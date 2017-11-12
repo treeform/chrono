@@ -21,7 +21,7 @@
 
 import strutils
 
-import calendars
+import ../calendars
 
 type
   Timestamp* = distinct float64

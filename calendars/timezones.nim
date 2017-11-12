@@ -3,8 +3,8 @@ import strutils
 import algorithm
 import streams
 
-import timestamps
-import calendars
+import ../calendars/timestamps
+import ../calendars
 
 type
   DstChange* = object {.packed.}
@@ -37,8 +37,8 @@ proc toString[A](arr: A): string =
     result &= c
 
 
-const zoneData = staticRead("timeZones.bin")
-const dstData = staticRead("dstChanges.bin")
+const zoneData = staticRead("../tzdata/timeZones.bin")
+const dstData = staticRead("../tzdata/dstChanges.bin")
 
 var timeZones* = newSeq[TimeZone](zoneData.len div sizeof(TimeZone))
 var dstChanges* = newSeq[DstChange](dstData.len div sizeof(DstChange))

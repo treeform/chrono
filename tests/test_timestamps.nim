@@ -1,5 +1,5 @@
 import unittest
-import "../timestamps"
+import "../calendars/timestamps"
 
 
 suite "timestamps":

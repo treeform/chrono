@@ -1,8 +1,8 @@
 import unittest
 
-import "../calendars"
-import "../timestamps"
-import "../timezones"
+import ../calendars
+import ../calendars/timestamps
+import ../calendars/timezones
 
 
 suite "timestamps":
