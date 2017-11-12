@@ -1,8 +1,8 @@
 import unittest
 
-import ../calendars
-import ../calendars/timestamps
-import ../calendars/timezones
+import ../chrono/calendars
+import ../chrono/timestamps
+import ../chrono/timezones
 
 
 suite "timestamps":

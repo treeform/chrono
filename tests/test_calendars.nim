@@ -1,5 +1,6 @@
 import unittest
-import "../calendars"
+
+import ../chrono/calendars
 
 
 suite "calendars":
