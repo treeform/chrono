@@ -2,6 +2,43 @@ import math
 import strutils
 
 
+
+
+##
+## Format spesification
+##
+## ===========  =================================================================================  ================================================
+## Specifier    Description                                                                        Example
+## ===========  =================================================================================  ================================================
+## {year}       Year in as many digits as needed. Can be negative.                                 ``12012/9/3 -> 12012``
+## {year/2}     Two digit year, 0-30 represents 2000-2030 while 30-99 is 1930 to 1999.             ``2012/9/3 -> 12``
+## {year/4}     Four digits of the year. Years 0 - 9999.                                           ``2012/9/3 -> 2012``
+## {month}      Month in digits 1-12                                                               ``2012/9/3 -> 9``
+## {month/2}    Month in two digits 01-12                                                          ``2012/9/3 -> 09``
+## {month/n}    Full name of month                                                                 ``September -> September``
+## {month/n/3}  Three letter name of month                                                         ``September -> Sep``
+## {day}        Day in digits 1-31                                                                 ``2012/9/3 -> 3``
+## {day/2}      Day in two digits 01-31                                                            ``2012/9/3 -> 03``
+## {hour}       Hour in digits 0-23                                                                ``09:08:07 -> 9``
+## {hour/2}     Hour in two digits 00-23                                                           ``09:08:07 -> 09``
+## {hour/2/ap}  Hour as 12-hour am/pm as digits 1-12                                               ``13:08:07 -> 1``
+## {hour/2/ap}  Hour as 12-hour am/pm as two digits 01-12                                          ``13:08:07 -> 01``
+## {am/pm}      Based on hour outputs "am" or "pm"                                                 ``13:08:07 -> pm``
+## {minute}     Minute in digits 0-59                                                              ``09:08:07 -> 8``
+## {minute/2}   Minute in two digits 0-59                                                          ``09:08:07 -> 08``
+## {second}     Second in digits 0-59                                                              ``09:08:07 -> 7``
+## {second/2}   Second in two digits 0-59                                                          ``09:08:07 -> 07``
+## {weekday}    Full name of weekday                                                               ``Saturday -> Saturday``
+## {weekday/3}  Three letter of name of weekday                                                    ``Saturday -> Sat``
+## {weekday/2}  Two letter of name of weekday                                                      ``Saturday -> Sa``
+## ============ =================================================================================  ================================================
+##
+## Any string that is not in {} considered to not be part of the format and is just inserted.
+## ``"{year/4} and {month/2} and {day/2}" -> "1988 and 02 and 09"``
+##
+
+
+
 type
   Calendar* = object
     year*: int
@@ -337,6 +374,9 @@ proc subYears*(cal: var Calendar, years: int) =
 
 
 proc parseCalendar*(format: string, value: string): Calendar =
+  ## Parses calendars from a string based on the format spesification
+  ## Note that not all valid formats can be parsed, things such as weeekdays or am/pm stuff without hours or am/pm marker.
+
   result = Calendar(year: 1970, month: 1, day: 1)
   var i = 0
   var j = 0
@@ -456,77 +496,7 @@ proc parseCalendar*(format: string, value: string): Calendar =
 
 
 proc formatCalendar*(cal: Calendar, format: string): string =
-  ## Format spesification
-  ##
-  ## ==========  =================================================================================  ================================================
-  ## Specifier   Description                                                                        Example
-  ## ==========  =================================================================================  ================================================
-  ## {year}      Year in as many digits as needed. Can be negative.                                 ``12012/9/3 -> 12012``
-  ## {year/2}    Two digit year, 0-30 represents 2000-2030 while 30-99 is 1930 to 1999.             ``2012/9/3 -> 12``
-  ## {year/4}    Four digits of the year. Years 0 - 9999.                                           ``2012/9/3 -> 2012``
-
-  ## {month}     Month in digits 1-12                                                               ``2012/9/3 -> 9``
-  ## {month/2}   Month in two digits 01-12                                                          ``2012/9/3 -> 09``
-  ## {month/n}   Full name of month                                                                 ``September -> September``
-  ## {month/n/3} Three letter name of month                                                         ``September -> Sep``
-
-  ## {day}       Day in digits 1-31                                                                 ``2012/9/3 -> 3``
-  ## {day/2}     Day in two digits 01-31                                                            ``2012/9/3 -> 03``
-
-  ## {hour}      Hour in digits 0-24                                                                ``09:08:07 -> 9``
-  ## {hour/2}    Hour in two digits 00-24                                                           ``09:08:07 -> 09``
-  ## {hour/2/ap} Hour as 12-hour am/pm as digits 0-12                                               ``13:08:07 -> 1``
-  ## {hour/2/ap} Hour as 12-hour am/pm as two digits 00-12                                          ``13:08:07 -> 01``
-  ## {am/pm}     Based on hour am or pm                                                             ``13:08:07 -> pm``
-
-  ## {minute}    Minute in digits 0-59                                                              ``09:08:07 -> 8``
-  ## {minute/2}  Minute in two digits 0-59                                                          ``09:08:07 -> 08``
-
-  ## {second}    Second in digits 0-59                                                              ``09:08:07 -> 7``
-  ## {second/2}  Second in two digits 0-59                                                          ``09:08:07 -> 07``
-
-  ## {weekday}   Full name of weekday                                                               ``Saturday -> Saturday``
-  ## {weekday/3} Three letter of name of weekday                                                    ``Saturday -> Sat``
-  ## {weekday/2} Two letter of name of weekday                                                      ``Saturday -> Sa``
-
-
-
-  ## ==========  =================================================================================  ================================================
-  ##
-  ## Any string that is not in {} considred to not be part of the format and is just inserted.
-  ## ``"{year/4} and {month/2} and {day/2}" -> "1988 and 02 and 09"``
-
-
-
-
-  ##    dddd     Full string for the day of the week.                                               ``Saturday -> Saturday``, ``Monday -> Monday``
-  ##    h        The hours in one digit if possible. Ranging from 0-12.                             ``5pm -> 5``, ``2am -> 2``
-  ##    hh       The hours in two digits always. If the hour is one digit 0 is prepended.           ``5pm -> 05``, ``11am -> 11``
-  ##    H        The hours in one digit if possible, randing from 0-24.                             ``5pm -> 17``, ``2am -> 2``
-  ##    HH       The hours in two digits always. 0 is prepended if the hour is one digit.           ``5pm -> 17``, ``2am -> 02``
-  ##    m        The minutes in 1 digit if possible.                                                ``5:30 -> 30``, ``2:01 -> 1``
-  ##    mm       Same as above but always 2 digits, 0 is prepended if the minute is one digit.      ``5:30 -> 30``, ``2:01 -> 01``
-  ##    M        The month in one digit if possible.                                                ``September -> 9``, ``December -> 12``
-  ##    MM       The month in two digits always. 0 is prepended.                                    ``September -> 09``, ``December -> 12``
-  ##    MMM      Abbreviated three-letter form of the month.                                        ``September -> Sep``, ``December -> Dec``
-  ##    MMMM     Full month string, properly capitalized.                                           ``September -> September``
-  ##    s        Seconds as one digit if possible.                                                  ``00:00:06 -> 6``
-  ##    ss       Same as above but always two digits. 0 is prepended.                               ``00:00:06 -> 06``
-  ##    t        ``A`` when time is in the AM. ``P`` when time is in the PM.
-  ##    tt       Same as above, but ``AM`` and ``PM`` instead of ``A`` and ``P`` respectively.
-  ##    y(yyyy)  This displays the year to different digits. You most likely only want 2 or 4 'y's
-  ##    yy       Displays the year to two digits.                                                   ``2012 -> 12``
-  ##    yyyy     Displays the year to four digits.                                                  ``2012 -> 2012``
-  ##    z        Displays the timezone offset from UTC.                                             ``GMT+7 -> +7``, ``GMT-5 -> -5``
-  ##    zz       Same as above but with leading 0.                                                  ``GMT+7 -> +07``, ``GMT-5 -> -05``
-  ##    zzz      Same as above but with ``:mm`` where *mm* represents minutes.                      ``GMT+7 -> +07:00``, ``GMT-5 -> -05:00``
-  ## ==========  =================================================================================  ================================================
-  ##
-  ## Other strings can be inserted by putting them in ``''``. For example
-  ## ``hh'->'mm`` will give ``01->56``.  The following characters can be
-  ## inserted without quoting them: ``:`` ``-`` ``(`` ``)`` ``/`` ``[`` ``]``
-  ## ``,``. However you don't need to necessarily separate format specifiers, a
-  ## unambiguous format string like ``yyyyMMddhhmmss`` is valid too.
+  ## Formats calendars to a string based on the format spesification
 
   var i = 0
   var output = ""
