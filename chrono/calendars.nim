@@ -2,7 +2,7 @@ import math
 import strutils
 
 
-
+# my philosophy is that timestamp is king. Not the calendars.
 
 ##
 ## Format spesification
@@ -51,11 +51,6 @@ type
     tzOffset*: float64
     tzName*: string
 
-  Weekday = enum
-    Monday, Tuesday, Wednesday, Thursday, Friday, Saterday, Sunday
-
-  Months = enum
-    January, February, March, April, May, June, July, August, September, October, November, December
 
 const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saterday", "Sunday"]
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "August", "October", "November", "December"]
@@ -64,6 +59,8 @@ const months = ["January", "February", "March", "April", "May", "June", "July", 
 proc calendarToIso*(cal: Calendar): string =
   ## Fastest way to convert Calendar to an ISO 8601 string representaion
   ## Use this instead of the format function when dealing whith ISO format
+  ## Warning does minimal checking for speed. Make sure your calendar is valid.
+
   proc f(n: int): char = char(ord('0') + n)
 
   if cal.tzOffset == 0:
@@ -108,6 +105,7 @@ proc calendarToIso*(cal: Calendar): string =
 proc isoToCalendar*(iso: string): Calendar =
   ## Fastest way to convert an ISO 8601 string representaion to a Calendar.
   ## Use this instead of the parseTimestamp function when dealing whith ISO format
+  ## Warning does no error checking for speed. If you want error checking use parseTs.
 
   proc f(i: int): int = ord(iso[i]) - ord('0')
 

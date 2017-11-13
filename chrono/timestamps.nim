@@ -74,7 +74,7 @@ proc tsToCalendar*(ts: Timestamp): Calendar =
     result.year -= 1970
 
 
-proc calendarToTimestamp*(cal: Calendar): Timestamp =
+proc calendarToTs*(cal: Calendar): Timestamp =
   ## Converts Calendar to a Timestamp
 
   var m = cal.month
@@ -104,33 +104,21 @@ proc tsToIso*(ts: Timestamp): string =
 proc tsToIso*(ts: Timestamp, tzOffset: float64): string =
   ## Fastest way to convert Timestamp to an ISO 8601 string representaion
   ## Use this instead of the format function when dealing whith ISO format
+  ## Warning does no error checking for speed. If you want error checking use parseTs.
   return calendarToIso(tsToCalendar(ts, tzOffset))
 
 
-proc isoToTimestamp*(iso: string): Timestamp =
+proc isoToTs*(iso: string): Timestamp =
   ## Fastest way to convert an ISO 8601 string representaion to a Timestamp.
   ## Use this instead of the parseTimestamp function when dealing whith ISO format
-  return calendarToTimestamp(isoToCalendar(iso))
+  return calendarToTs(isoToCalendar(iso))
 
 
-#[
-proc parseTime*(fmt: string, str: string): Timestamp =
-  # dd
-  return 0.0
+proc parseTs*(fmt: string, value: string): Timestamp =
+  ## Parse time using the Chrono format string into a Timestamp.
+  parseCalendar(fmt, value).calendarToTs()
 
-proc parseTime*(fmt: string): Timestamp =
-  # default ISO format
-  return 0.0
 
-proc formatTime*(moment: Timestamp): string =
-  # default ISO format
-  return ""
-
-proc formatTime*(moment: Timestamp, fmt: string): string =
-  # user format
-  return ""
-
-proc formatTimeDelat*(dt: float): string =
-  # delta foramt
-  return ""
-]#
+proc formatTs*(ts: Timestamp, fmt: string): string =
+  ## Format a Timestamp using the format string.
+  tsToCalendar(ts).formatCalendar(fmt)

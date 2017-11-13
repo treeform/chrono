@@ -114,3 +114,17 @@ proc tsToIso*(ts: Timestamp, tzName: string): string =
   ## Fastest way to convert Timestamp to an ISO 8601 string representaion
   ## Use this instead of the format function when dealing whith ISO format
   return calendarToIso(tsToCalendar(ts, tzName))
+
+
+proc parseTs*(fmt: string, value: string, tzName: string): Timestamp =
+  ## Parse time using the Chrono format string with timezone nto a Timestamp.
+  var cal = parseCalendar(fmt, value)
+  cal.applyTimezone(tzName)
+  return cal.calendarToTs()
+
+
+proc formatTs*(ts: Timestamp, fmt: string, tzName: string): string =
+  ## Format a Timestamp with timezone using the format string.
+  cal = tsToCalendar(ts)
+  cal.applyTimezone(tzName)
+  return cal.formatCalendar(fmt)
