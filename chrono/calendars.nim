@@ -108,26 +108,39 @@ proc calendarToIso*(cal: Calendar): string =
 proc isoToCalendar*(iso: string): Calendar =
   ## Fastest way to convert an ISO 8601 string representaion to a Calendar.
   ## Use this instead of the parseTimestamp function when dealing whith ISO format
-  ## Warning does no error checking for speed. If you want error checking use parseTs.
 
-  proc f(i: int): int = ord(iso[i]) - ord('0')
+  var error = false
+  proc f(i: int): int =
+    result = ord(iso[i]) - ord('0')
+    if result < 0 or result > 9:
+      error = true
 
   result.year  = f(0) * 1000
   result.year += f(1) * 100
   result.year += f(2) * 10
   result.year += f(3)
 
+  if iso[4] != '-': error = true
+
   result.month = f(5) * 10
   result.month += f(6)
+
+  if iso[7] != '-': error = true
 
   result.day = f(8) * 10
   result.day += f(9)
 
+  if iso[10] != 'T': error = true
+
   result.hour = f(11) * 10
   result.hour += f(12)
 
+  if iso[13] != ':': error = true
+
   result.minute = f(14) * 10
   result.minute += f(15)
+
+  if iso[13] != ':': error = true
 
   result.second = f(17) * 10
   result.second += f(18)
@@ -136,12 +149,19 @@ proc isoToCalendar*(iso: string): Calendar =
     var tzOffsetHour = f(20) * 10
     tzOffsetHour += f(21)
 
+    if iso[22] != ':': error = true
+
     var tzOffsetMinute = f(23) * 10
     tzOffsetMinute += f(24)
 
     result.tzOffset = float64(tzOffsetMinute * 60 + tzOffsetHour * 3600)
     if iso[19] == '-':
       result.tzOffset = -result.tzOffset
+    elif iso[19] != '+':
+      error = true
+
+  if error:
+    raise newException(ValueError, "Invalid format")
 
 
 proc weekday*(cal: Calendar): int =

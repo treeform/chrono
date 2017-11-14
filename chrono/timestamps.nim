@@ -104,7 +104,6 @@ proc tsToIso*(ts: Timestamp): string =
 proc tsToIso*(ts: Timestamp, tzOffset: float64): string =
   ## Fastest way to convert Timestamp to an ISO 8601 string representaion
   ## Use this instead of the format function when dealing whith ISO format
-  ## Warning does no error checking for speed. If you want error checking use parseTs.
   return calendarToIso(tsToCalendar(ts, tzOffset))
 
 
