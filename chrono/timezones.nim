@@ -1,3 +1,40 @@
+##
+## chrono/timezones
+## ================
+##
+## Timezones can be complicated.
+## But if you treat them as a presentation level issue sort of like language it becomes easier.
+## Never store anything as non-UTC.
+## If you need to store timezone info store it as a `string` plus a `Timestamp`.
+## When you need to display or parse it use the tzName attribute.
+##
+## .. code-block:: nim
+##     var ts = parseTs(
+##         "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
+##        "1988-02-09T03:34:12Z",
+##         tzName = "America/Los_Angeles"
+##     )
+##
+##     echo ts
+##
+##     echo formatTs(
+##         ts,
+##         "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
+##         tzName = "America/Los_Angeles"
+##     )
+##
+## Timezone and daylight savings can and do change unpredictably remember to keep this library up to date.
+##
+## When you include the library it also includes the daylight savings table in the binary which is about 6MB.
+## It does not use OS's timezone functions.
+## You are always guaranteed to game the same result on all platforms.
+##
+## Many confuse proper time zone names like **"America/Los_Angeles"** with 3-4 letter time zone abbreviations like **"PST"** or **"PDT"**.
+## Time zone abbreviations cannot describe a time zone fully, unless you know what country you are in and its a common one.
+## It is always recommended to use full timezone names for parsing and storage and only display time zone abbreviations and never parse them.
+##
+
+
 import parsecsv
 import strutils
 import algorithm
@@ -40,8 +77,8 @@ proc toString[A](arr: A): string =
 const zoneData = staticRead("../tzdata/timeZones.bin")
 const dstData = staticRead("../tzdata/dstChanges.bin")
 
-var timeZones* = newSeq[TimeZone](zoneData.len div sizeof(TimeZone))
-var dstChanges* = newSeq[DstChange](dstData.len div sizeof(DstChange))
+var timeZones* = newSeq[TimeZone](zoneData.len div sizeof(TimeZone)) ## List of all timezones
+var dstChanges* = newSeq[DstChange](dstData.len div sizeof(DstChange)) ## List of all DST changes
 
 var zoneStream = newStringStream(zoneData)
 for i in 0..<timeZones.len:

@@ -1,38 +1,63 @@
-## This module contains routines and types for dealing with time, calendars and timezones.
 ##
-## Examples:
+## chrono/timestamps
+## =================
+##
+## If you are going to just parse or format dates. I recommend using just the ``include chrono/timestamps`` module.
+## It it includes the Timestamp that is enough for most cases involved with times.
+## I always recommend storing dates as a ``float64`` number of seconds sence 1970. This is exactly what ``Timestamp`` is.
+## When you need to parse it or display it use ``parseTs`` or ``formatTs``.
 ##
 ## .. code-block:: nim
+##     var ts = parseTs(
+##       "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
+##       "1988-02-09T03:34:12Z"
+##     )
 ##
-##  import moment
+## echo ts
+##
+## .. code-block:: nim
+##     echo formatTs(
+##       ts,
+##       "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
+##     )
 ##
 ##
-## There are two ways to represent time with moment, Timestamp and Calendar
+## If you need to parse ISO dates which is a very common format you find all over the internet. You can even use faster optimized versions here:
 ##
-## Timestamp is just a float64 number of seconds since 1970 UTC. This is very fast way to deal with time and is recommened to store and use your times with this.
+## .. code-block:: nim
+##     echo isoToTs("2017-11-08T08:01:43Z")
+##     echo tsToIso(Timestamp(1510128103.0))
 ##
-## Calendar is a full data structure that has time, date and timezone info parsed out. You can use if you have to, but it is recommended to use Timestamp for most operations.
-##
-## Dealing with timezones and DST. If you can get a way with just using UTC you should. Dealing with timzones is not fun.
-## If there is a known timezone, parseTs with that timzone. Then timezone is thrown a way.
-## When you need to display time back, chanses are its a different time zone so just format the number with that timezone.
-##
-
 
 import strutils
-
 import calendars
 
 type
-  Timestamp* = distinct float64
+  Timestamp* = distinct float64 ## Always seconds since 1970 UTC
 
+proc `==`*(a, b: Timestamp): bool =
+  ## Compare timestamps
+  float64(a) == float64(b)
 
-proc `==`*(a, b: Timestamp): bool = float64(a) == float64(b)
-proc `>`*(a, b: Timestamp): bool = float64(a) > float64(b)
-proc `<`*(a, b: Timestamp): bool = float64(a) < float64(b)
-proc `<=`*(a, b: Timestamp): bool = float64(a) <= float64(b)
-proc `>=`*(a, b: Timestamp): bool = float64(a) >= float64(b)
-proc `$`*(a: Timestamp): string = $float64(a)
+proc `>`*(a, b: Timestamp): bool =
+  ## Compare timestamps
+  float64(a) > float64(b)
+
+proc `<`*(a, b: Timestamp): bool =
+  ## Compare timestamps
+  float64(a) < float64(b)
+
+proc `<=`*(a, b: Timestamp): bool =
+  ## Compare timestamps
+  float64(a) <= float64(b)
+
+proc `>=`*(a, b: Timestamp): bool =
+  ## Compare timestamps
+  float64(a) >= float64(b)
+
+proc `$`*(a: Timestamp): string =
+  ## Display a timestamps as a float64
+  $float64(a)
 
 
 proc tsToCalendar*(ts: Timestamp): Calendar =

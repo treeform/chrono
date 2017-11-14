@@ -95,8 +95,6 @@ If you need extra features that calendars provide I recommending creating a `Cal
 ts = cal.calendarToTs()
 cal = ts.tsToCalendar()
 ```
-Calendars are not ment to be stored or to live for very long unlike in other libraries. All common operations can be done with `Timestamps`.
-
 
 
 ## chrono/timezones

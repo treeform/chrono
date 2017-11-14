@@ -1,9 +1,6 @@
-import math
-import strutils
-
-
 ##
 ## Format spesification
+## ====================
 ##
 ## ===========  =================================================================================  ================================================
 ## Specifier    Description                                                                        Example
@@ -36,8 +33,39 @@ import strutils
 ## Any string that is not in {} considered to not be part of the format and is just inserted.
 ## ``"{year/4} and {month/2} and {day/2}" -> "1988 and 02 and 09"``
 ##
+## chrono/calendars
+## ================
+##
+## Calendars are more involved they support more features but come with complexity and are mutable.
+##
+## I do not recommend storing ``Calendar`` objects in files or databases. Store ``Timestamp`` instead.
+##
+## Most useful thing about calendars is that you can add years, months, days, hours, minutes or seconds to them.
+##
+## .. code-block:: nim
+##     var cal = Calendar(year: 2013, month: 12, day: 31, hour: 59, minute: 59, second: 59)
+##     echo cal.calendarToIso()
+##     # "2013-12-31T59:59:59Z"
+##
+##     cal.addSeconds(20)
+##     cal.subMinutes(15)
+##     cal.addDays(40)
+##     cal.subMonths(120)
+##
+## It supports same format spesification as ``Timestamp``:
+##
+## .. code-block:: nim
+##     echo cal.formatCalendar("{month/2}/{day/2}/{year/4} {hour/2}:{minute/2}:{second/2}")
+##
+## If you need extra features that calendars provide I recommending creating a ``Calendar`` with ``tsToCalendar`` doing your work and converting back with ``calendarToTs``.
+##
+## .. code-block:: nim
+##     ts = cal.calendarToTs()
+##     cal = ts.tsToCalendar()
+##
 
-
+import math
+import strutils
 
 type
   Calendar* = object
