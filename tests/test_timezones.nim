@@ -14,13 +14,21 @@ suite "timestamps":
     for change in findDstChanges(findTimeZone("America/Los_Angeles")):
       check change.tzId == 399
 
-    check tsToCalendar(Timestamp(28800.0), tzName = "America/Los_Angeles") == Calendar(year: 1970, month: 1, day: 1, tzOffset: -28800.0)
+    check tsToCalendar(Timestamp(28800.0), tzName = "America/Los_Angeles") == Calendar(year: 1970, month: 1, day: 1, tzOffset: -28800.0, tzName: "America/Los_Angeles", dstName: "PST")
+
     check tsToIso(Timestamp(0.0), tzName = "America/Los_Angeles") == "1969-12-31T16:00:00-08:00"
     check tsToIso(Timestamp(28800.0), tzName = "America/Los_Angeles") == "1970-01-01T00:00:00-08:00"
     check tsToIso(Timestamp(1510128103.0), tzName = "America/Los_Angeles") == "2017-11-08T00:01:43-08:00"
 
     # ADD DST
     check tsToIso(Timestamp(1509823680.0), tzName = "America/Los_Angeles") == "2017-11-04T12:28:00-07:00"
+
+    # ADD DST
+    check formatTs(
+        Timestamp(1509823680.0),
+        "{year}-{month/2}-{day/2} {hour/2}:{minute/2} {tzName}@{dstName}",
+        tzName = "America/Los_Angeles"
+      ) == "2017-11-04 12:28 America/Los_Angeles@PDT"
 
   test "time zones":
     proc testTime(ts: int64, iso: string, tzName: string) =
@@ -85,7 +93,13 @@ suite "timestamps":
 
   test "time zones random":
     proc testTime(ts: int64, iso: string, tzName: string) =
-      check tsToIso(Timestamp(float64(ts)), tzName=tzName) == iso
+      var isoGen = tsToIso(Timestamp(float64(ts)), tzName=tzName)
+      if isoGen != iso:
+        echo "---"
+        echo "norm: ", tsToCalendar(Timestamp(float64(ts)))
+        echo "want: ", iso
+        echo "have: ", isoGen
+        fail()
 
     testTime(0, "1970-01-01T11:00:00+11:00", "Antarctica/Macquarie")
     testTime(2345671, "1970-01-27T22:34:31-05:00", "America/Jamaica")

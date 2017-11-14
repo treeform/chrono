@@ -27,16 +27,16 @@ suite "timestamps":
 
   test "parseTs":
     check parseTs(
-      "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
-      "1988-02-09T03:34:12Z"
-     ) == isoToTs("1988-02-09T03:34:12Z")
+        "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
+        "1988-02-09T03:34:12Z"
+      ) == isoToTs("1988-02-09T03:34:12Z")
 
 
   test "formatTs":
     check formatTs(
-      isoToTs("1988-02-09T03:34:12Z"),
-      "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
-     ) == "1988-02-09T03:34:12Z"
+        isoToTs("1988-02-09T03:34:12Z"),
+        "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
+      ) == "1988-02-09T03:34:12Z"
 
 
   test "tsToIso utc random":

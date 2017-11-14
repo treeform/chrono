@@ -131,6 +131,14 @@ suite "calendars":
     c.addSeconds(24 * 3600 * 400)
     check Calendar(year: 1971, month: 2, day: 5) == c
 
+    c = Calendar(year: 1970, month: 2, day: 1)
+    c.addSeconds(- 3600 * 7)
+    check Calendar(year: 1970, month: 1, day: 31, hour: 17) == c
+
+    c = Calendar(year: 2017, month: 9, day: 20, hour: 15, minute: 19, second: 42, secondFraction: 0.0)
+    c.addSeconds(- 3600 * 3)
+    check Calendar(year: 2017, month: 9, day: 20, hour: 12, minute: 19, second: 42, secondFraction: 0.0) == c
+
   test "addMinutes":
     var c = Calendar(year: 1970, month: 1, day: 1)
     c.addMinutes(12345678)

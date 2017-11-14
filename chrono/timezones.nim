@@ -98,22 +98,37 @@ iterator findDstChanges*(tz: TimeZone): DstChange =
     inc index
 
 
-proc tsToCalendar*(ts: Timestamp, tzName: string): Calendar =
+proc applyTimezone*(cal: var Calendar, tzName: string) =
+  ## take a calendar and apply a timezone to it
+  ## this does not change the timestamp of the calendar
   var prevChange: DstChange
   var tz = findTimeZone(tzName)
+  var ts = cal.calendarToTs()
   if tz.valid:
     for change in findDstChanges(tz):
       if Timestamp(change.start) > ts:
         break
       prevChange = change
     var tzOffset = float64(prevChange.offset)
-    return tsToCalendar(ts, tzOffset = tzOffset)
+    cal.tzOffset = tzOffset
+    cal.addSeconds(prevChange.offset)
+    cal.tzName = tz.name.toString()
+    cal.dstName = prevChange.name.toString()
+
+
+proc tsToCalendar*(ts: Timestamp, tzName: string): Calendar =
+  ## Convert Timestamp to calendar with a timezone
+  var cal = tsToCalendar(ts)
+  cal.applyTimezone(tzName)
+  return cal
 
 
 proc tsToIso*(ts: Timestamp, tzName: string): string =
   ## Fastest way to convert Timestamp to an ISO 8601 string representaion
   ## Use this instead of the format function when dealing whith ISO format
-  return calendarToIso(tsToCalendar(ts, tzName))
+  var cal = tsToCalendar(ts)
+  cal.applyTimezone(tzName)
+  return cal.calendarToIso()
 
 
 proc parseTs*(fmt: string, value: string, tzName: string): Timestamp =
@@ -125,6 +140,6 @@ proc parseTs*(fmt: string, value: string, tzName: string): Timestamp =
 
 proc formatTs*(ts: Timestamp, fmt: string, tzName: string): string =
   ## Format a Timestamp with timezone using the format string.
-  cal = tsToCalendar(ts)
+  var cal = tsToCalendar(ts)
   cal.applyTimezone(tzName)
   return cal.formatCalendar(fmt)

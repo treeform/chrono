@@ -31,6 +31,8 @@ import strutils
 ## {weekday}    Full name of weekday                                                               ``Saturday -> Saturday``
 ## {weekday/3}  Three letter of name of weekday                                                    ``Saturday -> Sat``
 ## {weekday/2}  Two letter of name of weekday                                                      ``Saturday -> Sa``
+## {tzName}     Timezone name (can't be parsed)                                                    ``America/Los_Angeles``
+## {dstName}    Daylight savings name or standard name (can't be parsed)                           ``PDT``
 ## ============ =================================================================================  ================================================
 ##
 ## Any string that is not in {} considered to not be part of the format and is just inserted.
@@ -50,6 +52,7 @@ type
     secondFraction*: float64
     tzOffset*: float64
     tzName*: string
+    dstName*: string
 
 
 const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saterday", "Sunday"]
@@ -483,7 +486,7 @@ proc parseCalendar*(format: string, value: string): Calendar =
           result.second = getNumber(2)
 
         else:
-          raise newException(ValueError, "Invalid token: " & token)
+          raise newException(ValueError, "Invalid parse token: " & token)
 
     elif format[i] == value[j]:
       inc i
@@ -538,7 +541,6 @@ proc formatCalendar*(cal: Calendar, format: string): string =
         of "month/n/3":
           output &= months[cal.month - 1][0..2]
 
-
         of "day":
           putNumber(cal.day)
         of "day/2":
@@ -582,8 +584,13 @@ proc formatCalendar*(cal: Calendar, format: string): string =
         of "weekday/2":
           output &= weekdays[cal.weekday][0..1]
 
+        of "tzName":
+          output &= cal.tzName
+        of "dstName":
+          output &= cal.dstName
+
         else:
-          raise newException(ValueError, "Invalid token: " & token)
+          raise newException(ValueError, "Invalid format token: " & token)
 
     else:
       output &= format[i]
