@@ -380,43 +380,43 @@ proc addYears*(cal: var Calendar, years: int) =
 
 
 proc subSeconds*(cal: var Calendar, seconds: float64) =
-  ## Subtracts float point seconds to this calendar
+  ## Subtracts float point seconds from this calendar
   cal.secondFraction -= seconds
   cal.normalize()
 
 
 proc subSeconds*(cal: var Calendar, seconds: int) =
-  ## Subtracts seconds to this calendar
+  ## Subtracts seconds from this calendar
   cal.second -= seconds
   cal.normalize()
 
 
 proc subMinutes*(cal: var Calendar, minutes: int) =
-  ## Subtracts minutes to this calendar
+  ## Subtracts minutes from this calendar
   cal.minute -= minutes
   cal.normalize()
 
 
 proc subHours*(cal: var Calendar, hours: int) =
-  ## Subtracts hours to this calendar
+  ## Subtracts hours from this calendar
   cal.hour -= hours
   cal.normalize()
 
 
 proc subDays*(cal: var Calendar, days: int) =
-  ## Subtracts days to this calendar
+  ## Subtracts days from this calendar
   cal.day -= days
   cal.normalize()
 
 
 proc subMonths*(cal: var Calendar, months: int) =
-  ## Subtracts months to this calendar
+  ## Subtracts months from this calendar
   cal.month -= months
   cal.normalize()
 
 
 proc subYears*(cal: var Calendar, years: int) =
-  ## Subtracts years to this calendar
+  ## Subtracts years from this calendar
   cal.year -= years
 
 
