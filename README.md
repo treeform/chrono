@@ -2,7 +2,7 @@
 
 Documentation: https://treeform.github.io/chrono/
 
-## Parse timestamps
+## Parse Timestamps
 
 ```Nim
 var ts = parseTs(
@@ -11,7 +11,7 @@ var ts = parseTs(
 )
 ```
 
-## Format timestamps
+## Format Timestamps
 
 ```Nim
 echo formatTs(
@@ -30,7 +30,7 @@ cal.addDays(40)
 cal.subMonths(120)
 ```
 
-## Use timezones
+## Use Timezones
 
 ```Nim
 echo formatTs(
