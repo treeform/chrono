@@ -4,7 +4,7 @@ Documentation: https://treeform.github.io/chrono/
 
 ## Parse timestamps
 
-```
+```Nim
 var ts = parseTs(
   "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
   "1988-02-09T03:34:12Z"
@@ -13,7 +13,7 @@ var ts = parseTs(
 
 ## Format timestamps
 
-```
+```Nim
 echo formatTs(
   ts,
   "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
@@ -22,7 +22,7 @@ echo formatTs(
 
 ## Manipulate Calendars
 
-```
+```Nim
 var cal = Calendar(year: 2013, month: 12, day: 31, hour: 59, minute: 59, second: 59)
 cal.addSeconds(20)
 cal.subMinutes(15)
@@ -32,7 +32,7 @@ cal.subMonths(120)
 
 ## Use timezones
 
-```
+```Nim
 echo formatTs(
     ts,
     "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
