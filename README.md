@@ -40,4 +40,4 @@ echo formatTs(
 )
 ```
 
-More: ttps://treeform.github.io/chrono/
+More: https://treeform.github.io/chrono/
