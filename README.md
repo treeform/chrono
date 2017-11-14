@@ -3,14 +3,6 @@
 
 ## Format spesification
 
-
-| First Header  | Second Header |
-| ------------- | ------------- |
-| Content Cell  | Content Cell  |
-| Content Cell  | Content Cell  |
-
-
-
 | Specifier   | Description                                                                        | Example                     |
 | ----------- | ---------------------------------------------------------------------------------- | --------------------------- |
 | {year}      | Year in as many digits as needed. Can be negative.                                 | ``12012/9/3 -> 12012``      |
