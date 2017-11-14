@@ -2,8 +2,6 @@ import math
 import strutils
 
 
-# my philosophy is that timestamp is king. Not the calendars.
-
 ##
 ## Format spesification
 ##
