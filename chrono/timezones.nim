@@ -147,10 +147,18 @@ proc applyTimezone*(cal: var Calendar, tzName: string) =
         break
       prevChange = change
     var tzOffset = float64(prevChange.offset)
+    cal.subSeconds(int(cal.tzOffset))
     cal.tzOffset = tzOffset
     cal.addSeconds(prevChange.offset)
     cal.tzName = tz.name.toString()
     cal.dstName = prevChange.name.toString()
+
+
+proc clearTimezone*(cal: var Calendar) =
+  cal.subSeconds(int(cal.tzOffset))
+  cal.tzOffset = 0
+  cal.tzName = ""
+  cal.dstName = ""
 
 
 proc tsToCalendar*(ts: Timestamp, tzName: string): Calendar =

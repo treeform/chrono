@@ -20,15 +20,42 @@ suite "timestamps":
     check tsToIso(Timestamp(28800.0), tzName = "America/Los_Angeles") == "1970-01-01T00:00:00-08:00"
     check tsToIso(Timestamp(1510128103.0), tzName = "America/Los_Angeles") == "2017-11-08T00:01:43-08:00"
 
-    # ADD DST
     check tsToIso(Timestamp(1509823680.0), tzName = "America/Los_Angeles") == "2017-11-04T12:28:00-07:00"
-
-    # ADD DST
     check formatTs(
         Timestamp(1509823680.0),
         "{year}-{month/2}-{day/2} {hour/2}:{minute/2} {tzName}@{dstName}",
         tzName = "America/Los_Angeles"
       ) == "2017-11-04 12:28 America/Los_Angeles@PDT"
+
+  test "applyTimezone/clearTimezone":
+    var ts = Timestamp(12345678.0)
+    var cal = tsToCalendar(ts)
+    check cal.calendartoTs() == ts
+    check cal.calendartoIso() == "1970-05-23T21:21:18Z"
+
+    cal.applyTimezone("America/Los_Angeles")
+    check cal.calendartoTs() == ts
+    check cal.calendartoIso() == "1970-05-23T14:21:18-07:00"
+
+    cal.applyTimezone("America/New_York")
+    check cal.calendartoTs() == ts
+    check cal.calendartoIso() == "1970-05-23T17:21:18-04:00"
+
+    cal.applyTimezone("America/Chicago")
+    check cal.calendartoTs() == ts
+    check cal.calendartoIso() == "1970-05-23T16:21:18-05:00"
+
+    cal.applyTimezone("Pacific/Honolulu")
+    check cal.calendartoTs() == ts
+    check cal.calendartoIso() == "1970-05-23T11:21:18-10:00"
+
+    cal.applyTimezone("America/Denver")
+    check cal.calendartoTs() == ts
+    check cal.calendartoIso() == "1970-05-23T15:21:18-06:00"
+
+    cal.clearTimezone()
+    check cal.calendartoTs() == ts
+    check cal.calendartoIso() == "1970-05-23T21:21:18Z"
 
   test "time zones":
     proc testTime(ts: int64, iso: string, tzName: string) =
