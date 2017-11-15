@@ -25,7 +25,7 @@
 ##
 ## Timezone and daylight savings can and do change unpredictably remember to keep this library up to date.
 ##
-## When you include the library it also includes the daylight savings table in the binary which is about 6MB.
+## When you import the library it also statically includes the daylight savings table in the binary which is about 6MB.
 ## It does not use OS's timezone functions.
 ## You are always guaranteed to game the same result on all platforms.
 ##

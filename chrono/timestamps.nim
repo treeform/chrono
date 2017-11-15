@@ -2,8 +2,8 @@
 ## chrono/timestamps
 ## =================
 ##
-## If you are going to just parse or format dates. I recommend using just the ``include chrono/timestamps`` module.
-## It it includes the Timestamp that is enough for most cases involved with times.
+## If you are going to just parse or format dates. I recommend using just the ``import chrono/timestamps`` module.
+## It it imports the Timestamp that is enough for most cases involved with times.
 ## I always recommend storing dates as a ``float64`` number of seconds sence 1970. This is exactly what ``Timestamp`` is.
 ## When you need to parse it or display it use ``parseTs`` or ``formatTs``.
 ##
