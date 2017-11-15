@@ -135,6 +135,14 @@ iterator findDstChanges*(tz: TimeZone): DstChange =
     inc index
 
 
+iterator findTimeZoneFromDstName*(dstName: string): TimeZone =
+  ## Finds timezone dst changes by timezone.
+  for dst in dstChanges:
+    if dst.name.toString() == dstName:
+      echo dst
+
+
+
 proc applyTimezone*(cal: var Calendar, tzName: string) =
   ## take a calendar and apply a timezone to it
   ## this does not change the timestamp of the calendar

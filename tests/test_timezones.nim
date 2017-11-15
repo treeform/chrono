@@ -57,6 +57,11 @@ suite "timestamps":
     check cal.calendartoTs() == ts
     check cal.calendartoIso() == "1970-05-23T21:21:18Z"
 
+
+  test "findTimeZoneFromDstName":
+    for tz in findTimeZoneFromDstName("PST"):
+      echo "tz", tz
+
   test "time zones":
     proc testTime(ts: int64, iso: string, tzName: string) =
       check tsToIso(Timestamp(float64(ts)), tzName=tzName) == iso
