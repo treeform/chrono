@@ -59,8 +59,27 @@ suite "timestamps":
 
 
   test "findTimeZoneFromDstName":
+    var names = newSeq[string]()
     for tz in findTimeZoneFromDstName("PST"):
-      echo "tz", tz
+      names.add tz.name.toString()
+    check names == @[
+      "America/Inuvik",
+      "America/Creston",
+      "America/Dawson_Creek",
+      "America/Fort_Nelson",
+      "America/Vancouver",
+      "America/Whitehorse",
+      "America/Dawson",
+      "America/Mazatlan",
+      "America/Hermosillo",
+      "America/Tijuana",
+      "America/Bahia_Banderas",
+      "America/Boise",
+      "America/Los_Angeles",
+      "America/Juneau",
+      "America/Sitka",
+      "America/Metlakatla"
+    ]
 
   test "time zones":
     proc testTime(ts: int64, iso: string, tzName: string) =

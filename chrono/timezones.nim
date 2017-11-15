@@ -66,7 +66,7 @@ proc toArray[A](str: string): A =
     result[i] = str[i]
 
 
-proc toString[A](arr: A): string =
+proc toString*[A](arr: A): string =
   result = ""
   for c in arr:
     if c == '\0':
@@ -121,6 +121,13 @@ proc findTimeZone*(tzName: string): TimeZone =
   return timeZones.binarySearchValue(tzName, getName)
 
 
+proc findTimeZone*(tzId: int): TimeZone =
+  ## Finds timezone by its id (slow).
+  for tz in timeZones:
+    if tz.id == tzId:
+      return tz
+
+
 proc valid*(tz: TimeZone): bool =
   ## Returns true if timezone is valid
   return tz.id > 0
@@ -136,11 +143,13 @@ iterator findDstChanges*(tz: TimeZone): DstChange =
 
 
 iterator findTimeZoneFromDstName*(dstName: string): TimeZone =
-  ## Finds timezone dst changes by timezone.
+  ## Finds timezones by its dst name (slow).
+  var lastTzId = -1
   for dst in dstChanges:
     if dst.name.toString() == dstName:
-      echo dst
-
+      if lastTzId != dst.tzId:
+        lastTzId = dst.tzId
+        yield findTimeZone(dst.tzId)
 
 
 proc applyTimezone*(cal: var Calendar, tzName: string) =
