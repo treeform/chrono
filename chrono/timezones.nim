@@ -44,6 +44,8 @@ import timestamps
 import calendars
 
 type
+  PackedString[N] = array[N, char]
+
   DstChange* = object {.packed.}
     ## Day Light Savings time transition
     tzId*: int16
@@ -57,21 +59,30 @@ type
     name*: array[32, char]
 
 
-proc toArray[A](str: string): A =
+proc pack[N](str: string): PackedString[N] =
   if str.len >= result.len:
-    echo str.len
+    raise Exception("Can't pack " & str.len & " string into " & result.len)
   for i in 0..<result.len:
     if i >= str.len:
       break
     result[i] = str[i]
 
 
-proc toString*[A](arr: A): string =
+proc `$`*[N](ps: PackedString[N]): string =
   result = ""
-  for c in arr:
+  for c in ps:
     if c == '\0':
       break
     result &= c
+
+
+proc `==`[N](a: PackedString[N], b: string): bool =
+  for i, c in a:
+    if c == '\0':
+      return b.len == i
+    if c != b[i]:
+      return false
+  return true
 
 
 const zoneData = staticRead("../tzdata/timeZones.bin")
@@ -117,7 +128,7 @@ proc binarySearchValue[T,K](a: openArray[T], key:K, keyProc: proc (e: T):K): T =
 
 proc findTimeZone*(tzName: string): TimeZone =
   ## Finds timezone by its name
-  proc getName(tz: TimeZone): string = toString(tz.name)
+  proc getName(tz: TimeZone): string = $tz.name
   return timeZones.binarySearchValue(tzName, getName)
 
 
@@ -146,7 +157,7 @@ iterator findTimeZoneFromDstName*(dstName: string): TimeZone =
   ## Finds timezones by its dst name (slow).
   var lastTzId = -1
   for dst in dstChanges:
-    if dst.name.toString() == dstName:
+    if dst.name == dstName:
       if lastTzId != dst.tzId:
         lastTzId = dst.tzId
         yield findTimeZone(dst.tzId)
@@ -167,8 +178,8 @@ proc applyTimezone*(cal: var Calendar, tzName: string) =
     cal.subSeconds(int(cal.tzOffset))
     cal.tzOffset = tzOffset
     cal.addSeconds(prevChange.offset)
-    cal.tzName = tz.name.toString()
-    cal.dstName = prevChange.name.toString()
+    cal.tzName = $tz.name
+    cal.dstName = $prevChange.name
 
 
 proc clearTimezone*(cal: var Calendar) =

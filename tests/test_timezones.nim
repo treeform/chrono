@@ -61,7 +61,7 @@ suite "timestamps":
   test "findTimeZoneFromDstName":
     var names = newSeq[string]()
     for tz in findTimeZoneFromDstName("PST"):
-      names.add tz.name.toString()
+      names.add $tz.name
     check names == @[
       "America/Inuvik",
       "America/Creston",
