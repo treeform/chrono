@@ -27,6 +27,9 @@ suite "timestamps":
         tzName = "America/Los_Angeles"
       ) == "2017-11-04 12:28 America/Los_Angeles@PDT"
 
+    check tsToIso(Timestamp(0.0), tzName = "Europe/Riga") == "1970-01-01T03:00:00+03:00"
+    check tsToIso(Timestamp(0.0), tzName = "Europe/Dublin") == "1970-01-01T01:00:00+01:00"
+
   test "applyTimezone/clearTimezone":
     var ts = Timestamp(12345678.0)
     var cal = tsToCalendar(ts)
