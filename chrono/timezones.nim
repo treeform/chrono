@@ -25,9 +25,9 @@
 ##
 ## Timezone and daylight savings can and do change unpredictably remember to keep this library up to date.
 ##
-## When you import the library it also statically includes the daylight savings table in the binary which is about 6MB.
+## When you import the library it also statically includes compressed daylight savings table in the binary which is about 0.7MB.
 ## It does not use OS's timezone functions.
-## You are always guaranteed to game the same result on all platforms.
+## This way, you are always guaranteed to get the same result on all platforms.
 ##
 ## Many confuse proper time zone names like **"America/Los_Angeles"** with 3-4 letter time zone abbreviations like **"PST"** or **"PDT"**.
 ## Time zone abbreviations cannot describe a time zone fully, unless you know what country you are in and its a common one.
@@ -39,12 +39,13 @@ import parsecsv
 import strutils
 import algorithm
 import streams
+import zip/zlib
 
 import timestamps
 import calendars
 
 type
-  PackedString[N] = array[N, char]
+  PackedString[N: static[int]] = array[N, char]
 
   DstChange* = object {.packed.}
     ## Day Light Savings time transition
@@ -58,10 +59,12 @@ type
     id*: int16
     name*: array[32, char]
 
+var timeZones*: seq[TimeZone] ## List of all timezones
+var dstChanges*: seq[DstChange] ## List of all DST changes
 
 proc pack[N](str: string): PackedString[N] =
   if str.len >= result.len:
-    raise Exception("Can't pack " & str.len & " string into " & result.len)
+    raise newException(ValueError, "Can't pack " & $str.len & " string into " & $result.len)
   for i in 0..<result.len:
     if i >= str.len:
       break
@@ -85,23 +88,27 @@ proc `==`[N](a: PackedString[N], b: string): bool =
   return true
 
 
-const zoneData = staticRead("../tzdata/timeZones.bin")
-const dstData = staticRead("../tzdata/dstChanges.bin")
+when not compiles(skipLoadingTimeZones):
+  const zoneDataZip = staticRead("../tzdata/timezones.bin")
+  const dstDataZip = staticRead("../tzdata/dstchanges.bin")
 
-var timeZones* = newSeq[TimeZone](zoneData.len div sizeof(TimeZone)) ## List of all timezones
-var dstChanges* = newSeq[DstChange](dstData.len div sizeof(DstChange)) ## List of all DST changes
+  var zoneData = uncompress(zoneDataZip)
+  var dstData = uncompress(dstDataZip)
 
-var zoneStream = newStringStream(zoneData)
-for i in 0..<timeZones.len:
-  var dummyZone = TimeZone()
-  discard zoneStream.readData(cast[pointer](addr dummyZone), sizeof(TimeZone))
-  timeZones[i] = dummyZone
+  timeZones = newSeq[TimeZone](zoneData.len div sizeof(TimeZone)) ## List of all timezones
+  dstChanges = newSeq[DstChange](dstData.len div sizeof(DstChange)) ## List of all DST changes
 
-var dstStream = newStringStream(dstData)
-for i in 0..<dstChanges.len:
-  var dummyDst = DstChange()
-  discard dstStream.readData(cast[pointer](addr dummyDst), sizeof(DstChange))
-  dstChanges[i] = dummyDst
+  var zoneStream = newStringStream(zoneData)
+  for i in 0..<timeZones.len:
+    var dummyZone = TimeZone()
+    discard zoneStream.readData(cast[pointer](addr dummyZone), sizeof(TimeZone))
+    timeZones[i] = dummyZone
+
+  var dstStream = newStringStream(dstData)
+  for i in 0..<dstChanges.len:
+    var dummyDst = DstChange()
+    discard dstStream.readData(cast[pointer](addr dummyDst), sizeof(DstChange))
+    dstChanges[i] = dummyDst
 
 
 proc binarySearch[T,K](a: openArray[T], key:K, keyProc: proc (e: T):K): int =
