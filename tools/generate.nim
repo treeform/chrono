@@ -16,7 +16,7 @@ import zip/zlib
 
 # You can modify these parameters here to get the timezone table you want:
 # Generating timezones from 2015 to 2025 generates only a 14k dstchanges.bin
-# Default time range of 1970 to 2030 generates 79k tzdata/dstchanges.bin
+# Default time range of 1970 to 2030 generates 94k tzdata/dstchanges.bin
 
 const startYear = 1970
 const endYear = 2030
@@ -164,10 +164,17 @@ proc csvToBin() =
     var dst = DstChange()
     var zoneDsts = newSeq[DstChange]()
 
-
     proc dumpZone() =
-      echo "end ", zoneDsts
-      for innerDst in zoneDsts:
+      var startI = 0
+      var endI = zoneDsts.len
+      for i, innerDst in zoneDsts:
+        if Timestamp(innerDst.start) < startYearTs:
+          startI = i
+        if Timestamp(dst.start) > endYearTs and endI > i:
+          endI = i
+      if startI > 0:
+        dec startI
+      for innerDst in zoneDsts[startI..<endI]:
         dstChanges.add(innerDst)
 
       zoneDsts = newSeq[DstChange]()
@@ -186,25 +193,9 @@ proc csvToBin() =
       zoneDsts.add(dst)
       prevDst = dst
 
-
-      #[
-      if Timestamp(dst.start) < startYearTs:
-        hasPrev = true
-        prevDst = dst
-        continue
-      if Timestamp(dst.start) > endYearTs:
-        if hasPrev:
-          dstChanges.add(dst)
-          hasPrev = false
-        continue
-      hasPrev = false
-      dstChanges.add(dst)
-      ]#
-
     dumpZone()
 
-    echo dstChanges.len
-
+    echo "dst transitoins: ", dstChanges.len
 
     var f = newStringStream()
     f.writeData(cast[pointer](addr dstChanges[0]), dstChanges.len * sizeOf(DstChange))
