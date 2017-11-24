@@ -155,9 +155,10 @@ iterator findDstChanges*(tz: TimeZone): DstChange =
   ## Finds timezone dst changes by timezone.
   proc getTzId(dst: DstChange): int16 = dst.tzId
   var index = dstChanges.binarySearch(tz.id, getTzId)
-  while index < dstChanges.len and dstChanges[index].tzId == tz.id:
-    yield dstChanges[index]
-    inc index
+  if index != -1:
+    while index < dstChanges.len and dstChanges[index].tzId == tz.id:
+      yield dstChanges[index]
+      inc index
 
 
 iterator findTimeZoneFromDstName*(dstName: string): TimeZone =
@@ -177,7 +178,11 @@ proc applyTimezone*(cal: var Calendar, tzName: string) =
   var tz = findTimeZone(tzName)
   var ts = cal.calendarToTs()
   if tz.valid:
+    var first = true
     for change in findDstChanges(tz):
+      if first:
+        prevChange = change
+        first = false
       if Timestamp(change.start) > ts:
         break
       prevChange = change

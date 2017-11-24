@@ -16,9 +16,9 @@ import zip/zlib
 
 # You can modify these parameters here to get the timezone table you want:
 # Generating timezones from 2015 to 2025 generates only a 14k dstchanges.bin
-# By default years 1990 to 2030 generates 58k tzdata/dstchanges.bin
+# Default time range of 1970 to 2030 generates 79k tzdata/dstchanges.bin
 
-const startYear = 1990
+const startYear = 1970
 const endYear = 2030
 const timeZoneFiles = @[
   "africa",
@@ -91,7 +91,7 @@ proc dumpToCsvFiles() =
     var prevDstName = ""
     var prevOffset = 0
     # zdump can only do absolute paths
-    let output = catCommand("cd tz; ./zdump -v " & getCurrentDir() & "/" & file)
+    let output = catCommand("tz/zdump -v -c 2060 " & getCurrentDir() & "/" & file)
 
     for rawLine in output.split("\L"):
       let line = rawLine.replace(getCurrentDir() & "/tz/zic_out/", "")
@@ -161,15 +161,33 @@ proc csvToBin() =
 
   block:
     var prevDst = DstChange()
-    var hasPrev = false
+    var dst = DstChange()
+    var zoneDsts = newSeq[DstChange]()
+
+
+    proc dumpZone() =
+      echo "end ", zoneDsts
+      for innerDst in zoneDsts:
+        dstChanges.add(innerDst)
+
+      zoneDsts = newSeq[DstChange]()
+
     for row in readCvs("tzdata/dstchanges.csv"):
-      var dst = DstChange(
+      dst = DstChange(
         tzId: int16 parseInt(row[0]),
         name: pack[6](row[1]),
         start: float64 parseFloat(row[2]),
         offset: int32 parseInt(row[3])
       )
 
+      if prevDst.tzId != dst.tzId:
+        dumpZone()
+
+      zoneDsts.add(dst)
+      prevDst = dst
+
+
+      #[
       if Timestamp(dst.start) < startYearTs:
         hasPrev = true
         prevDst = dst
@@ -181,6 +199,12 @@ proc csvToBin() =
         continue
       hasPrev = false
       dstChanges.add(dst)
+      ]#
+
+    dumpZone()
+
+    echo dstChanges.len
+
 
     var f = newStringStream()
     f.writeData(cast[pointer](addr dstChanges[0]), dstChanges.len * sizeOf(DstChange))
