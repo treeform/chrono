@@ -82,7 +82,7 @@ type
 
 
 const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saterday", "Sunday"]
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "August", "October", "November", "December"]
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 
 proc calendarToIso*(cal: Calendar): string =
@@ -428,7 +428,12 @@ proc parseCalendar*(format: string, value: string): Calendar =
   var i = 0
   var j = 0
 
+  proc eatSpaces() =
+    while value[j] == ' ':
+      inc j
+
   proc getNumber(): int =
+    eatSpaces()
     var num = ""
     while isDigit(value[j]):
       num &= value[j]
@@ -495,6 +500,7 @@ proc parseCalendar*(format: string, value: string): Calendar =
           for k, m in months:
             if nextMatch(m[0..2]):
               result.month = k + 1
+              break
         of "day":
           result.day = getNumber()
         of "day/2":
@@ -531,6 +537,19 @@ proc parseCalendar*(format: string, value: string): Calendar =
         of "second/2":
           result.second = getNumber(2)
 
+        of "weekday":
+          for k, m in weekdays:
+            if nextMatch(m):
+              discard
+        of "weekday/3":
+          for k, m in weekdays:
+            if nextMatch(m[0..2]):
+              discard
+        of "weekday/2":
+          for k, m in weekdays:
+            if nextMatch(m[0..1]):
+              discard
+
         else:
           raise newException(ValueError, "Invalid parse token: " & token)
 
@@ -539,7 +558,18 @@ proc parseCalendar*(format: string, value: string): Calendar =
       inc j
 
     else:
-      raise newException(ValueError, "Not match")
+      raise newException(ValueError, "Calendar format does not match at " & $j)
+
+
+proc parseCalendar*(formats: seq[string], value: string): Calendar =
+  ## Parses calendars from a seq of strings based on the format spesification
+  ## Returns first format that parses or rases ValueError
+  for format in formats:
+      try:
+        return parseCalendar(format, value)
+      except ValueError:
+        discard
+  raise newException(ValueError, "None of the format strings matched")
 
 
 proc formatCalendar*(cal: Calendar, format: string): string =
