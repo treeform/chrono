@@ -92,7 +92,7 @@ proc calendarToIso*(cal: Calendar): string =
 
   proc f(n: int): char = char(ord('0') + n)
 
-  if cal.tzOffset == 0:
+  if cal.tzName.len == 0 and cal.dstName.len == 0 and cal.tzOffset == 0:
     result = "0000-00-00T00:00:00Z"
   else:
     result = "0000-00-00T00:00:00+00:00"

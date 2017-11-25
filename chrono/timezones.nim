@@ -171,9 +171,19 @@ iterator findTimeZoneFromDstName*(dstName: string): TimeZone =
         yield findTimeZone(dst.tzId)
 
 
+proc clearTimezone*(cal: var Calendar) =
+  cal.subSeconds(int(cal.tzOffset))
+  cal.tzOffset = 0
+  cal.tzName = ""
+  cal.dstName = ""
+
+
 proc applyTimezone*(cal: var Calendar, tzName: string) =
   ## take a calendar and apply a timezone to it
   ## this does not change the timestamp of the calendar
+  if tzName == "UTC":
+    cal.clearTimezone()
+    return
   var prevChange: DstChange
   var tz = findTimeZone(tzName)
   var ts = cal.calendarToTs()
@@ -192,13 +202,6 @@ proc applyTimezone*(cal: var Calendar, tzName: string) =
     cal.addSeconds(prevChange.offset)
     cal.tzName = $tz.name
     cal.dstName = $prevChange.name
-
-
-proc clearTimezone*(cal: var Calendar) =
-  cal.subSeconds(int(cal.tzOffset))
-  cal.tzOffset = 0
-  cal.tzName = ""
-  cal.dstName = ""
 
 
 proc tsToCalendar*(ts: Timestamp, tzName: string): Calendar =
