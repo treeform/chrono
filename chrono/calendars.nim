@@ -762,10 +762,13 @@ proc formatCalendar*(cal: Calendar, format: string): string =
           output &= weekdays[cal.weekday][0..1]
 
         of "tzName":
-          output &= cal.tzName
+          if cal.tzName != nil:
+            output &= cal.tzName
+          else:
+            output &= "utc"
         of "dstName":
-          output &= cal.dstName
-
+          if cal.dstName != nil:
+            output &= cal.dstName
         else:
           raise newException(ValueError, "Invalid format token: " & token)
 

@@ -1,4 +1,3 @@
-
 import os
 import osproc
 import strutils
@@ -6,15 +5,11 @@ import parsecsv
 import algorithm
 import streams
 import zip/zlib
-
 import json
-
 
 include ../chrono/calendars
 include ../chrono/timestamps
 include ../chrono/timezones
-
-
 
 ## Hey, so you want to fetch your own time zones?
 ## You can use this file to fetch timezone files from the primary source.
@@ -48,6 +43,12 @@ const timeZoneFiles = @[
   # "backward",   # historical renames
   # "backzone"    # historical timezones pre-1970
 ]
+
+# Add only time zones you want to include here:
+const includeOnly: seq[string] = @[]
+#  "America/Los_Angeles",
+#  "America/New_York"
+# ]
 
 
 const startYearTs = Calendar(year: startYear, month: 1, day: 1).ts
