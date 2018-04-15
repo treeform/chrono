@@ -35,45 +35,65 @@ suite "timestamps":
   test "applyTimezone/clearTimezone":
     var ts = Timestamp(12345678.0)
     var cal = calendar(ts)
-    check cal.ts() == ts
+    check cal.ts == ts
     check cal.formatIso() == "1970-05-23T21:21:18Z"
 
     cal.applyTimezone("America/Los_Angeles")
-    check cal.ts() == ts
+    check cal.ts == ts
     check cal.formatIso() == "1970-05-23T14:21:18-07:00"
 
     cal.applyTimezone("America/New_York")
-    check cal.ts() == ts
+    check cal.ts == ts
     check cal.formatIso() == "1970-05-23T17:21:18-04:00"
 
     cal.applyTimezone("America/Chicago")
-    check cal.ts() == ts
+    check cal.ts == ts
     check cal.formatIso() == "1970-05-23T16:21:18-05:00"
 
     cal.applyTimezone("Pacific/Honolulu")
-    check cal.ts() == ts
+    check cal.ts == ts
     check cal.formatIso() == "1970-05-23T11:21:18-10:00"
 
     cal.applyTimezone("America/Denver")
-    check cal.ts() == ts
+    check cal.ts == ts
     check cal.formatIso() == "1970-05-23T15:21:18-06:00"
 
     cal.clearTimezone()
-    check cal.ts() == ts
+    check cal.ts == ts
     check cal.formatIso() == "1970-05-23T21:21:18Z"
+
+  test "shiftTimezone":
+    var ts = Timestamp(12345678.0)
+    var cal = calendar(ts)
+    check cal.formatIso() == "1970-05-23T21:21:18Z"
+
+    cal.shiftTimezone("America/Los_Angeles")
+    check cal.formatIso() == "1970-05-23T21:21:18-07:00"
+
+    cal.shiftTimezone("America/New_York")
+    check cal.formatIso() == "1970-05-23T21:21:18-04:00"
+
+    cal.shiftTimezone("America/Chicago")
+    check cal.formatIso() == "1970-05-23T21:21:18-05:00"
+
+    cal.shiftTimezone("Pacific/Honolulu")
+    check cal.formatIso() == "1970-05-23T21:21:18-10:00"
+
+    cal.shiftTimezone("America/Denver")
+    check cal.formatIso() == "1970-05-23T21:21:18-06:00"
 
   test "utc test":
     var ts = Timestamp(12345678.0)
     var cal = calendar(ts)
-    check cal.ts() == ts
+    check cal.ts == ts
     check cal.formatIso() == "1970-05-23T21:21:18Z"
 
     cal.applyTimezone("America/Denver")
-    check cal.ts() == ts
+    check cal.ts == ts
     check cal.formatIso() == "1970-05-23T15:21:18-06:00"
 
     cal.applyTimezone("UTC")
-    check cal.ts() == ts
+    check cal.ts == ts
     check cal.formatIso() == "1970-05-23T21:21:18Z"
 
   test "findTimeZoneFromDstName":

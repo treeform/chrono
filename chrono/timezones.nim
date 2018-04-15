@@ -149,6 +149,7 @@ iterator findTimeZoneFromDstName*(dstName: string): TimeZone =
 
 
 proc clearTimezone*(cal: var Calendar) =
+  ## Removes timezone form calendar
   cal.sub(Second, int(cal.tzOffset))
   cal.tzOffset = 0
   cal.tzName = ""
@@ -187,7 +188,9 @@ proc shiftTimezone*(cal: var Calendar, tzName: string) =
   ## this does *changes* timestamp of the calendar
   ## but does *not change* the hour:minute
   if tzName == "UTC":
-    cal.clearTimezone()
+    cal.tzOffset = 0
+    cal.tzName = ""
+    cal.dstName = ""
     return
   var prevChange: DstChange
   var tz = findTimeZone(tzName)
