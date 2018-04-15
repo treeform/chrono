@@ -172,6 +172,7 @@ proc add*(ts: Timestamp, timeScale: TimeScale, number: int): Timestamp =
   cal.add(timeScale, number)
   return cal.ts
 
+
 proc sub*(ts: Timestamp, timeScale: TimeScale, number: int): Timestamp =
   ## Subtract Sectons, Minutes, Hours, Days ... to Timestamp
   var cal = ts.calendar
