@@ -17,3 +17,6 @@ task test, "Runs the test suite":
 
 task generate, "Generate timezone bins from raw data":
   exec "nim c -r tools/generate"
+
+task docs, "Generate docs":
+  exec "nim doc2 --project chrono.nim; cp htmldocs/chrono.html docs/index.html"
