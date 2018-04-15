@@ -1,6 +1,6 @@
 # Package
 
-version       = "0.0.1"
+version       = "0.0.5"
 author        = "Andre von Houck"
 description   = "Calendars, Timestamps and Timezones utilities."
 license       = "MIT"

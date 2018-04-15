@@ -80,12 +80,35 @@ type
     tzName*: string
     dstName*: string
 
+  TimeScale* = enum
+    Unkown
+    Second
+    Minute
+    Hour
+    Day
+    Week
+    Month
+    Quarter
+    Year
 
 const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saterday", "Sunday"]
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
+proc parseTimeScale*(timeScale: string): TimeScale =
+  ## Turns a time scale string like "second" to the enum Second
+  case timeScale:
+    of "second": Second
+    of "minute": Minute
+    of "hour": Hour
+    of "day": Day
+    of "week": Week
+    of "month": Month
+    of "quarter": Quarter
+    of "year": Year
+    else: Unkown
 
-proc calendarToIso*(cal: Calendar): string =
+
+proc formatIso*(cal: Calendar): string =
   ## Fastest way to convert Calendar to an ISO 8601 string representaion
   ## Use this instead of the format function when dealing whith ISO format
   ## Warning does minimal checking for speed. Make sure your calendar is valid.
@@ -131,7 +154,12 @@ proc calendarToIso*(cal: Calendar): string =
   result[18] = f cal.second mod 10
 
 
-proc isoToCalendar*(iso: string): Calendar =
+proc `$`*(a: Calendar): string =
+  ## Display a Calendar as a ISO 8601 string
+  a.formatIso
+
+
+proc parseIsoCalendar*(iso: string): Calendar =
   ## Fastest way to convert an ISO 8601 string representaion to a Calendar.
   ## Use this instead of the parseTimestamp function when dealing whith ISO format
 
@@ -338,91 +366,166 @@ proc normalize*(cal: var Calendar) =
     inc cal.day # back to 1-based days
 
 
-proc addSeconds*(cal: var Calendar, seconds: float64) =
-  ## Add float point seconds to this calendar
-  cal.secondFraction += seconds
+proc add*(cal: var Calendar, timeScale: TimeScale, number: int) =
+  ## Add a Day, Hour, Year... to calendar
+  case timeScale:
+    of Unkown:
+     # TODO what kind of error?
+      assert false
+    of Second:
+      cal.second += number
+    of Minute:
+      cal.minute += number
+    of Hour:
+      cal.hour += number
+    of Day:
+      cal.day += number
+    of Week:
+      # TODO implement
+      assert false
+    of Month:
+      cal.month += number
+    of Quarter:
+      # TODO implement
+      assert false
+    of Year:
+      cal.year += number
   cal.normalize()
 
 
-proc addSeconds*(cal: var Calendar, seconds: int) =
-  ## Add seconds to this calendar
-  cal.second += seconds
+proc add*(cal: var Calendar, timeScale: TimeScale, number: float) =
+  case timeScale:
+    of Unkown:
+      # TODO what kind of error?
+      assert false
+    of Second:
+      cal.secondFraction += number
+    of Minute:
+      assert false
+    of Hour:
+      assert false
+    of Day:
+      assert false
+    of Week:
+      assert false
+    of Month:
+      assert false
+    of Quarter:
+      assert false
+    of Year:
+      assert false
   cal.normalize()
 
 
-proc addMinutes*(cal: var Calendar, minutes: int) =
-  ## Add minutes to this calendar
-  cal.minute += minutes
-  cal.normalize()
+proc sub*(cal: var Calendar, timeScale: TimeScale, number: int) =
+  ## Subtract a Day, Hour, Year... to calendar
+  cal.add(timeScale, -number)
 
 
-proc addHours*(cal: var Calendar, hours: int) =
-  ## Add hours to this calendar
-  cal.hour += hours
-  cal.normalize()
+proc sub*(cal: var Calendar, timeScale: TimeScale, number: float) =
+  ## Subtract a Day, Hour, Year... to calendar
+  cal.add(timeScale, -number)
 
 
-proc addDays*(cal: var Calendar, days: int) =
-  ## Add days to this calendar
-  cal.day += days
-  cal.normalize()
+proc compare*(a, b: Calendar): int =
+  ## Compare two calendars
+  if a.year < b.year:
+    return -1
+  elif a.year > b.year:
+    return +1
+
+  if a.month < b.month:
+    return -1
+  elif a.month > b.month:
+    return +1
+
+  if a.day < b.day:
+    return -1
+  elif a.day > b.day:
+    return +1
+
+  if a.hour < b.hour:
+    return -1
+  elif a.hour > b.hour:
+    return +1
+
+  if a.minute < b.minute:
+    return -1
+  elif a.minute > b.minute:
+    return +1
+
+  if a.second < b.second:
+    return -1
+  elif a.second > b.second:
+    return +1
+
+  if a.secondFraction < b.secondFraction:
+    return -1
+  elif a.secondFraction > b.secondFraction:
+    return +1
+
+  return 0
 
 
-proc addMonths*(cal: var Calendar, months: int) =
-  ## Add months to this calendar
-  cal.month += months
-  cal.normalize()
+proc `==`*(a, b: Calendar): bool = a.compare(b) == 0
+proc `<`*(a, b: Calendar): bool = a.compare(b) < 0
+proc `>`*(a, b: Calendar): bool = a.compare(b) > 0
+proc `<=`*(a, b: Calendar): bool = a.compare(b) <= 0
+proc `>=`*(a, b: Calendar): bool = a.compare(b) >= 0
 
 
-proc addYears*(cal: var Calendar, years: int) =
-  ## Add years to this calendar
-  cal.year += years
+proc toStartOf*(cal: var Calendar, timeScale: TimeScale) =
+  ## Move the time stamp to a start of a time scale
+  case timeScale:
+    of Unkown:
+     # TODO what kind of error?
+      assert false
+    of Second:
+      cal.secondFraction = 0
+    of Minute:
+      cal.secondFraction = 0
+      cal.second = 0
+    of Hour:
+      cal.secondFraction = 0
+      cal.second = 0
+      cal.minute = 0
+    of Day:
+      cal.secondFraction = 0
+      cal.second = 0
+      cal.minute = 0
+      cal.hour = 0
+    of Week:
+      # TODO implement
+      assert false
+    of Month:
+      cal.secondFraction = 0
+      cal.second = 0
+      cal.minute = 0
+      cal.hour = 0
+      cal.day = 1
+    of Quarter:
+      # TODO implement
+      assert false
+    of Year:
+      cal.secondFraction = 0
+      cal.second = 0
+      cal.minute = 0
+      cal.hour = 0
+      cal.day = 1
+      cal.month = 1
 
 
-proc subSeconds*(cal: var Calendar, seconds: float64) =
-  ## Subtracts float point seconds from this calendar
-  cal.secondFraction -= seconds
-  cal.normalize()
-
-
-proc subSeconds*(cal: var Calendar, seconds: int) =
-  ## Subtracts seconds from this calendar
-  cal.second -= seconds
-  cal.normalize()
-
-
-proc subMinutes*(cal: var Calendar, minutes: int) =
-  ## Subtracts minutes from this calendar
-  cal.minute -= minutes
-  cal.normalize()
-
-
-proc subHours*(cal: var Calendar, hours: int) =
-  ## Subtracts hours from this calendar
-  cal.hour -= hours
-  cal.normalize()
-
-
-proc subDays*(cal: var Calendar, days: int) =
-  ## Subtracts days from this calendar
-  cal.day -= days
-  cal.normalize()
-
-
-proc subMonths*(cal: var Calendar, months: int) =
-  ## Subtracts months from this calendar
-  cal.month -= months
-  cal.normalize()
-
-
-proc subYears*(cal: var Calendar, years: int) =
-  ## Subtracts years from this calendar
-  cal.year -= years
+proc toEndOf*(cal: var Calendar, timeScale: TimeScale) =
+  ## Move the calendar to an end of a time scale
+  let calPrev = cal
+  cal.toStartOf(timeScale)
+  if calPrev < cal:
+    cal.add(timeScale, 1)
 
 
 proc parseCalendar*(format: string, value: string): Calendar =
   ## Parses calendars from a string based on the format spesification
-  ## Note that not all valid formats can be parsed, things such as weeekdays or am/pm stuff without hours or am/pm marker.
+  ## Note that not all valid formats can be parsed, things such as weeekdays or am/pm stuff without hours.
 
   result = Calendar(year: 1970, month: 1, day: 1)
   var i = 0
@@ -457,7 +560,7 @@ proc parseCalendar*(format: string, value: string): Calendar =
     j += chars
 
   proc nextMatch(match: string): bool =
-    if value[j..<j + match.len].toLower() == match.toLower():
+    if value.len > j + match.len - 1 and value[j..<j + match.len].toLowerAscii() == match.toLowerAscii():
       j += match.len
       return true
     return false
@@ -574,7 +677,6 @@ proc parseCalendar*(formats: seq[string], value: string): Calendar =
 
 proc formatCalendar*(cal: Calendar, format: string): string =
   ## Formats calendars to a string based on the format spesification
-
   var i = 0
   var output = ""
 
@@ -670,7 +772,5 @@ proc formatCalendar*(cal: Calendar, format: string): string =
 
     else:
       output &= format[i]
-
     inc i
-
   return output

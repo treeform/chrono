@@ -5,47 +5,47 @@ import ../chrono/timestamps
 
 suite "timestamps":
 
-  test "tsToIso/isoToTs":
-    check isoToTs("1970-01-01T00:00:00Z") == Timestamp(0.0)
-    check isoToTs("1970-01-01T00:00:00+08:00") == Timestamp(-(8.0 * 3600.0))
-    check isoToTs("1970-01-01T00:00:00-08:30") == Timestamp(+(8.0 * 3600.0 + 30 * 60))
+  test "iso/parseIsoTs":
+    check parseIsoTs("1970-01-01T00:00:00Z") == Timestamp(0.0)
+    check parseIsoTs("1970-01-01T00:00:00+08:00") == Timestamp(-(8.0 * 3600.0))
+    check parseIsoTs("1970-01-01T00:00:00-08:30") == Timestamp(+(8.0 * 3600.0 + 30 * 60))
 
-    check tsToIso(Timestamp(1510128103.0)) == "2017-11-08T08:01:43Z"
-    var ad0 = isoToTs("0000-01-01T00:00:00Z")
-    check tsToIso(ad0) == "0000-01-01T00:00:00Z"
+    check formatIso(Timestamp(1510128103.0)) == "2017-11-08T08:01:43Z"
+    var ad0 = parseIsoTs("0000-01-01T00:00:00Z")
+    check formatIso(ad0) == "0000-01-01T00:00:00Z"
 
-    check tsToIso(Timestamp(-8 * 3600)) == "1969-12-31T16:00:00Z"
+    check formatIso(Timestamp(-8 * 3600)) == "1969-12-31T16:00:00Z"
 
     for i in 0..10000:
       var m = Timestamp(float64(i) * 123456)
-      check isoToTs(tsToIso(m)) == m
+      check parseIsoTs(formatIso(m)) == m
 
-  test "calendarToTs/tsToCalendar":
+  test "ts/calendar":
     for i in 0..10000:
       var m = Timestamp(float64(i) * 123456)
-      check calendarToTs(tsToCalendar(m)) == m
+      check ts(calendar(m)) == m
 
   test "parseTs":
     check parseTs(
         "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
         "1988-02-09T03:34:12Z"
-      ) == isoToTs("1988-02-09T03:34:12Z")
+      ) == parseIsoTs("1988-02-09T03:34:12Z")
 
 
   test "formatTs":
     check formatTs(
-        isoToTs("1988-02-09T03:34:12Z"),
+        parseIsoTs("1988-02-09T03:34:12Z"),
         "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
       ) == "1988-02-09T03:34:12Z"
 
     check formatTs(
-        isoToTs("1988-02-09T03:34:12Z"),
+        parseIsoTs("1988-02-09T03:34:12Z"),
         "{month/2}/{day/2}/{year/4} {hour/2}:{minute/2}:{second/2}",
       ) == "02/09/1988 03:34:12"
 
-  test "tsToIso utc random":
+  test "iso utc random":
     proc testTime(ts: int64, iso: string) =
-      check tsToIso(Timestamp(float64(ts))) == iso
+      check formatIso(Timestamp(float64(ts))) == iso
 
     testTime(0, "1970-01-01T00:00:00Z")
     testTime(2345671, "1970-01-28T03:34:31Z")

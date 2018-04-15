@@ -35,11 +35,8 @@
 ##
 
 
-import parsecsv
 import strutils
 import algorithm
-import streams
-import zip/zlib
 
 import timestamps
 import calendars
@@ -59,8 +56,10 @@ type
     id*: int16
     name*: array[32, char]
 
+
 var timeZones*: seq[TimeZone] ## List of all timezones
 var dstChanges*: seq[DstChange] ## List of all DST changes
+
 
 proc pack[N](str: string): PackedString[N] =
   if str.len >= result.len:
@@ -69,6 +68,7 @@ proc pack[N](str: string): PackedString[N] =
     if i >= str.len:
       break
     result[i] = str[i]
+  result[str.len] = '\0'
 
 
 proc `$`*[N](ps: PackedString[N]): string =
@@ -86,29 +86,6 @@ proc `==`[N](a: PackedString[N], b: string): bool =
     if c != b[i]:
       return false
   return true
-
-
-when not compiles(skipLoadingTimeZones):
-  const zoneDataZip = staticRead("../tzdata/timezones.bin")
-  const dstDataZip = staticRead("../tzdata/dstchanges.bin")
-
-  var zoneData = uncompress(zoneDataZip)
-  var dstData = uncompress(dstDataZip)
-
-  timeZones = newSeq[TimeZone](zoneData.len div sizeof(TimeZone)) ## List of all timezones
-  dstChanges = newSeq[DstChange](dstData.len div sizeof(DstChange)) ## List of all DST changes
-
-  var zoneStream = newStringStream(zoneData)
-  for i in 0..<timeZones.len:
-    var dummyZone = TimeZone()
-    discard zoneStream.readData(cast[pointer](addr dummyZone), sizeof(TimeZone))
-    timeZones[i] = dummyZone
-
-  var dstStream = newStringStream(dstData)
-  for i in 0..<dstChanges.len:
-    var dummyDst = DstChange()
-    discard dstStream.readData(cast[pointer](addr dummyDst), sizeof(DstChange))
-    dstChanges[i] = dummyDst
 
 
 proc binarySearch[T,K](a: openArray[T], key:K, keyProc: proc (e: T):K): int =
@@ -172,7 +149,7 @@ iterator findTimeZoneFromDstName*(dstName: string): TimeZone =
 
 
 proc clearTimezone*(cal: var Calendar) =
-  cal.subSeconds(int(cal.tzOffset))
+  cal.sub(Second, int(cal.tzOffset))
   cal.tzOffset = 0
   cal.tzName = ""
   cal.dstName = ""
@@ -180,13 +157,14 @@ proc clearTimezone*(cal: var Calendar) =
 
 proc applyTimezone*(cal: var Calendar, tzName: string) =
   ## take a calendar and apply a timezone to it
-  ## this does not change the timestamp of the calendar
+  ## this does *not changes* timestamp of the calendar
+  ## but does *change* the hour:minute
   if tzName == "UTC":
     cal.clearTimezone()
     return
   var prevChange: DstChange
   var tz = findTimeZone(tzName)
-  var ts = cal.calendarToTs()
+  var ts = cal.ts
   if tz.valid:
     var first = true
     for change in findDstChanges(tz):
@@ -197,37 +175,63 @@ proc applyTimezone*(cal: var Calendar, tzName: string) =
         break
       prevChange = change
     var tzOffset = float64(prevChange.offset)
-    cal.subSeconds(int(cal.tzOffset))
+    cal.sub(Second, int(cal.tzOffset))
     cal.tzOffset = tzOffset
-    cal.addSeconds(prevChange.offset)
+    cal.add(Second, prevChange.offset)
     cal.tzName = $tz.name
     cal.dstName = $prevChange.name
 
 
-proc tsToCalendar*(ts: Timestamp, tzName: string): Calendar =
+proc shiftTimezone*(cal: var Calendar, tzName: string) =
+  ## take a calendar and moves it into a timezone
+  ## this does *changes* timestamp of the calendar
+  ## but does *not change* the hour:minute
+  if tzName == "UTC":
+    cal.clearTimezone()
+    return
+  var prevChange: DstChange
+  var tz = findTimeZone(tzName)
+  var ts = cal.ts
+  if tz.valid:
+    var first = true
+    for change in findDstChanges(tz):
+      if first:
+        prevChange = change
+        first = false
+      if Timestamp(change.start) > ts:
+        break
+      prevChange = change
+    var tzOffset = float64(prevChange.offset)
+    cal.tzOffset = tzOffset
+    cal.tzName = $tz.name
+    cal.dstName = $prevChange.name
+    cal.normalize()
+
+
+proc calendar*(ts: Timestamp, tzName: string): Calendar =
   ## Convert Timestamp to calendar with a timezone
-  var cal = tsToCalendar(ts)
+  var cal = ts.calendar
   cal.applyTimezone(tzName)
   return cal
 
 
-proc tsToIso*(ts: Timestamp, tzName: string): string =
+proc formatIso*(ts: Timestamp, tzName: string): string =
   ## Fastest way to convert Timestamp to an ISO 8601 string representaion
   ## Use this instead of the format function when dealing whith ISO format
-  var cal = tsToCalendar(ts)
+  var cal = ts.calendar
   cal.applyTimezone(tzName)
-  return cal.calendarToIso()
+  return cal.formatIso()
 
 
 proc parseTs*(fmt: string, value: string, tzName: string): Timestamp =
   ## Parse time using the Chrono format string with timezone nto a Timestamp.
   var cal = parseCalendar(fmt, value)
   cal.applyTimezone(tzName)
-  return cal.calendarToTs()
+  return cal.ts
 
 
 proc formatTs*(ts: Timestamp, fmt: string, tzName: string): string =
   ## Format a Timestamp with timezone using the format string.
-  var cal = tsToCalendar(ts)
+  var cal = ts.calendar
   cal.applyTimezone(tzName)
   return cal.formatCalendar(fmt)

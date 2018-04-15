@@ -2,6 +2,8 @@
 
 Documentation: https://treeform.github.io/chrono/
 
+Works in c as well as in javascript! All calendar manipulations! Include only the timezones and years you need!
+
 ## Parse Timestamps
 
 ```Nim
@@ -24,10 +26,12 @@ echo formatTs(
 
 ```Nim
 var cal = Calendar(year: 2013, month: 12, day: 31, hour: 59, minute: 59, second: 59)
-cal.addSeconds(20)
-cal.subMinutes(15)
-cal.addDays(40)
-cal.subMonths(120)
+cal.add(Second, 20)
+cal.sub(Minute, 15)
+cal.add(Day, 40)
+cal.sub(Month, 120)
+cal.toStartOf(Day)
+cal.toEndOf(Month)
 ```
 
 ## Use Timezones
@@ -39,5 +43,20 @@ echo formatTs(
     tzName = "America/Los_Angeles"
 )
 ```
+
+Include only the timezones and years you need:
+
+```Nim
+# The year range you want to include
+const startYear = 1970
+const endYear = 2030
+# Add only time zones you want to include here:
+const includeOnly: seq[string] = @[
+  "utc",
+  "America/Los_Angeles",
+  "America/New_York"
+]
+```
+Then just run `nim c -r tools/generate`
 
 More: https://treeform.github.io/chrono/

@@ -1,5 +1,3 @@
-const skipLoadingTimeZones = true
-import ../chrono
 
 import os
 import osproc
@@ -8,6 +6,15 @@ import parsecsv
 import algorithm
 import streams
 import zip/zlib
+
+import json
+
+
+include ../chrono/calendars
+include ../chrono/timestamps
+include ../chrono/timezones
+
+
 
 ## Hey, so you want to fetch your own time zones?
 ## You can use this file to fetch timezone files from the primary source.
@@ -18,8 +25,16 @@ import zip/zlib
 # Generating timezones from 2015 to 2025 generates only a 14k dstchanges.bin
 # Default time range of 1970 to 2030 generates 94k tzdata/dstchanges.bin
 
+# The year range you want to include
 const startYear = 1970
 const endYear = 2030
+# Add only time zones you want to include here:
+const includeOnly: seq[string] = @[]
+#  "utc",
+#  "America/Los_Angeles",
+#  "America/New_York"
+#]
+
 const timeZoneFiles = @[
   "africa",
   "antarctica",
@@ -35,8 +50,8 @@ const timeZoneFiles = @[
 ]
 
 
-const startYearTs = Calendar(year: startYear, month: 1, day: 1).calendarToTs()
-const endYearTs = Calendar(year: endYear, month: 1, day: 1).calendarToTs()
+const startYearTs = Calendar(year: startYear, month: 1, day: 1).ts
+const endYearTs = Calendar(year: endYear, month: 1, day: 1).ts
 
 
 proc runCommand(cmd: string) =
@@ -126,18 +141,6 @@ iterator readCvs*(fileName: string, readHeader = false): CsvRow =
   p.close()
 
 
-type PackedString[N: static[int]] = array[N, char]
-
-
-proc pack[N](str: string): PackedString[N] =
-  if str.len >= result.len:
-    raise newException(ValueError, "Can't pack " & $str.len & " string into " & $result.len)
-  for i in 0..<result.len:
-    if i >= str.len:
-      break
-    result[i] = str[i]
-
-
 proc csvToBin() =
   var timeZones = newSeq[TimeZone]()
   var dstChanges = newSeq[DstChange]()
@@ -205,6 +208,84 @@ proc csvToBin() =
     echo "written file tzdata/dstchanges.bin ", zdata.len div 1024, "k"
 
 
+proc csvToJson() =
+  type TimeZoneWithStr = object
+    id: int
+    name: string
+  type DstChangeWithStr = object
+    tzId: int
+    name: string
+    start: float
+    offset: int
+
+  var timeZones = newSeq[TimeZoneWithStr]()
+  var dstChanges = newSeq[DstChangeWithStr]()
+  var zoneIds = newSeq[int]()
+
+  block:
+    for row in readCvs("tzdata/timezones.csv"):
+      if includeOnly.len == 0 or row[2] in includeOnly:
+        timeZones.add TimeZoneWithStr(
+          id: parseInt(row[0]),
+          name: row[2],
+          )
+        zoneIds.add(parseInt(row[0]))
+
+    timeZones.sort do (x, y: TimeZoneWithStr) -> int:
+      result = cmp(x.name, y.name)
+
+    let timeZonesJsonData = $ %*(timeZones)
+    writeFile("tzdata/timezones.json", timeZonesJsonData)
+    echo "written file tzdata/timezones.json ", timeZonesJsonData.len div 1024, "k"
+
+  block:
+    var prevDst = DstChangeWithStr()
+    var dst = DstChangeWithStr()
+    var zoneDsts = newSeq[DstChangeWithStr]()
+
+    proc dumpZone() =
+      var startI = 0
+      var endI = zoneDsts.len
+      for i, innerDst in zoneDsts:
+        if Timestamp(innerDst.start) < startYearTs:
+          startI = i
+        if Timestamp(dst.start) > endYearTs and endI > i:
+          endI = i
+      if startI > 0:
+        dec startI
+      for innerDst in zoneDsts[startI..<endI]:
+        dstChanges.add(innerDst)
+
+      zoneDsts = newSeq[DstChangeWithStr]()
+
+    for row in readCvs("tzdata/dstchanges.csv"):
+      dst = DstChangeWithStr(
+        tzId: parseInt(row[0]),
+        name: row[1],
+        start: parseFloat(row[2]),
+        offset: parseInt(row[3])
+      )
+
+      if prevDst.tzId != dst.tzId:
+        dumpZone()
+
+      zoneDsts.add(dst)
+      prevDst = dst
+
+    dumpZone()
+
+    var dstChangesAllowed = newSeq[DstChangeWithStr]()
+    for dst in dstChanges:
+      if dst.tzId in zoneIds:
+        dstChangesAllowed.add(dst)
+
+    echo "dst transitoins: ", dstChangesAllowed.len
+
+    let dstJsonData = $ %*dstChangesAllowed
+    writeFile("tzdata/dstchanges.json", dstJsonData)
+    echo "written file tzdata/dstchanges.json ", dstJsonData.len div 1024, "k"
+
 fetchAndCompileTzDb()
 dumpToCsvFiles()
 csvToBin()
+csvToJson()

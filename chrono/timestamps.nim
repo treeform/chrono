@@ -35,32 +35,38 @@ import calendars
 type
   Timestamp* = distinct float64 ## Always seconds since 1970 UTC
 
+
 proc `==`*(a, b: Timestamp): bool =
   ## Compare timestamps
   float64(a) == float64(b)
+
 
 proc `>`*(a, b: Timestamp): bool =
   ## Compare timestamps
   float64(a) > float64(b)
 
+
 proc `<`*(a, b: Timestamp): bool =
   ## Compare timestamps
   float64(a) < float64(b)
+
 
 proc `<=`*(a, b: Timestamp): bool =
   ## Compare timestamps
   float64(a) <= float64(b)
 
+
 proc `>=`*(a, b: Timestamp): bool =
   ## Compare timestamps
   float64(a) >= float64(b)
+
 
 proc `$`*(a: Timestamp): string =
   ## Display a timestamps as a float64
   $float64(a)
 
 
-proc tsToCalendar*(ts: Timestamp): Calendar =
+proc calendar*(ts: Timestamp): Calendar =
   ## Converts a Timestamp to a Calendar
   var tss: int64 = int(ts)
 
@@ -99,7 +105,7 @@ proc tsToCalendar*(ts: Timestamp): Calendar =
     result.year -= 1970
 
 
-proc calendarToTs*(cal: Calendar): Timestamp =
+proc ts*(cal: Calendar): Timestamp =
   ## Converts Calendar to a Timestamp
 
   var m = cal.month
@@ -111,38 +117,50 @@ proc calendarToTs*(cal: Calendar): Timestamp =
   var tss = (yearMonthPart + cal.day - 719561) * 86400 + 3600 * cal.hour + 60 * cal.minute + cal.second
   return Timestamp(float64(tss) + cal.secondFraction - cal.tzOffset)
 
-
-proc tsToCalendar*(ts: Timestamp, tzOffset: float64): Calendar =
+proc calendar*(ts: Timestamp, tzOffset: float64): Calendar =
   ## Converts a Timestamp to a Calendar with a tz offset. Does not deal with DST.
-
   var tsTz = float64(ts) + tzOffset
-  result = tsToCalendar(Timestamp(tsTz))
+  result = Timestamp(tsTz).calendar
   result.tzOffset = tzOffset
 
 
-proc tsToIso*(ts: Timestamp): string =
+proc formatIso*(ts: Timestamp): string =
   ## Fastest way to convert Timestamp to an ISO 8601 string representaion
   ## Use this instead of the format function when dealing whith ISO format
-  return calendarToIso(tsToCalendar(ts))
+  return ts.calendar.formatIso
 
 
-proc tsToIso*(ts: Timestamp, tzOffset: float64): string =
+proc formatIso*(ts: Timestamp, tzOffset: float64): string =
   ## Fastest way to convert Timestamp to an ISO 8601 string representaion
   ## Use this instead of the format function when dealing whith ISO format
-  return calendarToIso(tsToCalendar(ts, tzOffset))
+  return ts.calendar(tzOffset).formatIso
 
 
-proc isoToTs*(iso: string): Timestamp =
+proc parseIsoTs*(iso: string): Timestamp =
   ## Fastest way to convert an ISO 8601 string representaion to a Timestamp.
   ## Use this instead of the parseTimestamp function when dealing whith ISO format
-  return calendarToTs(isoToCalendar(iso))
+  return parseIsoCalendar(iso).ts
 
 
 proc parseTs*(fmt: string, value: string): Timestamp =
   ## Parse time using the Chrono format string into a Timestamp.
-  parseCalendar(fmt, value).calendarToTs()
+  parseCalendar(fmt, value).ts
 
 
 proc formatTs*(ts: Timestamp, fmt: string): string =
   ## Format a Timestamp using the format string.
-  tsToCalendar(ts).formatCalendar(fmt)
+  ts.calendar.formatCalendar(fmt)
+
+
+proc toStartOf*(ts: Timestamp, timeScale: TimeScale): Timestamp =
+  ## Move the time stamp to a start of a time scale
+  var cal = ts.calendar
+  cal.toStartOf(timeScale)
+  return cal.ts
+
+
+proc toEndOf*(ts: Timestamp, timeScale: TimeScale): Timestamp =
+  ## Move the time stamp to an end of a time scale
+  var cal = ts.calendar
+  cal.toEndOf(timeScale)
+  return cal.ts
