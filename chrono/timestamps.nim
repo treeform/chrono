@@ -25,8 +25,8 @@
 ## If you need to parse ISO dates which is a very common format you find all over the internet. You can even use faster optimized versions here:
 ##
 ## .. code-block:: nim
-##     echo isoToTs("2017-11-08T08:01:43Z")
-##     echo tsToIso(Timestamp(1510128103.0))
+##     echo parseIsoTs("2017-11-08T08:01:43Z")
+##     echo Timestamp(1510128103.0).formatIso()
 ##
 
 import strutils
@@ -107,7 +107,6 @@ proc calendar*(ts: Timestamp): Calendar =
 
 proc ts*(cal: Calendar): Timestamp =
   ## Converts Calendar to a Timestamp
-
   var m = cal.month
   var y = cal.year
   if m <= 2:
@@ -116,6 +115,7 @@ proc ts*(cal: Calendar): Timestamp =
   var yearMonthPart = 365 * y + y div 4 - y div 100 + y div 400 + 3 * (m + 1) div 5 + 30 * m
   var tss = (yearMonthPart + cal.day - 719561) * 86400 + 3600 * cal.hour + 60 * cal.minute + cal.second
   return Timestamp(float64(tss) + cal.secondFraction - cal.tzOffset)
+
 
 proc calendar*(ts: Timestamp, tzOffset: float64): Calendar =
   ## Converts a Timestamp to a Calendar with a tz offset. Does not deal with DST.
@@ -163,4 +163,17 @@ proc toEndOf*(ts: Timestamp, timeScale: TimeScale): Timestamp =
   ## Move the time stamp to an end of a time scale
   var cal = ts.calendar
   cal.toEndOf(timeScale)
+  return cal.ts
+
+
+proc add*(ts: Timestamp, timeScale: TimeScale, number: int): Timestamp =
+  ## Add Sectons, Minutes, Hours, Days ... to Timestamp
+  var cal = ts.calendar
+  cal.add(timeScale, number)
+  return cal.ts
+
+proc sub*(ts: Timestamp, timeScale: TimeScale, number: int): Timestamp =
+  ## Subtract Sectons, Minutes, Hours, Days ... to Timestamp
+  var cal = ts.calendar
+  cal.sub(timeScale, number)
   return cal.ts
