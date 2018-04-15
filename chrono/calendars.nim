@@ -43,14 +43,13 @@
 ## Most useful thing about calendars is that you can add years, months, days, hours, minutes or seconds to them.
 ##
 ## .. code-block:: nim
-##     var cal = Calendar(year: 2013, month: 12, day: 31, hour: 59, minute: 59, second: 59)
-##     echo cal.calendarToIso()
-##     # "2013-12-31T59:59:59Z"
-##
-##     cal.addSeconds(20)
-##     cal.subMinutes(15)
-##     cal.addDays(40)
-##     cal.subMonths(120)
+##      var cal = Calendar(year: 2013, month: 12, day: 31, hour: 59, minute: 59, second: 59)
+##      cal.add(Second, 20)
+##      cal.sub(Minute, 15)
+##      cal.add(Day, 40)
+##      cal.sub(Month, 120)
+##      cal.toStartOf(Day)
+##      cal.toEndOf(Month)
 ##
 ## It supports same format spesification as ``Timestamp``:
 ##
@@ -60,8 +59,8 @@
 ## If you need extra features that calendars provide I recommending creating a ``Calendar`` with ``tsToCalendar`` doing your work and converting back with ``calendarToTs``.
 ##
 ## .. code-block:: nim
-##     ts = cal.calendarToTs()
-##     cal = ts.tsToCalendar()
+##     ts = cal.ts
+##     cal = ts.calendar
 ##
 
 import math
