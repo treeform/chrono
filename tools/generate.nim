@@ -44,13 +44,6 @@ const timeZoneFiles = @[
   # "backzone"    # historical timezones pre-1970
 ]
 
-# Add only time zones you want to include here:
-const includeOnly: seq[string] = @[]
-#  "America/Los_Angeles",
-#  "America/New_York"
-# ]
-
-
 const startYearTs = Calendar(year: startYear, month: 1, day: 1).ts
 const endYearTs = Calendar(year: endYear, month: 1, day: 1).ts
 
