@@ -57,6 +57,6 @@ const includeOnly: seq[string] = @[
   "America/New_York"
 ]
 ```
-Then just run `nim c -r tools/generate`
+Then just run `nimble generate`
 
 More: https://treeform.github.io/chrono/
