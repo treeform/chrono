@@ -3,5 +3,6 @@
 !*.*
 *.exe
 *.dll
-tz/*
 nimcache
+tz/*
+

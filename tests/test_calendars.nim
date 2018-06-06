@@ -254,3 +254,65 @@ suite "calendars":
   test "tzOffset":
     check parseIsoCalendar("1970-01-01T00:00:00+07:00") == Calendar(year: 1970, month: 1, day: 1, tzOffset: 25200.0)
     check formatIso(Calendar(year: 1970, month: 1, day: 1, tzOffset: 25200.0)) == "1970-01-01T00:00:00+07:00"
+
+  test "toStartOf":
+    var c: Calendar
+
+    c = parseIsoCalendar("2016-01-01T12:23:45Z")
+    c.toStartOf(Minute)
+    assert $c == "2016-01-01T12:23:00Z"
+
+    c = parseIsoCalendar("2016-01-01T12:23:45Z")
+    c.toStartOf(Hour)
+    assert $c == "2016-01-01T12:00:00Z"
+
+    c = parseIsoCalendar("2016-01-01T12:23:00Z")
+    c.toStartOf(Day)
+    assert $c == "2016-01-01T00:00:00Z"
+
+    c = parseIsoCalendar("2016-01-01T12:23:00Z")
+    c.toStartOf(Week)
+    assert $c == "2015-12-28T00:00:00Z"
+
+    c = parseIsoCalendar("2016-10-20T12:23:00Z")
+    c.toStartOf(Month)
+    assert $c == "2016-10-01T00:00:00Z"
+
+    c = parseIsoCalendar("2016-02-20T12:23:00Z")
+    c.toStartOf(Quarter)
+    assert $c == "2016-01-01T00:00:00Z"
+
+    c = parseIsoCalendar("2016-10-20T12:23:00Z")
+    c.toStartOf(Year)
+    assert $c == "2016-01-01T00:00:00Z"
+
+  test "toEndOf":
+    var c: Calendar
+
+    c = parseIsoCalendar("2016-01-01T12:23:45Z")
+    c.toEndOf(Minute)
+    assert $c == "2016-01-01T12:24:00Z"
+
+    c = parseIsoCalendar("2016-01-01T12:23:45Z")
+    c.toEndOf(Hour)
+    assert $c == "2016-01-01T13:00:00Z"
+
+    c = parseIsoCalendar("2016-01-01T12:23:00Z")
+    c.toEndOf(Day)
+    assert $c == "2016-01-02T00:00:00Z"
+
+    c = parseIsoCalendar("2016-01-01T12:23:00Z")
+    c.toEndOf(Week)
+    assert $c == "2016-01-04T00:00:00Z"
+
+    c = parseIsoCalendar("2016-10-20T12:23:00Z")
+    c.toEndOf(Month)
+    assert $c == "2016-11-01T00:00:00Z"
+
+    c = parseIsoCalendar("2016-10-20T12:23:00Z")
+    c.toEndOf(Quarter)
+    assert $c == "2017-01-01T00:00:00Z"
+
+    c = parseIsoCalendar("2016-10-20T12:23:00Z")
+    c.toEndOf(Year)
+    assert $c == "2017-01-01T00:00:00Z"

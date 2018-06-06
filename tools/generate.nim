@@ -1,3 +1,4 @@
+
 import os
 import osproc
 import strutils
@@ -5,11 +6,15 @@ import parsecsv
 import algorithm
 import streams
 import zip/zlib
+import parseopt
 import json
+
 
 include ../chrono/calendars
 include ../chrono/timestamps
 include ../chrono/timezones
+
+
 
 ## Hey, so you want to fetch your own time zones?
 ## You can use this file to fetch timezone files from the primary source.
@@ -279,7 +284,14 @@ proc csvToJson() =
     writeFile("tzdata/dstchanges.json", dstJsonData)
     echo "written file tzdata/dstchanges.json ", dstJsonData.len div 1024, "k"
 
-fetchAndCompileTzDb()
-dumpToCsvFiles()
-csvToBin()
-csvToJson()
+
+for kind, key, val in getopt():
+  if kind == cmdArgument:
+    if key == "fetch" or key == "all":
+      fetchAndCompileTzDb()
+    if key == "dump" or key == "all":
+      dumpToCsvFiles()
+    if key == "bin" or key == "all":
+      csvToBin()
+    if key == "json" or key == "all":
+      csvToJson()

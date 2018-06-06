@@ -380,13 +380,11 @@ proc add*(cal: var Calendar, timeScale: TimeScale, number: int) =
     of Day:
       cal.day += number
     of Week:
-      # TODO implement
-      assert false
+      cal.day += 7 * number
     of Month:
       cal.month += number
     of Quarter:
-      # TODO implement
-      assert false
+      cal.month += 3 * number
     of Year:
       cal.year += number
   cal.normalize()
@@ -494,8 +492,12 @@ proc toStartOf*(cal: var Calendar, timeScale: TimeScale) =
       cal.minute = 0
       cal.hour = 0
     of Week:
-      # TODO implement
-      assert false
+      cal.secondFraction = 0
+      cal.second = 0
+      cal.minute = 0
+      cal.hour = 0
+      cal.day -= cal.weekday()
+      cal.normalize()
     of Month:
       cal.secondFraction = 0
       cal.second = 0
@@ -503,8 +505,13 @@ proc toStartOf*(cal: var Calendar, timeScale: TimeScale) =
       cal.hour = 0
       cal.day = 1
     of Quarter:
-      # TODO implement
-      assert false
+      cal.secondFraction = 0
+      cal.second = 0
+      cal.minute = 0
+      cal.hour = 0
+      cal.day = 1
+      cal.month = ((cal.month - 1)  div 3) * 3 + 1
+      cal.normalize()
     of Year:
       cal.secondFraction = 0
       cal.second = 0
@@ -516,16 +523,13 @@ proc toStartOf*(cal: var Calendar, timeScale: TimeScale) =
 
 proc toEndOf*(cal: var Calendar, timeScale: TimeScale) =
   ## Move the calendar to an end of a time scale
-  let calPrev = cal
   cal.toStartOf(timeScale)
-  if calPrev < cal:
-    cal.add(timeScale, 1)
+  cal.add(timeScale, 1)
 
 
 proc parseCalendar*(format: string, value: string): Calendar =
   ## Parses calendars from a string based on the format spesification
   ## Note that not all valid formats can be parsed, things such as weeekdays or am/pm stuff without hours.
-
   result = Calendar(year: 1970, month: 1, day: 1)
   var i = 0
   var j = 0
@@ -537,7 +541,7 @@ proc parseCalendar*(format: string, value: string): Calendar =
   proc getNumber(): int =
     eatSpaces()
     var num = ""
-    while isDigit(value[j]):
+    while j < value.len and isDigit(value[j]):
       num &= value[j]
       inc j
     if num.len == 0:
@@ -762,13 +766,10 @@ proc formatCalendar*(cal: Calendar, format: string): string =
           output &= weekdays[cal.weekday][0..1]
 
         of "tzName":
-          if cal.tzName != nil:
-            output &= cal.tzName
-          else:
-            output &= "utc"
+          output &= cal.tzName
         of "dstName":
-          if cal.dstName != nil:
-            output &= cal.dstName
+          output &= cal.dstName
+
         else:
           raise newException(ValueError, "Invalid format token: " & token)
 
