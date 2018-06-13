@@ -67,9 +67,17 @@ proc `$`*(a: Timestamp): string =
   $float64(a)
 
 
+proc sign(a: float64): float64 =
+  ## Float point sign, why because javascript ints.
+  if a < 0:
+    -1
+  else:
+    +1
+
+
 proc `div`(a, b: float64): float64 =
-  ## Integer division with floats, why because javascript 56 bit int.
-  floor(a / b)
+  ## Integer division with floats, why because javascript ints.
+  floor(abs(a) / abs(b)) * sign(a) * sign(b)
 
 
 proc calendar*(ts: Timestamp): Calendar =
@@ -113,13 +121,13 @@ proc calendar*(ts: Timestamp): Calendar =
 
 proc ts*(cal: Calendar): Timestamp =
   ## Converts Calendar to a Timestamp
-  var m = cal.month
-  var y = cal.year
+  var m = float64(cal.month)
+  var y = float64(cal.year)
   if m <= 2:
      y -= 1
      m += 12
   var yearMonthPart = 365 * y + y div 4 - y div 100 + y div 400 + 3 * (m + 1) div 5 + 30 * m
-  var tss = (yearMonthPart + cal.day - 719561) * 86400 + 3600 * cal.hour + 60 * cal.minute + cal.second
+  var tss = (yearMonthPart + cal.day.float64 - 719561) * 86400 + 3600 * cal.hour.float64 + 60 * cal.minute.float64 + cal.second.float64
   return Timestamp(float64(tss) + cal.secondFraction - cal.tzOffset)
 
 
