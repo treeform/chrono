@@ -23,14 +23,19 @@ suite "calendars":
 
   test "readme":
     var cal = Calendar(year: 2013, month: 12, day: 31, hour: 59, minute: 59, second: 59)
+    check $cal == "2013-12-31T59:59:59Z"
     cal.add(Second, 20)
+    check $cal == "2014-01-02T12:00:19Z"
     cal.sub(Minute, 15)
+    check $cal == "2014-01-02T11:45:19Z"
     cal.add(Day, 40)
+    check $cal == "2014-02-11T11:45:19Z"
     cal.sub(Month, 120)
+    check $cal == "2004-02-11T11:45:19Z"
     cal.toStartOf(Day)
+    check $cal == "2004-02-11T00:00:00Z"
     cal.toEndOf(Month)
-
-    check $cal == "2004-02-01T00:00:00Z"
+    check $cal == "2004-03-01T00:00:00Z"
 
   test "parseCalendar":
     proc testParse(iso, format, value: string) =

@@ -31,6 +31,7 @@
 
 import strutils
 import calendars
+import math
 
 type
   Timestamp* = distinct float64 ## Always seconds since 1970 UTC
@@ -66,13 +67,18 @@ proc `$`*(a: Timestamp): string =
   $float64(a)
 
 
+proc `div`(a, b: float64): float64 =
+  ## Integer division with floats, why because javascript 56 bit int.
+  floor(a / b)
+
+
 proc calendar*(ts: Timestamp): Calendar =
   ## Converts a Timestamp to a Calendar
-  var tss: int64 = int(ts)
+  var tss = float64(ts)
 
   if float64(ts) < 0:
     # TODO this works but is kind of a hack to support negative ts
-    tss += 62167132800 # seconds from 0 to 1970
+    tss += 62167132800.0 # seconds from 0 to 1970
     if tss < 0:
       return
 
