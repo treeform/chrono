@@ -1,7 +1,7 @@
 
 when not defined(js):
   import streams
-  import zip/zlib
+  import miniz
 
   const zoneDataZip = staticRead("../tzdata/timezones.bin")
   const dstDataZip = staticRead("../tzdata/dstchanges.bin")

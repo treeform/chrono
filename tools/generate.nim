@@ -5,7 +5,7 @@ import strutils
 import parsecsv
 import algorithm
 import streams
-import zip/zlib
+import miniz
 import parseopt
 import json
 

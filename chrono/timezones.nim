@@ -213,7 +213,7 @@ proc shiftTimezone*(cal: var Calendar, tzName: string) =
 
 proc normalizeTimezone*(cal: var Calendar) =
   ## After shifting around the calendar, its DST might need to be updated
-  if cal.tzName != "":
+  if cal.tzName.len != 0:
     cal.applyTimezone(cal.tzName)
 
 proc calendar*(ts: Timestamp, tzName: string): Calendar =
