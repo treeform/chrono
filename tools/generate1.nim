@@ -26,8 +26,8 @@ include ../chrono/timezones
 # Default time range of 1970 to 2030 generates 94k tzdata/dstchanges.bin
 
 # The year range you want to include
-const startYear = 2018
-const endYear = 2020
+const startYear = 2015
+const endYear = 2022
 # Add only time zones you want to include here:
 const includeOnly: seq[string] = @[
   "utc",
