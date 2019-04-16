@@ -558,10 +558,6 @@ proc parseCalendar*(format: string, value: string): Calendar =
         raise newException(ValueError, "Not a digit")
     return parseInt(num)
 
-  proc getStr(chars: int): string =
-    result = value[j..<j + chars]
-    j += chars
-
   proc nextMatch(match: string): bool =
     if value.len > j + match.len - 1 and value[j..<j + match.len].toLowerAscii() == match.toLowerAscii():
       j += match.len
@@ -678,7 +674,7 @@ proc parseCalendar*(formats: seq[string], value: string): Calendar =
   raise newException(ValueError, "None of the format strings matched")
 
 
-proc formatCalendar*(cal: Calendar, format: string): string =
+proc format*(cal: Calendar, format: string): string =
   ## Formats calendars to a string based on the format spesification
   var i = 0
   var output = ""

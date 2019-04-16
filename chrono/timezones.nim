@@ -238,8 +238,8 @@ proc parseTs*(fmt: string, value: string, tzName: string): Timestamp =
   return cal.ts
 
 
-proc formatTs*(ts: Timestamp, fmt: string, tzName: string): string =
+proc format*(ts: Timestamp, fmt: string, tzName: string): string =
   ## Format a Timestamp with timezone using the format string.
   var cal = ts.calendar
   cal.applyTimezone(tzName)
-  return cal.formatCalendar(fmt)
+  return cal.format(fmt)
