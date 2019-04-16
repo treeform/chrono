@@ -32,13 +32,13 @@ suite "timestamps":
       ) == parseIsoTs("1988-02-09T03:34:12Z")
 
 
-  test "formatTs":
-    check formatTs(
+  test "format Timestamp":
+    check format(
         parseIsoTs("1988-02-09T03:34:12Z"),
         "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
       ) == "1988-02-09T03:34:12Z"
 
-    check formatTs(
+    check format(
         parseIsoTs("1988-02-09T03:34:12Z"),
         "{month/2}/{day/2}/{year/4} {hour/2}:{minute/2}:{second/2}",
       ) == "02/09/1988 03:34:12"

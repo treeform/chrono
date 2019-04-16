@@ -23,7 +23,7 @@ suite "timestamps":
     check formatIso(Timestamp(1510128103.0), tzName = "America/Los_Angeles") == "2017-11-08T00:01:43-08:00"
 
     check formatIso(Timestamp(1509823680.0), tzName = "America/Los_Angeles") == "2017-11-04T12:28:00-07:00"
-    check formatTs(
+    check format(
         Timestamp(1509823680.0),
         "{year}-{month/2}-{day/2} {hour/2}:{minute/2} {tzName}@{dstName}",
         tzName = "America/Los_Angeles"

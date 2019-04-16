@@ -161,9 +161,9 @@ proc parseTs*(fmt: string, value: string): Timestamp =
   parseCalendar(fmt, value).ts
 
 
-proc formatTs*(ts: Timestamp, fmt: string): string =
+proc format*(ts: Timestamp, fmt: string): string =
   ## Format a Timestamp using the format string.
-  ts.calendar.formatCalendar(fmt)
+  ts.calendar.format(fmt)
 
 
 proc toStartOf*(ts: Timestamp, timeScale: TimeScale): Timestamp =
