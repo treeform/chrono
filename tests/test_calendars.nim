@@ -260,6 +260,10 @@ suite "calendars":
     check parseIsoCalendar("1970-01-01T00:00:00+07:00") == Calendar(year: 1970, month: 1, day: 1, tzOffset: 25200.0)
     check formatIso(Calendar(year: 1970, month: 1, day: 1, tzOffset: 25200.0)) == "1970-01-01T00:00:00+07:00"
 
+    let dtStr = "1970-01-01 00:00:00 -07:00"
+    let cal = parseCalendar("{year/4}-{month/2}-{day/2} {hour/2}:{minute/2}:{second/2} {offsetDir}{offsetHour/2}:{offsetMinute/2}", dtStr)
+    check $cal == "1970-01-01T00:00:00-07:00"
+
   test "toStartOf":
     var c: Calendar
 
