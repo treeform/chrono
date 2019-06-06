@@ -260,9 +260,14 @@ suite "calendars":
     check parseIsoCalendar("1970-01-01T00:00:00+07:00") == Calendar(year: 1970, month: 1, day: 1, tzOffset: 25200.0)
     check formatIso(Calendar(year: 1970, month: 1, day: 1, tzOffset: 25200.0)) == "1970-01-01T00:00:00+07:00"
 
-    let dtStr = "1970-01-01 00:00:00 -07:00"
-    let cal = parseCalendar("{year/4}-{month/2}-{day/2} {hour/2}:{minute/2}:{second/2} {offsetDir}{offsetHour/2}:{offsetMinute/2}", dtStr)
+    let dtStr = "1970-01-01 00:00:00 -07:00:00"
+    let cal = parseCalendar("{year/4}-{month/2}-{day/2} {hour/2}:{minute/2}:{second/2} {offsetDir}{offsetHour/2}:{offsetMinute/2}:{offsetSecond/2}", dtStr)
     check $cal == "1970-01-01T00:00:00-07:00"
+
+    let dtStr2 = "1970-01-01 00:00:00 -07:13:46"
+    let cal2 = parseCalendar("{year/4}-{month/2}-{day/2} {hour/2}:{minute/2}:{second/2} {offsetDir}{offsetHour/2}:{offsetMinute/2}:{offsetSecond/2}", dtStr2)
+    check cal2.tzOffset == -26026.0
+    check $cal2 == "1970-01-01T00:00:00-07:13"
 
   test "toStartOf":
     var c: Calendar
