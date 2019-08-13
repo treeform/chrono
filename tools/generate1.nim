@@ -32,7 +32,9 @@ const endYear = 2020
 const includeOnly: seq[string] = @[
   "utc",
   "America/Los_Angeles",
-  "America/New_York"
+  "America/New_York",
+  "America/Chicago",
+  "Europe/Dublin",
 ]
 
 const timeZoneFiles = @[
