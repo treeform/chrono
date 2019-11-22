@@ -16,7 +16,7 @@
 ## {day/2}           Day in two digits 01-31                                                            ``2012/9/3 -> 03``
 ## {hour}            Hour in digits 0-23                                                                ``09:08:07 -> 9``
 ## {hour/2}          Hour in two digits 00-23                                                           ``09:08:07 -> 09``
-## {hour/2/ap}       Hour as 12-hour am/pm as digits 1-12                                               ``13:08:07 -> 1``
+## {hour/ap}         Hour as 12-hour am/pm as digits 1-12                                               ``13:08:07 -> 1``
 ## {hour/2/ap}       Hour as 12-hour am/pm as two digits 01-12                                          ``13:08:07 -> 01``
 ## {am/pm}           Based on hour outputs "am" or "pm"                                                 ``13:08:07 -> pm``
 ## {minute}          Minute in digits 0-59                                                              ``09:08:07 -> 8``
