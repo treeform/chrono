@@ -689,7 +689,7 @@ proc parseCalendar*(formats: seq[string], value: string): Calendar =
   for format in formats:
       try:
         return parseCalendar(format, value)
-      except ValueError:
+      except ValueError, IndexError:
         discard
   raise newException(ValueError, "None of the format strings matched")
 
