@@ -1,7 +1,6 @@
 import unittest
 
-import ../chrono/timestamps
-
+import chrono/timestamps
 
 suite "timestamps":
 

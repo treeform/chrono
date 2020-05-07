@@ -1,9 +1,9 @@
 import unittest
 
-include ../chrono/calendars
-include ../chrono/timestamps
-include ../chrono/timezones
-include ../chrono/statictz
+include chrono/calendars
+include chrono/timestamps
+include chrono/timezones
+include chrono/statictz
 
 suite "timestamps":
 
