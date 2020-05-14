@@ -1,39 +1,38 @@
-
-import os
-import osproc
-import strutils
-import parsecsv
-import algorithm
-import streams
-import miniz
-import parseopt
-import json
-
+import ../chrono/snappyutils, algorithm, json, os, osproc, parsecsv, parseopt,
+    streams, strutils
 
 include ../chrono/calendars
 include ../chrono/timestamps
 include ../chrono/timezones
 
+const doc = """
 
+Generate your own packed timezone file.
 
-## Hey, so you want to fetch your own time zones?
-## You can use this file to fetch timezone files from the primary source.
-## You can tweak the parameters in this file to only get timezones you need and for the years your need.
-## This takes about 10 minutes to process all of the timezone data. Hey, I did not write this tool.
+Generate all timezones in bin and json:
 
-# You can modify these parameters here to get the timezone table you want:
-# Generating timezones from 2015 to 2025 generates only a 14k dstchanges.bin
-# Default time range of 1970 to 2030 generates 94k tzdata/dstchanges.bin
+  generate all
 
-# The year range you want to include
-const startYear = 1970
-const endYear = 2030
-# Add only time zones you want to include here:
-const includeOnly: seq[string] = @[]
-#  "utc",
-#  "America/Los_Angeles",
-#  "America/New_York"
-#]
+Generate only the years you want:
+
+  generate all --startYear:2010 --endYear:2030
+
+Generate only the timezones you want
+
+  generate all --includeOnly:"utc,America/Los_Angeles,America/New_York,America/Chicago,Europe/Dublin"
+
+Generate only the json data files:
+
+  generate json
+
+All together:
+
+  generate.nim json --startYear:2010 --endYear:2030 --includeOnly:"utc,America/Los_Angeles,America/New_York,America/Chicago,Europe/Dublin"
+"""
+
+var startYearTs = Calendar(year: 1970, month: 1, day: 1).ts
+var endYearTs = Calendar(year: 2060, month: 1, day: 1).ts
+var includeOnly: seq[string] = @[]
 
 const timeZoneFiles = @[
   "africa",
@@ -44,14 +43,10 @@ const timeZoneFiles = @[
   "northamerica",
   "southamerica",
   # "pacificnew", # some leagal thing
-  # "etcetera",   # mostly present for historical reasons
-  # "backward",   # historical renames
-  # "backzone"    # historical timezones pre-1970
+    # "etcetera",   # mostly present for historical reasons
+    # "backward",   # historical renames
+    # "backzone"    # historical timezones pre-1970
 ]
-
-const startYearTs = Calendar(year: startYear, month: 1, day: 1).ts
-const endYearTs = Calendar(year: endYear, month: 1, day: 1).ts
-
 
 proc runCommand(cmd: string) =
   echo "running: ", cmd
@@ -61,7 +56,6 @@ proc runCommand(cmd: string) =
     echo ret.output
     quit()
 
-
 proc catCommand(cmd: string): string =
   echo "running: ", cmd
   let ret = execCmdEx(cmd)
@@ -70,7 +64,6 @@ proc catCommand(cmd: string): string =
     echo ret.output
     quit()
   return ret.output
-
 
 proc fetchAndCompileTzDb() =
   if not dirExists("tz"):
@@ -83,7 +76,6 @@ proc fetchAndCompileTzDb() =
     runCommand("cd tz; make")
 
   runCommand("cd tz; zic -d zic_out " & timeZoneFiles.join(" "))
-
 
 proc dumpToCsvFiles() =
   let timezones = open("tzdata/timezones.csv", fmWrite)
@@ -119,7 +111,8 @@ proc dumpToCsvFiles() =
       if prevDstName == dstName and prevOffset == offset:
         continue
       let ts = parseTs("{month/n/3} {day} {hour/2}:{minute/2}:{second/2} {year}", date)
-      let csvLine = "\"" & $tzId & "\",\"" & dstName & "\",\"" & $(int64(ts)) & "\",\"" & $offset & "\",\"" & $isDst & "\"\n"
+      let csvLine = "\"" & $tzId & "\",\"" & dstName & "\",\"" & $(int64(ts)) &
+          "\",\"" & $offset & "\",\"" & $isDst & "\"\n"
 
       dstchanges.write(csvLine)
 
@@ -129,7 +122,6 @@ proc dumpToCsvFiles() =
   timezones.close()
   dstchanges.close()
 
-
 iterator readCvs*(fileName: string, readHeader = false): CsvRow =
   var p: CsvParser
   p.open(fileName)
@@ -138,7 +130,6 @@ iterator readCvs*(fileName: string, readHeader = false): CsvRow =
   while p.readRow():
     yield p.row
   p.close()
-
 
 proc csvToBin() =
   var timeZones = newSeq[TimeZone]()
@@ -157,7 +148,7 @@ proc csvToBin() =
     var f = newStringStream()
     f.writeData(cast[pointer](addr timeZones[0]), timeZones.len * sizeOf(TimeZone))
     f.setPosition(0)
-    let zdata = compress(f.readAll(), level=9)
+    let zdata = compress(f.readAll())
     writeFile("tzdata/timezones.bin", zdata)
     echo "written file tzdata/timezones.bin ", zdata.len div 1024, "k"
 
@@ -202,10 +193,9 @@ proc csvToBin() =
     var f = newStringStream()
     f.writeData(cast[pointer](addr dstChanges[0]), dstChanges.len * sizeOf(DstChange))
     f.setPosition(0)
-    let zdata = compress(f.readAll(), level=9)
+    let zdata = compress(f.readAll())
     writeFile("tzdata/dstchanges.bin", zdata)
     echo "written file tzdata/dstchanges.bin ", zdata.len div 1024, "k"
-
 
 proc csvToJson() =
   type TimeZoneWithStr = object
@@ -248,7 +238,7 @@ proc csvToJson() =
       for i, innerDst in zoneDsts:
         if Timestamp(innerDst.start) < startYearTs:
           startI = i
-        if Timestamp(dst.start) > endYearTs and endI > i:
+        if Timestamp(innerDst.start) > endYearTs and endI > i:
           endI = i
       if startI > 0:
         dec startI
@@ -284,14 +274,38 @@ proc csvToJson() =
     writeFile("tzdata/dstchanges.json", dstJsonData)
     echo "written file tzdata/dstchanges.json ", dstJsonData.len div 1024, "k"
 
-
-for kind, key, val in getopt():
-  if kind == cmdArgument:
-    if key == "fetch" or key == "all":
-      fetchAndCompileTzDb()
-    if key == "dump" or key == "all":
-      dumpToCsvFiles()
-    if key == "bin" or key == "all":
-      csvToBin()
-    if key == "json" or key == "all":
-      csvToJson()
+when isMainModule:
+  var action = "all"
+  for kind, key, val in getopt():
+    if kind == cmdArgument:
+      action = key
+    if kind == cmdLongOption:
+      case key
+      of "startYear":
+        startYearTs = Calendar(year: parseInt(val), month: 1, day: 1).ts
+      of "endYear":
+        endYearTs = Calendar(year: parseInt(val), month: 1, day: 1).ts
+      of "includeOnly":
+        includeOnly = val.split(",")
+      else:
+        quit("invalid option " & key)
+    if kind == cmdShortOption:
+      quit(doc)
+  case action:
+  of "help":
+    quit(doc)
+  of "all":
+    fetchAndCompileTzDb()
+    dumpToCsvFiles()
+    csvToBin()
+    csvToJson()
+  of "fetch":
+    fetchAndCompileTzDb()
+  of "dump":
+    dumpToCsvFiles()
+  of "bin":
+    csvToBin()
+  of "json":
+    csvToJson()
+  else:
+    quit("invalid action " & action)
