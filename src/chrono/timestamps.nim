@@ -4,7 +4,7 @@
 ##
 ## If you are going to just parse or format dates. I recommend using just the ``import chrono/timestamps`` module.
 ## It it imports the Timestamp that is enough for most cases involved with times.
-## I always recommend storing dates as a ``float64`` number of seconds sence 1970. This is exactly what ``Timestamp`` is.
+## I always recommend storing dates as a ``float64`` number of seconds since 1970. This is exactly what ``Timestamp`` is.
 ## When you need to parse it or display it use ``parseTs`` or ``formatTs``.
 ##
 ## .. code-block:: nim
@@ -29,9 +29,7 @@
 ##     echo Timestamp(1510128103.0).formatIso()
 ##
 
-import strutils
-import calendars
-import math
+import calendars, math
 
 type
   Timestamp* = distinct float64 ## Always seconds since 1970 UTC
@@ -139,20 +137,20 @@ proc calendar*(ts: Timestamp, tzOffset: float64): Calendar =
 
 
 proc formatIso*(ts: Timestamp): string =
-  ## Fastest way to convert Timestamp to an ISO 8601 string representaion
-  ## Use this instead of the format function when dealing whith ISO format
+  ## Fastest way to convert Timestamp to an ISO 8601 string representation
+  ## Use this instead of the format function when dealing with ISO format
   return ts.calendar.formatIso
 
 
 proc formatIso*(ts: Timestamp, tzOffset: float64): string =
-  ## Fastest way to convert Timestamp to an ISO 8601 string representaion
-  ## Use this instead of the format function when dealing whith ISO format
+  ## Fastest way to convert Timestamp to an ISO 8601 string representation
+  ## Use this instead of the format function when dealing with ISO format
   return ts.calendar(tzOffset).formatIso
 
 
 proc parseIsoTs*(iso: string): Timestamp =
-  ## Fastest way to convert an ISO 8601 string representaion to a Timestamp.
-  ## Use this instead of the parseTimestamp function when dealing whith ISO format
+  ## Fastest way to convert an ISO 8601 string representation to a Timestamp.
+  ## Use this instead of the parseTimestamp function when dealing with ISO format
   return parseIsoCalendar(iso).ts
 
 
@@ -181,14 +179,14 @@ proc toEndOf*(ts: Timestamp, timeScale: TimeScale): Timestamp =
 
 
 proc add*(ts: Timestamp, timeScale: TimeScale, number: int): Timestamp =
-  ## Add Sectons, Minutes, Hours, Days ... to Timestamp
+  ## Add Seconds, Minutes, Hours, Days ... to Timestamp
   var cal = ts.calendar
   cal.add(timeScale, number)
   return cal.ts
 
 
 proc sub*(ts: Timestamp, timeScale: TimeScale, number: int): Timestamp =
-  ## Subtract Sectons, Minutes, Hours, Days ... to Timestamp
+  ## Subtract Seconds, Minutes, Hours, Days ... to Timestamp
   var cal = ts.calendar
   cal.sub(timeScale, number)
   return cal.ts

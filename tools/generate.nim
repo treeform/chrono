@@ -1,4 +1,4 @@
-import algorithm, chrono, chrono/snappyutils, json, os, osproc, parsecsv,
+import algorithm, chrono, json, os, osproc, parsecsv,
     parseopt, streams, strutils
 
 const doc = """
@@ -38,7 +38,7 @@ const timeZoneFiles = @[
   "europe",
   "northamerica",
   "southamerica",
-  # "pacificnew", # some leagal thing
+  # "pacificnew", # some legal thing
     # "etcetera",   # mostly present for historical reasons
     # "backward",   # historical renames
     # "backzone"    # historical timezones pre-1970

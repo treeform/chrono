@@ -37,14 +37,14 @@
 import algorithm, timestamps, calendars
 
 type
-  DstChange* = object {.packed.}
+  DstChange* = object
     ## Day Light Savings time transition
     tzId*: int16
     name*: string
     start*: float64
     offset*: int32
 
-  TimeZone* = object {.packed.}
+  TimeZone* = object
     ## Time Zone information
     id*: int16
     name*: string
@@ -54,7 +54,7 @@ var tzs*: seq[TimeZone] ## List of all timezones
 var dstChanges*: seq[DstChange] ## List of all DST changes
 
 proc binarySearch[T,K](a: openArray[T], key:K, keyProc: proc (e: T):K): int =
-  ## binary search for `element` in `a`. Using a `keyProce` returns an Index or -1
+  ## binary search for `element` in `a`. Using a `keyProc` returns an Index or -1
   var b = len(a)
   var index = 0
   while index < b:
@@ -69,7 +69,7 @@ proc binarySearch[T,K](a: openArray[T], key:K, keyProc: proc (e: T):K): int =
 
 
 proc binarySearchValue[T,K](a: openArray[T], key:K, keyProc: proc (e: T):K): T =
-  ## binary search for `element` in `a`. Using a `keyProce`, returns default or a found value
+  ## binary search for `element` in `a`. Using a `keyProc`, returns default or a found value
   var index = binarySearch(a, key, keyProc)
   if index >= 0:
     result = a[index]
@@ -189,8 +189,8 @@ proc calendar*(ts: Timestamp, tzName: string): Calendar =
 
 
 proc formatIso*(ts: Timestamp, tzName: string): string =
-  ## Fastest way to convert Timestamp to an ISO 8601 string representaion
-  ## Use this instead of the format function when dealing whith ISO format
+  ## Fastest way to convert Timestamp to an ISO 8601 string representation
+  ## Use this instead of the format function when dealing with ISO format
   var cal = ts.calendar
   cal.applyTimezone(tzName)
   return cal.formatIso()

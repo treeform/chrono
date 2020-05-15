@@ -9,7 +9,6 @@ srcDir = "src"
 # Dependencies
 
 requires "nim >= 1.2.0"
-requires "snappy >= 0.1.0"
 
 skipDirs = @["tests", "tools"]
 
