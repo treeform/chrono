@@ -1,5 +1,8 @@
 import unittest, chrono
 
+const tzData = staticRead("../tzdata/tzdata.json")
+loadTzData(tzData)
+
 suite "timestamps":
 
   test "time zones basic":

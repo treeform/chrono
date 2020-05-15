@@ -34,7 +34,7 @@
 ## It is always recommended to use full timezone names for parsing and storage and only display time zone abbreviations and never parse them.
 ##
 
-import algorithm, timestamps, calendars
+import algorithm, timestamps, calendars, json
 
 type
   DstChange* = object
@@ -208,3 +208,13 @@ proc format*(ts: Timestamp, fmt: string, tzName: string): string =
   var cal = ts.calendar
   cal.applyTimezone(tzName)
   return cal.format(fmt)
+
+proc loadTzData*(tzData: string) =
+  ## Loads timezone information from tzdata.json file contents.
+  ## To statically include time zones in your program:
+  ## ```
+  ##   loadTzData(staticRead("your-path/tzdata.json"))
+  ## ```
+  let tzData = parseJson(tzData)
+  tzs = tzData["timezones"].to(seq[TimeZone])
+  dstChanges = tzData["dstChanges"].to(seq[DstChange])

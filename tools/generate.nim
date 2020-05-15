@@ -137,7 +137,7 @@ proc csvToJson() =
     offset: int
 
   var timeZones = newSeq[TimeZoneWithStr]()
-  var dstChanges = newSeq[DstChangeWithStr]()
+  var dstChangesAllowed = newSeq[DstChangeWithStr]()
   var zoneIds = newSeq[int]()
 
   block:
@@ -152,14 +152,11 @@ proc csvToJson() =
     timeZones.sort do (x, y: TimeZoneWithStr) -> int:
       result = cmp(x.name, y.name)
 
-    let timeZonesJsonData = $ %*(timeZones)
-    writeFile("tzdata/timezones.json", timeZonesJsonData)
-    echo "written file tzdata/timezones.json ", timeZonesJsonData.len div 1024, "k"
-
   block:
     var prevDst = DstChangeWithStr()
     var dst = DstChangeWithStr()
     var zoneDsts = newSeq[DstChangeWithStr]()
+    var dstChanges = newSeq[DstChangeWithStr]()
 
     proc dumpZone() =
       var startI = 0
@@ -192,16 +189,18 @@ proc csvToJson() =
 
     dumpZone()
 
-    var dstChangesAllowed = newSeq[DstChangeWithStr]()
     for dst in dstChanges:
       if dst.tzId in zoneIds:
         dstChangesAllowed.add(dst)
 
     echo "dst transitions: ", dstChangesAllowed.len
 
-    let dstJsonData = $ %*dstChangesAllowed
-    writeFile("tzdata/dstchanges.json", dstJsonData)
-    echo "written file tzdata/dstchanges.json ", dstJsonData.len div 1024, "k"
+  let timeZonesJsonData = $(%*{
+    "timezones": timeZones,
+    "dstChanges": dstChangesAllowed
+  })
+  writeFile("tzdata.json", timeZonesJsonData)
+  echo "written file tzdata.json ", timeZonesJsonData.len div 1024, "k"
 
 when isMainModule:
   var action = "all"
