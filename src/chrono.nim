@@ -36,12 +36,7 @@
 ##     )
 ##
 
-import chrono/calendars
-import chrono/timestamps
-import chrono/timezones
-import chrono/statictz
-
-export calendars
-export timestamps
-export timezones
-export statictz
+include chrono/calendars
+include chrono/timestamps
+include chrono/timezones
+include chrono/statictz
