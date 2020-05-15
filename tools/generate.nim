@@ -1,5 +1,4 @@
-import algorithm, chrono, json, os, osproc, parsecsv,
-    parseopt, streams, strutils
+import algorithm, chrono, json, os, osproc, parsecsv, parseopt, strutils
 
 const doc = """
 
