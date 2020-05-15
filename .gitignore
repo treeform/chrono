@@ -5,5 +5,3 @@
 *.dll
 .*
 nimcache
-tz/*
-

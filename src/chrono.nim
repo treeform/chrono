@@ -1,7 +1,7 @@
 ##
 ## **Chrono a Timestamps, Calendars, and Timezones library for nim.**
 ##
-## Parse timestamps
+## Parse timestamps:
 ##
 ## .. code-block:: nim
 ##     var ts = parseTs(
@@ -9,7 +9,7 @@
 ##       "1988-02-09T03:34:12Z"
 ##     )
 ##
-## Format timestamps
+## Format timestamps:
 ##
 ## .. code-block:: nim
 ##     echo formatTs(
@@ -17,7 +17,7 @@
 ##       "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
 ##     )
 ##
-## Manipulate Calendars
+## Manipulate Calendars:
 ##
 ## .. code-block:: nim
 ##     var cal = Calendar(year: 2013, month: 12, day: 31, hour: 59, minute: 59, second: 59)
@@ -26,7 +26,7 @@
 ##     cal.addDays(40)
 ##     cal.subMonths(120)
 ##
-## Use timezones
+## Use timezones:
 ##
 ## .. code-block:: nim
 ##     echo formatTs(
@@ -36,7 +36,12 @@
 ##     )
 ##
 
-include chrono/calendars
-include chrono/timestamps
-include chrono/timezones
-include chrono/statictz
+import chrono/calendars
+import chrono/timestamps
+import chrono/timezones
+import chrono/statictz
+
+export calendars
+export timestamps
+export timezones
+export statictz

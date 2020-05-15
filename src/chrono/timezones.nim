@@ -34,62 +34,27 @@
 ## It is always recommended to use full timezone names for parsing and storage and only display time zone abbreviations and never parse them.
 ##
 
-
-import strutils
-import algorithm
-
-import timestamps
-import calendars
+import algorithm, timestamps, calendars
 
 type
-  PackedString[N: static[int]] = array[N, char]
-
-  DstChange* = object {.packed.}
+  DstChange* = object
     ## Day Light Savings time transition
     tzId*: int16
-    name*: array[6, char]
+    name*: string
     start*: float64
     offset*: int32
 
-  TimeZone* = object {.packed.}
+  TimeZone* = object
     ## Time Zone information
     id*: int16
-    name*: array[32, char]
+    name*: string
 
 
-var timeZones*: seq[TimeZone] ## List of all timezones
+var tzs*: seq[TimeZone] ## List of all timezones
 var dstChanges*: seq[DstChange] ## List of all DST changes
 
-
-proc pack[N](str: string): PackedString[N] =
-  if str.len >= result.len:
-    raise newException(ValueError, "Can't pack " & $str.len & " string into " & $result.len)
-  for i in 0..<result.len:
-    if i >= str.len:
-      break
-    result[i] = str[i]
-  result[str.len] = '\0'
-
-
-proc `$`*[N](ps: PackedString[N]): string =
-  result = ""
-  for c in ps:
-    if c == '\0':
-      break
-    result &= c
-
-
-proc `==`[N](a: PackedString[N], b: string): bool =
-  for i, c in a:
-    if c == '\0':
-      return b.len == i
-    if c != b[i]:
-      return false
-  return true
-
-
 proc binarySearch[T,K](a: openArray[T], key:K, keyProc: proc (e: T):K): int =
-  ## binary search for `element` in `a`. Using a `keyProce` returns an Index or -1
+  ## binary search for `element` in `a`. Using a `keyProc` returns an Index or -1
   var b = len(a)
   var index = 0
   while index < b:
@@ -104,7 +69,7 @@ proc binarySearch[T,K](a: openArray[T], key:K, keyProc: proc (e: T):K): int =
 
 
 proc binarySearchValue[T,K](a: openArray[T], key:K, keyProc: proc (e: T):K): T =
-  ## binary search for `element` in `a`. Using a `keyProce`, returns default or a found value
+  ## binary search for `element` in `a`. Using a `keyProc`, returns default or a found value
   var index = binarySearch(a, key, keyProc)
   if index >= 0:
     result = a[index]
@@ -113,12 +78,12 @@ proc binarySearchValue[T,K](a: openArray[T], key:K, keyProc: proc (e: T):K): T =
 proc findTimeZone*(tzName: string): TimeZone =
   ## Finds timezone by its name
   proc getName(tz: TimeZone): string = $tz.name
-  return timeZones.binarySearchValue(tzName, getName)
+  return tzs.binarySearchValue(tzName, getName)
 
 
 proc findTimeZone*(tzId: int): TimeZone =
   ## Finds timezone by its id (slow).
-  for tz in timeZones:
+  for tz in tzs:
     if tz.id == tzId:
       return tz
 
@@ -212,20 +177,20 @@ proc shiftTimezone*(cal: var Calendar, tzName: string) =
 
 
 proc normalizeTimezone*(cal: var Calendar) =
-  ## After shifting around the calendar, its DST might need to be updated
+  ## After shifting around the calendar, its DST might need to be updated.
   if cal.tzName.len != 0:
     cal.applyTimezone(cal.tzName)
 
 proc calendar*(ts: Timestamp, tzName: string): Calendar =
-  ## Convert Timestamp to calendar with a timezone
+  ## Convert Timestamp to calendar with a timezone.
   var cal = ts.calendar
   cal.applyTimezone(tzName)
   return cal
 
 
 proc formatIso*(ts: Timestamp, tzName: string): string =
-  ## Fastest way to convert Timestamp to an ISO 8601 string representaion
-  ## Use this instead of the format function when dealing whith ISO format
+  ## Fastest way to convert Timestamp to an ISO 8601 string representation.
+  ## Use this instead of the format function when dealing with ISO format.
   var cal = ts.calendar
   cal.applyTimezone(tzName)
   return cal.formatIso()

@@ -1,6 +1,4 @@
-import unittest
-
-import chrono/calendars
+import unittest, chrono
 
 suite "calendars":
 
