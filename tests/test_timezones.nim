@@ -827,6 +827,6 @@ suite "timestamps":
     testTime(1595056280, "2020-07-18T01:11:20-06:00", "America/El_Salvador")
     testTime(1599747622, "2020-09-10T17:20:22+03:00", "Africa/Addis_Ababa")
     testTime(1602093293, "2020-10-07T18:54:53+01:00", "Africa/Malabo")
-    testTime(1604438964, "2020-11-03T21:29:24+00:00", "Africa/Casablanca")
+    testTime(1604438964, "2020-11-03T22:29:24+01:00", "Africa/Casablanca")
     testTime(1606784635, "2020-12-01T01:03:55+00:00", "Africa/Bissau")
     testTime(1609130306, "2020-12-28T17:38:26+13:00", "Pacific/Fiji")
