@@ -16,4 +16,4 @@ task generate, "Generate timezone bins from raw data":
   exec "nim c -r tools/generate all"
 
 task docs, "Generate docs":
-  exec "nim doc -o:docs/index.html chrono.nim"
+  exec "nim doc -o:docs/index.html src/chrono.nim"
