@@ -1,9 +1,4 @@
-import unittest
-
-include chrono/calendars
-include chrono/timestamps
-include chrono/timezones
-include chrono/statictz
+import unittest, chrono
 
 suite "timestamps":
 

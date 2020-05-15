@@ -1,6 +1,4 @@
-import unittest
-
-import chrono/timestamps
+import unittest, chrono
 
 suite "timestamps":
 

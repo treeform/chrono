@@ -57,11 +57,11 @@ type
     name*: array[32, char]
 
 
-var timeZones*: seq[TimeZone] ## List of all timezones
+var tzs*: seq[TimeZone] ## List of all timezones
 var dstChanges*: seq[DstChange] ## List of all DST changes
 
 
-proc pack[N](str: string): PackedString[N] =
+proc pack*[N](str: string): PackedString[N] =
   if str.len >= result.len:
     raise newException(ValueError, "Can't pack " & $str.len & " string into " & $result.len)
   for i in 0..<result.len:
@@ -113,12 +113,12 @@ proc binarySearchValue[T,K](a: openArray[T], key:K, keyProc: proc (e: T):K): T =
 proc findTimeZone*(tzName: string): TimeZone =
   ## Finds timezone by its name
   proc getName(tz: TimeZone): string = $tz.name
-  return timeZones.binarySearchValue(tzName, getName)
+  return tzs.binarySearchValue(tzName, getName)
 
 
 proc findTimeZone*(tzId: int): TimeZone =
   ## Finds timezone by its id (slow).
-  for tz in timeZones:
+  for tz in tzs:
     if tz.id == tzId:
       return tz
 
