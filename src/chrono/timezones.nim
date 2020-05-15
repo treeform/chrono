@@ -177,20 +177,20 @@ proc shiftTimezone*(cal: var Calendar, tzName: string) =
 
 
 proc normalizeTimezone*(cal: var Calendar) =
-  ## After shifting around the calendar, its DST might need to be updated
+  ## After shifting around the calendar, its DST might need to be updated.
   if cal.tzName.len != 0:
     cal.applyTimezone(cal.tzName)
 
 proc calendar*(ts: Timestamp, tzName: string): Calendar =
-  ## Convert Timestamp to calendar with a timezone
+  ## Convert Timestamp to calendar with a timezone.
   var cal = ts.calendar
   cal.applyTimezone(tzName)
   return cal
 
 
 proc formatIso*(ts: Timestamp, tzName: string): string =
-  ## Fastest way to convert Timestamp to an ISO 8601 string representation
-  ## Use this instead of the format function when dealing with ISO format
+  ## Fastest way to convert Timestamp to an ISO 8601 string representation.
+  ## Use this instead of the format function when dealing with ISO format.
   var cal = ts.calendar
   cal.applyTimezone(tzName)
   return cal.formatIso()

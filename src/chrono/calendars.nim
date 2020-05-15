@@ -97,7 +97,7 @@ const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Satur
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
 
 proc parseTimeScale*(timeScale: string): TimeScale =
-  ## Turns a time scale string like "second" to the enum Second
+  ## Turns a time scale string like "second" to the enum Second.
   case timeScale:
     of "second": Second
     of "minute": Minute
@@ -111,8 +111,8 @@ proc parseTimeScale*(timeScale: string): TimeScale =
 
 
 proc formatIso*(cal: Calendar): string =
-  ## Fastest way to convert Calendar to an ISO 8601 string representation
-  ## Use this instead of the format function when dealing with ISO format
+  ## Fastest way to convert Calendar to an ISO 8601 string representation.
+  ## Use this instead of the format function when dealing with ISO format.
   ## Warning does minimal checking for speed. Make sure your calendar is valid.
 
   proc f(n: int): char = char(ord('0') + n)
@@ -157,13 +157,14 @@ proc formatIso*(cal: Calendar): string =
 
 
 proc `$`*(a: Calendar): string =
-  ## Display a Calendar as a ISO 8601 string
+  ## Display a Calendar as a ISO 8601 string.
   a.formatIso
 
 
 proc parseIsoCalendar*(iso: string): Calendar =
   ## Fastest way to convert an ISO 8601 string representation to a Calendar.
-  ## Use this instead of the parseTimestamp function when dealing with ISO format
+  ## Use this instead of the parseTimestamp function when dealing with ISO
+  ## format.
 
   var error = false
   proc f(i: int): int =
@@ -263,13 +264,13 @@ proc daysInMonth(m: int, year: int): int =
 
 
 proc daysInMonth*(cal: Calendar): int =
-  ## Get number of days in a calendar month
+  ## Get number of days in a calendar month.
   daysInMonth(cal.month, cal.year)
 
 
 proc normalize*(cal: var Calendar) =
   ## Fixes any issues with calendar such as extra hours, extra days, and
-  ## negative months
+  ## negative months.
 
   if cal.secondFraction > 1:
     cal.second += int(cal.secondFraction)
@@ -323,8 +324,8 @@ proc normalize*(cal: var Calendar) =
       cal.hour = 0
 
   if cal.day < 1 or cal.month < 1:
-    dec cal.month # use 0-based for calculations
-    dec cal.day # use 0-based for calculations
+    dec cal.month # Use 0-based for calculations.
+    dec cal.day   # Use 0-based for calculations.
 
     if cal.month < 0:
       var qut = (-cal.month) div 12
@@ -344,13 +345,13 @@ proc normalize*(cal: var Calendar) =
       var monthDays = daysInMonth(cal.month+1, cal.year)
       cal.day += monthDays
 
-    inc cal.month # back to 1-based months
-    inc cal.day # back to 1-based days
+    inc cal.month # Back to 1-based months.
+    inc cal.day   # Back to 1-based days.
 
 
   if cal.day > cal.daysInMonth or cal.month > 12:
-    dec cal.month # use 0-based for calculations
-    dec cal.day # use 0-based for calculations
+    dec cal.month # Use 0-based for calculations.
+    dec cal.day   # Use 0-based for calculations.
 
     if cal.month >= 12:
       cal.year += cal.month div 12
@@ -365,12 +366,12 @@ proc normalize*(cal: var Calendar) =
         cal.month = 0
       monthDays = daysInMonth(cal.month + 1, cal.year)
 
-    inc cal.month # back to 1-based months
-    inc cal.day # back to 1-based days
+    inc cal.month # Back to 1-based months.
+    inc cal.day   # Back to 1-based days.
 
 
 proc add*(cal: var Calendar, timeScale: TimeScale, number: int) =
-  ## Add a Day, Hour, Year... to calendar
+  ## Add a Day, Hour, Year... to calendar.
   case timeScale:
     of Unknown:
      # TODO what kind of error?
@@ -419,17 +420,17 @@ proc add*(cal: var Calendar, timeScale: TimeScale, number: float) =
 
 
 proc sub*(cal: var Calendar, timeScale: TimeScale, number: int) =
-  ## Subtract a Day, Hour, Year... to calendar
+  ## Subtract a Day, Hour, Year... to calendar.
   cal.add(timeScale, -number)
 
 
 proc sub*(cal: var Calendar, timeScale: TimeScale, number: float) =
-  ## Subtract a Day, Hour, Year... to calendar
+  ## Subtract a Day, Hour, Year... to calendar.
   cal.add(timeScale, -number)
 
 
 proc compare*(a, b: Calendar): int =
-  ## Compare two calendars
+  ## Compare two calendars.
   if a.year < b.year:
     return -1
   elif a.year > b.year:
@@ -476,7 +477,7 @@ proc `>=`*(a, b: Calendar): bool = a.compare(b) >= 0
 
 
 proc toStartOf*(cal: var Calendar, timeScale: TimeScale) =
-  ## Move the time stamp to a start of a time scale
+  ## Move the time stamp to a start of a time scale.
   case timeScale:
     of Unknown:
      # TODO what kind of error?
@@ -564,7 +565,8 @@ proc parseCalendar*(format: string, value: string): Calendar =
     return parseInt(num)
 
   proc nextMatch(match: string): bool =
-    if value.len > j + match.len - 1 and value[j..<j + match.len].toLowerAscii() == match.toLowerAscii():
+    if value.len > j + match.len - 1 and
+      value[j..<j + match.len].toLowerAscii() == match.toLowerAscii():
       j += match.len
       return true
     return false
@@ -576,7 +578,8 @@ proc parseCalendar*(format: string, value: string): Calendar =
     if i == format.len and j == value.len:
       return
     if i == format.len or j == value.len:
-      raise newException(ValueError, "Format and value string length did not match")
+      raise newException(ValueError,
+        "Format and value string length did not match")
 
     if format[i] == '{':
       var token = ""
@@ -685,8 +688,8 @@ proc parseCalendar*(format: string, value: string): Calendar =
 
 
 proc parseCalendar*(formats: seq[string], value: string): Calendar =
-  ## Parses calendars from a seq of strings based on the format specification
-  ## Returns first format that parses or rases ValueError
+  ## Parses calendars from a seq of strings based on the format specification.
+  ## Returns first format that parses or rases ValueError.
   for format in formats:
       try:
         return parseCalendar(format, value)
@@ -696,7 +699,7 @@ proc parseCalendar*(formats: seq[string], value: string): Calendar =
 
 
 proc format*(cal: Calendar, format: string): string =
-  ## Formats calendars to a string based on the format specification
+  ## Formats calendars to a string based on the format specification.
   var i = 0
   var output = ""
 
