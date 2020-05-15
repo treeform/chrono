@@ -1,9 +1,5 @@
-import ../chrono/snappyutils, algorithm, json, os, osproc, parsecsv, parseopt,
-    streams, strutils
-
-include ../chrono/calendars
-include ../chrono/timestamps
-include ../chrono/timezones
+import algorithm, chrono, chrono/snappyutils, json, os, osproc, parsecsv,
+    parseopt, streams, strutils
 
 const doc = """
 
@@ -79,13 +75,13 @@ proc fetchAndCompileTzDb() =
 
 proc dumpToCsvFiles() =
   let timezones = open("tzdata/timezones.csv", fmWrite)
-  let dstchanges = open("tzdata/dstchanges.csv", fmWrite)
+  let dstChanges = open("tzdata/dstchanges.csv", fmWrite)
 
   var files = newSeq[string]()
   for file in walkDirRec("tz/zic_out/"):
 
     if not file[11..^1].contains("/"):
-      # ignore non contenental timezones
+      # ignore non continental timezones
       #CET CST6CDT EET EST EST5EDT ...
       continue
 
@@ -114,13 +110,13 @@ proc dumpToCsvFiles() =
       let csvLine = "\"" & $tzId & "\",\"" & dstName & "\",\"" & $(int64(ts)) &
           "\",\"" & $offset & "\",\"" & $isDst & "\"\n"
 
-      dstchanges.write(csvLine)
+      dstChanges.write(csvLine)
 
       prevDstName = dstName
       prevOffset = offset
 
   timezones.close()
-  dstchanges.close()
+  dstChanges.close()
 
 iterator readCvs*(fileName: string, readHeader = false): CsvRow =
   var p: CsvParser
@@ -130,72 +126,6 @@ iterator readCvs*(fileName: string, readHeader = false): CsvRow =
   while p.readRow():
     yield p.row
   p.close()
-
-proc csvToBin() =
-  var timeZones = newSeq[TimeZone]()
-  var dstChanges = newSeq[DstChange]()
-
-  block:
-    for row in readCvs("tzdata/timezones.csv"):
-      timeZones.add TimeZone(
-        id: int16 parseInt(row[0]),
-        name: pack[32](row[2]),
-        )
-
-    timeZones.sort do (x, y: TimeZone) -> int:
-      result = cmp($x.name, $y.name)
-
-    var f = newStringStream()
-    f.writeData(cast[pointer](addr timeZones[0]), timeZones.len * sizeOf(TimeZone))
-    f.setPosition(0)
-    let zdata = compress(f.readAll())
-    writeFile("tzdata/timezones.bin", zdata)
-    echo "written file tzdata/timezones.bin ", zdata.len div 1024, "k"
-
-  block:
-    var prevDst = DstChange()
-    var dst = DstChange()
-    var zoneDsts = newSeq[DstChange]()
-
-    proc dumpZone() =
-      var startI = 0
-      var endI = zoneDsts.len
-      for i, innerDst in zoneDsts:
-        if Timestamp(innerDst.start) < startYearTs:
-          startI = i
-        if Timestamp(dst.start) > endYearTs and endI > i:
-          endI = i
-      if startI > 0:
-        dec startI
-      for innerDst in zoneDsts[startI..<endI]:
-        dstChanges.add(innerDst)
-
-      zoneDsts = newSeq[DstChange]()
-
-    for row in readCvs("tzdata/dstchanges.csv"):
-      dst = DstChange(
-        tzId: int16 parseInt(row[0]),
-        name: pack[6](row[1]),
-        start: float64 parseFloat(row[2]),
-        offset: int32 parseInt(row[3])
-      )
-
-      if prevDst.tzId != dst.tzId:
-        dumpZone()
-
-      zoneDsts.add(dst)
-      prevDst = dst
-
-    dumpZone()
-
-    echo "dst transitoins: ", dstChanges.len
-
-    var f = newStringStream()
-    f.writeData(cast[pointer](addr dstChanges[0]), dstChanges.len * sizeOf(DstChange))
-    f.setPosition(0)
-    let zdata = compress(f.readAll())
-    writeFile("tzdata/dstchanges.bin", zdata)
-    echo "written file tzdata/dstchanges.bin ", zdata.len div 1024, "k"
 
 proc csvToJson() =
   type TimeZoneWithStr = object
@@ -268,7 +198,7 @@ proc csvToJson() =
       if dst.tzId in zoneIds:
         dstChangesAllowed.add(dst)
 
-    echo "dst transitoins: ", dstChangesAllowed.len
+    echo "dst transitions: ", dstChangesAllowed.len
 
     let dstJsonData = $ %*dstChangesAllowed
     writeFile("tzdata/dstchanges.json", dstJsonData)
@@ -297,14 +227,11 @@ when isMainModule:
   of "all":
     fetchAndCompileTzDb()
     dumpToCsvFiles()
-    csvToBin()
     csvToJson()
   of "fetch":
     fetchAndCompileTzDb()
   of "dump":
     dumpToCsvFiles()
-  of "bin":
-    csvToBin()
   of "json":
     csvToJson()
   else:
