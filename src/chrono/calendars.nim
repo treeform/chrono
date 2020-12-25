@@ -556,8 +556,8 @@ proc parseCalendar*(format: string, value: string): Calendar =
 
   proc getNumber(digits: int): int =
     var num = ""
-    for d in 0..<digits:
-      if isDigit(value[j]):
+    for d in 0 ..< digits:
+      if j < value.len and isDigit(value[j]):
         num &= value[j]
         inc j
       else:
