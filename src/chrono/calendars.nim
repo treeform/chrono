@@ -115,6 +115,7 @@ proc formatIso*(cal: Calendar): string =
   ## Fastest way to convert Calendar to an ISO 8601 string representation.
   ## Use this instead of the format function when dealing with ISO format.
   ## Warning does minimal checking for speed. Make sure your calendar is valid.
+  ## Note: Does not support fractional seconds.
 
   proc f(n: int): char = char(ord('0') + n)
 
@@ -166,6 +167,7 @@ proc parseIsoCalendar*(iso: string): Calendar =
   ## Fastest way to convert an ISO 8601 string representation to a Calendar.
   ## Use this instead of the parseTimestamp function when dealing with ISO
   ## format.
+  ## Note: Does not support fractional seconds.
 
   var error = false
   proc f(i: int): int =
@@ -782,6 +784,12 @@ proc format*(cal: Calendar, format: string): string =
           putNumber(cal.second)
         of "second/2":
           putNumber(cal.second, 2)
+
+        of "secondFraction":
+          if cal.secondFraction == 0:
+            output.add "0"
+          else:
+            output.add ($cal.secondFraction)[2..^1]
 
         of "weekday":
           output &= weekdays[cal.weekday]

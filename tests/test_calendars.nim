@@ -111,6 +111,10 @@ suite "calendars":
     testFormat("1970-01-01T12:08:00Z", "{month/n}", "January")
     testFormat("1970-02-09T12:08:00Z", "{month/n/3}", "Feb")
 
+    doAssert Calendar().format("{secondFraction}") == "0"
+    doAssert Calendar(secondFraction: 0.25).format("{secondFraction}") == "25"
+    doAssert Calendar(secondFraction: 0.3333333).format("{secondFraction}") == "3333333"
+
   test "weekday":
     check parseIsoCalendar("1970-01-01T00:00:00Z").weekday == 3
     check parseIsoCalendar("1999-01-01T00:00:00Z").weekday == 4
