@@ -71,6 +71,10 @@ suite "calendars":
     testParse("1916-09-30T22:59:59Z", "{weekday} {month/n/3} {day} {hour/2}:{minute/2}:{second/2} {year}", "Monday Sep 30 22:59:59 1916")
     testParse("1916-09-30T22:59:59Z", "{weekday/3} {month/n/3} {day} {hour/2}:{minute/2}:{second/2} {year}", "Mon Sep 30 22:59:59 1916")
 
+    # secondFraction
+    let c = parseCalendar("{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second}.{secondFraction}Z", "2021-02-01T14:28:58.983432014Z")
+    doAssert c.secondFraction == 0.983432014
+
   test "format Calendar":
 
     proc testFormat(iso, format, value: string) =

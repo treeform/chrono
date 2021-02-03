@@ -23,6 +23,7 @@
 ## {minute/2}        Minute in two digits 00-59                                                         ``09:08:07 -> 08``
 ## {second}          Second in digits 0-59                                                              ``09:08:07 -> 7``
 ## {second/2}        Second in two digits 00-59                                                         ``09:08:07 -> 07``
+## {secondFraction}  Seconds fraction value.                                                            ``09:08:07.123 -> 0.123``
 ## {weekday}         Full name of weekday                                                               ``Saturday -> Saturday``
 ## {weekday/3}       Three letter of name of weekday                                                    ``Saturday -> Sat``
 ## {weekday/2}       Two letter of name of weekday                                                      ``Saturday -> Sa``
@@ -67,7 +68,7 @@
 ##     cal = ts.calendar
 ##
 
-import strutils
+import strutils, math
 
 type
   Calendar* = object
@@ -649,6 +650,10 @@ proc parseCalendar*(format: string, value: string): Calendar =
           result.second = getNumber()
         of "second/2":
           result.second = getNumber(2)
+
+        of "secondFraction":
+          let f = getNumber().float64
+          result.secondFraction = f / pow(10, log10(f).ceil)
 
         of "weekday":
           for k, m in weekdays:
