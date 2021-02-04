@@ -34,36 +34,29 @@ import calendars, math
 type
   Timestamp* = distinct float64 ## Always seconds since 1970 UTC.
 
-
 proc `==`*(a, b: Timestamp): bool =
   ## Compare timestamps.
   float64(a) == float64(b)
-
 
 proc `>`*(a, b: Timestamp): bool =
   ## Compare timestamps.
   float64(a) > float64(b)
 
-
 proc `<`*(a, b: Timestamp): bool =
   ## Compare timestamps.
   float64(a) < float64(b)
-
 
 proc `<=`*(a, b: Timestamp): bool =
   ## Compare timestamps.
   float64(a) <= float64(b)
 
-
 proc `>=`*(a, b: Timestamp): bool =
   ## Compare timestamps.
   float64(a) >= float64(b)
 
-
 proc `$`*(a: Timestamp): string =
   ## Display a timestamps as a float64.
   $float64(a)
-
 
 proc sign(a: float64): float64 =
   ## Float point sign, why because javascript ints.
@@ -72,11 +65,9 @@ proc sign(a: float64): float64 =
   else:
     +1
 
-
 proc `div`(a, b: float64): float64 =
   ## Integer division with floats, why because javascript ints.
   floor(abs(a) / abs(b)) * sign(a) * sign(b)
-
 
 proc calendar*(ts: Timestamp): Calendar =
   ## Converts a Timestamp to a Calendar.
@@ -116,18 +107,18 @@ proc calendar*(ts: Timestamp): Calendar =
     # TODO: This works but is kind of a hack to support negative ts.
     result.year -= 1970
 
-
 proc ts*(cal: Calendar): Timestamp =
   ## Converts Calendar to a Timestamp.
   var m = float64(cal.month)
   var y = float64(cal.year)
   if m <= 2:
-     y -= 1
-     m += 12
-  var yearMonthPart = 365 * y + y div 4 - y div 100 + y div 400 + 3 * (m + 1) div 5 + 30 * m
-  var tss = (yearMonthPart + cal.day.float64 - 719561) * 86400 + 3600 * cal.hour.float64 + 60 * cal.minute.float64 + cal.second.float64
+    y -= 1
+    m += 12
+  var yearMonthPart = 365 * y + y div 4 - y div 100 +
+    y div 400 + 3 * (m + 1) div 5 + 30 * m
+  var tss = (yearMonthPart + cal.day.float64 - 719561) * 86400 +
+    3600 * cal.hour.float64 + 60 * cal.minute.float64 + cal.second.float64
   return Timestamp(float64(tss) + cal.secondFraction - cal.tzOffset)
-
 
 proc calendar*(ts: Timestamp, tzOffset: float64): Calendar =
   ## Converts a Timestamp to a Calendar with a tz offset.
@@ -136,18 +127,15 @@ proc calendar*(ts: Timestamp, tzOffset: float64): Calendar =
   result = Timestamp(tsTz).calendar
   result.tzOffset = tzOffset
 
-
 proc formatIso*(ts: Timestamp): string =
   ## Fastest way to convert Timestamp to an ISO 8601 string representation.
   ## Use this instead of the format function when dealing with ISO format.
   return ts.calendar.formatIso
 
-
 proc formatIso*(ts: Timestamp, tzOffset: float64): string =
   ## Fastest way to convert Timestamp to an ISO 8601 string representation.
   ## Use this instead of the format function when dealing with ISO format.
   return ts.calendar(tzOffset).formatIso
-
 
 proc parseIsoTs*(iso: string): Timestamp =
   ## Fastest way to convert an ISO 8601 string representation to a Timestamp.
@@ -155,16 +143,13 @@ proc parseIsoTs*(iso: string): Timestamp =
   ## format.
   return parseIsoCalendar(iso).ts
 
-
 proc parseTs*(fmt: string, value: string): Timestamp =
   ## Parse time using the Chrono format string into a Timestamp.
   parseCalendar(fmt, value).ts
 
-
 proc format*(ts: Timestamp, fmt: string): string =
   ## Format a Timestamp using the format string.
   ts.calendar.format(fmt)
-
 
 proc toStartOf*(ts: Timestamp, timeScale: TimeScale): Timestamp =
   ## Move the time stamp to a start of a time scale.
@@ -172,20 +157,17 @@ proc toStartOf*(ts: Timestamp, timeScale: TimeScale): Timestamp =
   cal.toStartOf(timeScale)
   return cal.ts
 
-
 proc toEndOf*(ts: Timestamp, timeScale: TimeScale): Timestamp =
   ## Move the time stamp to an end of a time scale.
   var cal = ts.calendar
   cal.toEndOf(timeScale)
   return cal.ts
 
-
 proc add*(ts: Timestamp, timeScale: TimeScale, number: int): Timestamp =
   ## Add Seconds, Minutes, Hours, Days ... to Timestamp.
   var cal = ts.calendar
   cal.add(timeScale, number)
   return cal.ts
-
 
 proc sub*(ts: Timestamp, timeScale: TimeScale, number: int): Timestamp =
   ## Subtract Seconds, Minutes, Hours, Days ... to Timestamp.

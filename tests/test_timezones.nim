@@ -1,4 +1,4 @@
-import unittest, chrono
+import chrono, unittest
 
 const tzData = staticRead("../tzdata/tzdata.json")
 loadTzData(tzData)
@@ -14,21 +14,29 @@ suite "timestamps":
       inc numChanges
     check numChanges > 30
 
-    check calendar(Timestamp(28800.0), tzName = "America/Los_Angeles") == Calendar(year: 1970, month: 1, day: 1, tzOffset: -28800.0, tzName: "America/Los_Angeles", dstName: "PST")
+    check calendar(Timestamp(28800.0), tzName = "America/Los_Angeles") ==
+        Calendar(year: 1970, month: 1, day: 1, tzOffset: -28800.0,
+        tzName: "America/Los_Angeles", dstName: "PST")
 
-    check formatIso(Timestamp(0.0), tzName = "America/Los_Angeles") == "1969-12-31T16:00:00-08:00"
-    check formatIso(Timestamp(28800.0), tzName = "America/Los_Angeles") == "1970-01-01T00:00:00-08:00"
-    check formatIso(Timestamp(1510128103.0), tzName = "America/Los_Angeles") == "2017-11-08T00:01:43-08:00"
+    check formatIso(Timestamp(0.0), tzName = "America/Los_Angeles") ==
+        "1969-12-31T16:00:00-08:00"
+    check formatIso(Timestamp(28800.0), tzName = "America/Los_Angeles") ==
+        "1970-01-01T00:00:00-08:00"
+    check formatIso(Timestamp(1510128103.0), tzName = "America/Los_Angeles") ==
+        "2017-11-08T00:01:43-08:00"
 
-    check formatIso(Timestamp(1509823680.0), tzName = "America/Los_Angeles") == "2017-11-04T12:28:00-07:00"
+    check formatIso(Timestamp(1509823680.0), tzName = "America/Los_Angeles") ==
+        "2017-11-04T12:28:00-07:00"
     check format(
         Timestamp(1509823680.0),
         "{year}-{month/2}-{day/2} {hour/2}:{minute/2} {tzName}@{dstName}",
         tzName = "America/Los_Angeles"
       ) == "2017-11-04 12:28 America/Los_Angeles@PDT"
 
-    check formatIso(Timestamp(0.0), tzName = "Europe/Riga") == "1970-01-01T03:00:00+03:00"
-    check formatIso(Timestamp(0.0), tzName = "Europe/Dublin") == "1970-01-01T01:00:00+01:00"
+    check formatIso(Timestamp(0.0), tzName = "Europe/Riga") ==
+        "1970-01-01T03:00:00+03:00"
+    check formatIso(Timestamp(0.0), tzName = "Europe/Dublin") ==
+        "1970-01-01T01:00:00+01:00"
 
   test "applyTimezone/clearTimezone":
     var ts = Timestamp(12345678.0)
@@ -100,10 +108,9 @@ suite "timestamps":
       names.add $tz.name
     check names.len > 5
 
-
   test "time zones":
     proc testTime(ts: int64, iso: string, tzName: string) =
-      check formatIso(Timestamp(float64(ts)), tzName=tzName) == iso
+      check formatIso(Timestamp(float64(ts)), tzName = tzName) == iso
 
     testTime(1482812940, "2016-12-26T20:29:00-08:00", "America/Los_Angeles")
     testTime(1483347507, "2017-01-02T00:58:27-08:00", "America/Los_Angeles")
@@ -159,12 +166,9 @@ suite "timestamps":
     testTime(1520232630, "2018-03-04T23:50:30-07:00", "America/Denver")
     testTime(1520767197, "2018-03-11T05:19:57-06:00", "America/Denver")
 
-
-
-
   test "time zones random":
     proc testTime(ts: int64, iso: string, tzName: string) =
-      var isoGen = formatIso(Timestamp(float64(ts)), tzName=tzName)
+      var isoGen = formatIso(Timestamp(float64(ts)), tzName = tzName)
       if isoGen != iso:
         echo "---", tzName
         echo "norm: ", calendar(Timestamp(float64(ts)))

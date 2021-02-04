@@ -68,7 +68,7 @@
 ##     cal = ts.calendar
 ##
 
-import strutils, math
+import math, strutils
 
 type
   Calendar* = object
@@ -94,8 +94,10 @@ type
     Quarter
     Year
 
-const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+const weekdays = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday",
+    "Saturday", "Sunday"]
+const months = ["January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"]
 
 proc parseTimeScale*(timeScale: string): TimeScale =
   ## Turns a time scale string like "second" to the enum Second.
@@ -109,7 +111,6 @@ proc parseTimeScale*(timeScale: string): TimeScale =
     of "quarter": Quarter
     of "year": Year
     else: Unknown
-
 
 proc formatIso*(cal: Calendar): string =
   ## Fastest way to convert Calendar to an ISO 8601 string representation.
@@ -157,11 +158,9 @@ proc formatIso*(cal: Calendar): string =
   result[17] = f cal.second div 10
   result[18] = f cal.second mod 10
 
-
 proc `$`*(a: Calendar): string =
   ## Display a Calendar as a ISO 8601 string.
   a.formatIso
-
 
 proc parseIsoCalendar*(iso: string): Calendar =
   ## Fastest way to convert an ISO 8601 string representation to a Calendar.
@@ -175,7 +174,7 @@ proc parseIsoCalendar*(iso: string): Calendar =
     if result < 0 or result > 9:
       error = true
 
-  result.year  = f(0) * 1000
+  result.year = f(0) * 1000
   result.year += f(1) * 100
   result.year += f(2) * 10
   result.year += f(3)
@@ -223,7 +222,6 @@ proc parseIsoCalendar*(iso: string): Calendar =
   if error:
     raise newException(ValueError, "Invalid format")
 
-
 proc weekday*(cal: Calendar): int =
   ## Get number of a weekday 0..6. Monday being 0
   var r = cal.day
@@ -234,7 +232,6 @@ proc weekday*(cal: Calendar): int =
   r += ((cal.year + 4800 - ((14 - cal.month) div 12)) div 400)
   r -= 32045
   return r mod 7
-
 
 proc leapYear(year: int): bool =
   if year mod 4 == 0:
@@ -248,11 +245,9 @@ proc leapYear(year: int): bool =
   else:
     return false
 
-
 proc leapYear*(cal: Calendar): bool =
   ## Is the calendar in a leap year
   leapYear(cal.year)
-
 
 proc daysInMonth(m: int, year: int): int =
   if m == 1 or m == 3 or m == 5 or m == 7 or m == 8 or m == 10 or m == 12:
@@ -265,11 +260,9 @@ proc daysInMonth(m: int, year: int): int =
     else:
       return 28
 
-
 proc daysInMonth*(cal: Calendar): int =
   ## Get number of days in a calendar month.
   daysInMonth(cal.month, cal.year)
-
 
 proc normalize*(cal: var Calendar) =
   ## Fixes any issues with calendar such as extra hours, extra days, and
@@ -300,7 +293,7 @@ proc normalize*(cal: var Calendar) =
 
   if cal.minute >= 60:
     cal.hour += cal.minute div 60
-    cal.minute  = cal.minute mod 60
+    cal.minute = cal.minute mod 60
 
   if cal.minute < 0:
     var qut = (-cal.minute) div 60
@@ -328,7 +321,7 @@ proc normalize*(cal: var Calendar) =
 
   if cal.day < 1 or cal.month < 1:
     dec cal.month # Use 0-based for calculations.
-    dec cal.day   # Use 0-based for calculations.
+    dec cal.day # Use 0-based for calculations.
 
     if cal.month < 0:
       var qut = (-cal.month) div 12
@@ -349,12 +342,11 @@ proc normalize*(cal: var Calendar) =
       cal.day += monthDays
 
     inc cal.month # Back to 1-based months.
-    inc cal.day   # Back to 1-based days.
-
+    inc cal.day # Back to 1-based days.
 
   if cal.day > cal.daysInMonth or cal.month > 12:
     dec cal.month # Use 0-based for calculations.
-    dec cal.day   # Use 0-based for calculations.
+    dec cal.day # Use 0-based for calculations.
 
     if cal.month >= 12:
       cal.year += cal.month div 12
@@ -370,15 +362,14 @@ proc normalize*(cal: var Calendar) =
       monthDays = daysInMonth(cal.month + 1, cal.year)
 
     inc cal.month # Back to 1-based months.
-    inc cal.day   # Back to 1-based days.
-
+    inc cal.day # Back to 1-based days.
 
 proc add*(cal: var Calendar, timeScale: TimeScale, number: int) =
   ## Add a Day, Hour, Year... to calendar.
   case timeScale:
     of Unknown:
-     # TODO what kind of error?
-      assert false
+      # TODO what kind of error?
+        assert false
     of Second:
       cal.second += number
     of Minute:
@@ -396,7 +387,6 @@ proc add*(cal: var Calendar, timeScale: TimeScale, number: int) =
     of Year:
       cal.year += number
   cal.normalize()
-
 
 proc add*(cal: var Calendar, timeScale: TimeScale, number: float) =
   case timeScale:
@@ -421,16 +411,13 @@ proc add*(cal: var Calendar, timeScale: TimeScale, number: float) =
       assert false
   cal.normalize()
 
-
 proc sub*(cal: var Calendar, timeScale: TimeScale, number: int) =
   ## Subtract a Day, Hour, Year... to calendar.
   cal.add(timeScale, -number)
 
-
 proc sub*(cal: var Calendar, timeScale: TimeScale, number: float) =
   ## Subtract a Day, Hour, Year... to calendar.
   cal.add(timeScale, -number)
-
 
 proc compare*(a, b: Calendar): int =
   ## Compare two calendars.
@@ -471,20 +458,18 @@ proc compare*(a, b: Calendar): int =
 
   return 0
 
-
 proc `==`*(a, b: Calendar): bool = a.compare(b) == 0
 proc `<`*(a, b: Calendar): bool = a.compare(b) < 0
 proc `>`*(a, b: Calendar): bool = a.compare(b) > 0
 proc `<=`*(a, b: Calendar): bool = a.compare(b) <= 0
 proc `>=`*(a, b: Calendar): bool = a.compare(b) >= 0
 
-
 proc toStartOf*(cal: var Calendar, timeScale: TimeScale) =
   ## Move the time stamp to a start of a time scale.
   case timeScale:
     of Unknown:
-     # TODO what kind of error?
-      assert false
+      # TODO what kind of error?
+        assert false
     of Second:
       cal.secondFraction = 0
     of Minute:
@@ -518,7 +503,7 @@ proc toStartOf*(cal: var Calendar, timeScale: TimeScale) =
       cal.minute = 0
       cal.hour = 0
       cal.day = 1
-      cal.month = ((cal.month - 1)  div 3) * 3 + 1
+      cal.month = ((cal.month - 1) div 3) * 3 + 1
       cal.normalize()
     of Year:
       cal.secondFraction = 0
@@ -528,12 +513,10 @@ proc toStartOf*(cal: var Calendar, timeScale: TimeScale) =
       cal.day = 1
       cal.month = 1
 
-
 proc toEndOf*(cal: var Calendar, timeScale: TimeScale) =
   ## Move the calendar to an end of a time scale.
   cal.toStartOf(timeScale)
   cal.add(timeScale, 1)
-
 
 proc parseCalendar*(format: string, value: string): Calendar =
   ## Parses calendars from a string based on the format specification.
@@ -693,17 +676,15 @@ proc parseCalendar*(format: string, value: string): Calendar =
     if offsetDir == '-':
       result.tzOffset = -result.tzOffset
 
-
 proc parseCalendar*(formats: seq[string], value: string): Calendar =
   ## Parses calendars from a seq of strings based on the format specification.
   ## Returns first format that parses or rases ValueError.
   for format in formats:
-      try:
-        return parseCalendar(format, value)
-      except ValueError, IndexError:
-        discard
+    try:
+      return parseCalendar(format, value)
+    except ValueError, IndexError:
+      discard
   raise newException(ValueError, "None of the format strings matched")
-
 
 proc format*(cal: Calendar, format: string): string =
   ## Formats calendars to a string based on the format specification.

@@ -1,11 +1,12 @@
-import unittest, chrono
+import chrono, unittest
 
 suite "timestamps":
 
   test "iso/parseIsoTs":
     check parseIsoTs("1970-01-01T00:00:00Z") == Timestamp(0.0)
     check parseIsoTs("1970-01-01T00:00:00+08:00") == Timestamp(-(8.0 * 3600.0))
-    check parseIsoTs("1970-01-01T00:00:00-08:30") == Timestamp(+(8.0 * 3600.0 + 30 * 60))
+    check parseIsoTs("1970-01-01T00:00:00-08:30") ==
+      Timestamp(+(8.0 * 3600.0 + 30 * 60))
 
     check formatIso(Timestamp(1510128103.0)) == "2017-11-08T08:01:43Z"
     var ad0 = parseIsoTs("0000-01-01T00:00:00Z")
@@ -27,7 +28,6 @@ suite "timestamps":
         "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
         "1988-02-09T03:34:12Z"
       ) == parseIsoTs("1988-02-09T03:34:12Z")
-
 
   test "format Timestamp":
     check format(
