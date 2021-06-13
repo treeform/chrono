@@ -1,30 +1,35 @@
+<img src="docs/chronoBanner.png">
+
 # Chrono a Timestamps, Calendars, and Timezones library for nim.
 
-Documentation: https://treeform.github.io/chrono/
+See API Reference: https://nimdocs.com/treeform/chrono/chrono.html
 
-Works in c as well as in javascript! All calendar manipulations! Include only the timezones and years you need!
+Works in `c`/`c++` as well as in `javascript`! All calendar manipulations! Include only the timezones and years you need!
 
 ## Philosophy
 
-The lowest building block should be the Timestamp of a single float64, not a complex calendar object. You should store Timestamp and transfer Timestamp. Calendar should only be used in time calculation like next month, previous week, 60 days from now… its a display/computation object that should be short lived.
+The lowest building block should be the Timestamp of a single float64, not a complex calendar object. You should store Timestamp and transfer Timestamp. Timestamps are always in UTC. Calendar should only be used in time calculation like next month, previous week, 60 days from now… its a display/computation object that should be short lived.
 
-Normalizing a calendar is an easy way to work with it. Its fine to add random days, years, months to the calendar. Its ok to have a calendar with 60 days… just normalize it when you are done. It just spills the days into next month. It’s very easy to do calendar math this way, as you can overflow or underflow calendar fields for a short time.
+Normalizing a calendar is an easy way to work with it. Its fine to add random days, years, months to the calendar. Its ok to have a calendar with 60 days… just normalize it when you are done. It just spills the days into next month. It’s very easy to do calendar math this way, as you can overflow or underflow calendar fields for a while you work with them.
 
-Be aware of timezone files. On some OSes there is a location where you can get timezone information that is up to date, but that is not the case on Windows and JS-Browser mode. That is why I provide a way to generate timezones from the source and ship them with your JS or native app. It’s an important feature for me.
+The date-time format should be easy to understand without having documentation. Is `MM` month or minute? Is `ZZ` timezone or seconds? I provide a format that is simple to understand: `{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z`
 
-I use:
-```
-nim c -r tools/generate.nim json --startYear:2010 --endYear:2030 --includeOnly:"utc,America/Los_Angeles,America/New_York,America/Chicago,Europe/Dublin"
-```
-
-Adding a timezone to a calendar is complex. There are two ways to do it. They are called apply and shift. Both functions will make your calendar have the new timezone offset.
+Adding a timezone to a calendar is complex. There are two ways to do it. They are called apply and shift. Both functions will make your calendar have the new timezone but will effect it differently:
 ```
 applyTimezone: "1970-05-23T21:21:18Z" -> "1970-05-23T14:21:18-07:00"
 shiftTimezone: "1970-05-23T21:21:18Z" -> "1970-05-23T21:21:18-07:00"
 ```
-But apply will not shift your time stamp, while shift will.
+* Apply will not shift your timestamp, so your display time will be different. Useful when some event happens at exact time but you want to display it to different people around the world in their time.
+* Shift will not change your display time, while shifting your timestamp. Useful for a calendar meetings for example repeat at 9am every week, then give me exact timestamps for it.
 
-You need to include or load the timezones. This is what I recommend doing:
+Be aware of timezone files. On some OSes there is a location where you can get timezone information that is up to date, but that is not the case on Windows and JS-Browser mode. That is why I provide a way to generate timezones from the source and ship them with your JS or native app. It’s an important feature for me.
+
+To generate timezone files use the included tool:
+```
+nim c -r tools/generate.nim json --startYear:2010 --endYear:2030 --includeOnly:"utc,America/Los_Angeles,America/New_York,America/Chicago,Europe/Dublin"
+```
+
+You need to include or load the timezones:
 
 ```
 const tzData = staticRead("../tzdata/tzdata.json")
@@ -85,8 +90,6 @@ const includeOnly: seq[string] = @[
 ]
 ```
 Then just run `nimble generate`
-
-More: https://treeform.github.io/chrono/
 
 ## Only ship the Timezones you use.
 
