@@ -2,11 +2,17 @@
 
 # Chrono a Timestamps, Calendars, and Timezones library for nim.
 
-See API Reference: https://nimdocs.com/treeform/chrono/chrono.html
+`nimble install chrono`
+
+![Github Actions](https://github.com/treeform/chrono/workflows/Github%20Actions/badge.svg)
+
+[API reference](https://nimdocs.com/treeform/chrono)
+
+This library has no dependencies other than the Nim standard libarary.
+
+## About
 
 Works in `c`/`c++` as well as in `javascript`! All calendar manipulations! Include only the timezones and years you need!
-
-## Philosophy
 
 The lowest building block should be the Timestamp of a single float64, not a complex calendar object. You should store Timestamp and transfer Timestamp. Timestamps are always in UTC. Calendar should only be used in time calculation like next month, previous week, 60 days from now… its a display/computation object that should be short lived.
 
