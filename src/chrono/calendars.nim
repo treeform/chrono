@@ -791,3 +791,17 @@ proc format*(cal: Calendar, format: string): string =
       output &= format[i]
     inc i
   return output
+
+proc copy*(cal: Calendar): Calendar =
+  ## Copies the calendar
+  result = Calendar()
+  result.year = cal.year
+  result.month = cal.month
+  result.day = cal.day
+  result.hour = cal.hour
+  result.minute = cal.minute
+  result.second = cal.second
+  result.secondFraction = cal.secondFraction
+  result.tzOffset = cal.tzOffset
+  result.tzName = cal.tzName
+  result.dstName = cal.dstName
