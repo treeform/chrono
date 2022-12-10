@@ -2,41 +2,67 @@
 ## Format Specification
 ## ====================
 ##
-## ================= =================================================================================  ================================================
-## Specifier         Description                                                                        Example
-## ================= =================================================================================  ================================================
-## {year}            Year in as many digits as needed. Can be negative.                                 ``12012/9/3 -> 12012``
-## {year/2}          Two digit year, 0-30 represents 2000-2030 while 30-99 is 1930 to 1999.             ``2012/9/3 -> 12``
-## {year/4}          Four digits of the year. Years 0 - 9999.                                           ``2012/9/3 -> 2012``
-## {month}           Month in digits 1-12                                                               ``2012/9/3 -> 9``
-## {month/2}         Month in two digits 01-12                                                          ``2012/9/3 -> 09``
-## {month/n}         Full name of month                                                                 ``September -> September``
-## {month/n/3}       Three letter name of month                                                         ``September -> Sep``
-## {day}             Day in digits 1-31                                                                 ``2012/9/3 -> 3``
-## {day/2}           Day in two digits 01-31                                                            ``2012/9/3 -> 03``
-## {hour}            Hour in digits 0-23                                                                ``09:08:07 -> 9``
-## {hour/2}          Hour in two digits 00-23                                                           ``09:08:07 -> 09``
-## {hour/ap}         Hour as 12-hour am/pm as digits 1-12                                               ``13:08:07 -> 1``
-## {hour/2/ap}       Hour as 12-hour am/pm as two digits 01-12                                          ``13:08:07 -> 01``
-## {am/pm}           Based on hour outputs "am" or "pm"                                                 ``13:08:07 -> pm``
-## {minute}          Minute in digits 0-59                                                              ``09:08:07 -> 8``
-## {minute/2}        Minute in two digits 00-59                                                         ``09:08:07 -> 08``
-## {second}          Second in digits 0-59                                                              ``09:08:07 -> 7``
-## {second/2}        Second in two digits 00-59                                                         ``09:08:07 -> 07``
-## {secondFraction}  Seconds fraction value.                                                            ``09:08:07.123 -> 0.123``
-## {weekday}         Full name of weekday                                                               ``Saturday -> Saturday``
-## {weekday/3}       Three letter of name of weekday                                                    ``Saturday -> Sat``
-## {weekday/2}       Two letter of name of weekday                                                      ``Saturday -> Sa``
-## {tzName}          Timezone name (can't be parsed)                                                    ``America/Los_Angeles``
-## {dstName}         Daylight savings name or standard name (can't be parsed)                           ``PDT``
-## {offsetDir}       Which direction is the offset going                                                ``+`` or ``-``
-## {offsetHour/2}    Offset hour 00-12                                                                  ``07``
-## {offsetMinute/2}  Offset minute 00-58                                                                ``00``
-## {offsetSecond/2}  Offset second 00-58                                                                ``00``
-## ================= =================================================================================  ================================================
+## ================== =================================================================================  ================================================
+## Specifier          Description                                                                        Example
+## ================== =================================================================================  ================================================
+## {year}             Year in as many digits as needed. Can be negative.                                 ``12012/9/3 -> 12012``
+## {year/2}           Two digit year, 0-30 represents 2000-2030 while 30-99 is 1930 to 1999.             ``2012/9/3 -> 12``
+## {year/4}           Four digits of the year. Years 0 - 9999.                                           ``2012/9/3 -> 2012``
+## {month}            Month in digits 1-12                                                               ``2012/9/3 -> 9``
+## {month/2}          Month in two digits 01-12                                                          ``2012/9/3 -> 09``
+## {month/n}          Full name of month                                                                 ``September -> September``
+## {month/n/3}        Three letter name of month                                                         ``September -> Sep``
+## {day}              Day in digits 1-31                                                                 ``2012/9/3 -> 3``
+## {day/2}            Day in two digits 01-31                                                            ``2012/9/3 -> 03``
+## {hour}             Hour in digits 0-23                                                                ``09:08:07 -> 9``
+## {hour/2}           Hour in two digits 00-23                                                           ``09:08:07 -> 09``
+## {hour/ap}          Hour as 12-hour am/pm as digits 1-12                                               ``13:08:07 -> 1``
+## {hour/2/ap}        Hour as 12-hour am/pm as two digits 01-12                                          ``13:08:07 -> 01``
+## {am/pm}            Based on hour outputs "am" or "pm"                                                 ``13:08:07 -> pm``
+## {minute}           Minute in digits 0-59                                                              ``09:08:07 -> 8``
+## {minute/2}         Minute in two digits 00-59                                                         ``09:08:07 -> 08``
+## {second}           Second in digits 0-59                                                              ``09:08:07 -> 7``
+## {second/2}         Second in two digits 00-59                                                         ``09:08:07 -> 07``
+## {secondFraction}   Seconds fraction value.                                                            ``09:08:07.123456789123 -> 0.123456789123``
+## {secondFraction/2} Seconds fraction 2 digit value.                                                    ``09:08:07.12 -> 0.12``
+## {secondFraction/7} Seconds fraction 7 digit value.                                                    ``09:08:07.1234567 -> 0.1234567``
+## {weekday}          Full name of weekday                                                               ``Saturday -> Saturday``
+## {weekday/3}        Three letter of name of weekday                                                    ``Saturday -> Sat``
+## {weekday/2}        Two letter of name of weekday                                                      ``Saturday -> Sa``
+## {tzName}           Timezone name (can't be parsed)                                                    ``America/Los_Angeles``
+## {dstName}          Daylight savings name or standard name (can't be parsed)                           ``PDT``
+## {offsetDir}        Which direction is the offset going                                                ``+`` or ``-``
+## {offsetHour/2}     Offset hour 00-12                                                                  ``07``
+## {offsetMinute/2}   Offset minute 00-58                                                                ``00``
+## {offsetSecond/2}   Offset second 00-58                                                                ``00``
+## ================== =================================================================================  ================================================
 ##
 ## Any string that is not in {} considered to not be part of the format and is just inserted.
 ## ``"{year/4} and {month/2} and {day/2}" -> "1988 and 02 and 09"``
+##
+## Common Formats
+## ==============
+##
+## American Date:
+## ``01/12/2020``
+## ``"{month/2}/{day/2}/{year/4}"``
+##
+## Europian Date:
+## ``01.12.2020``
+## ``"{year/4}.{month/2}.{day/2}"``
+##
+## American Time:
+## ``8:12pm``
+## ``"{hour/2/ap}:{minute/2}"``
+##
+## Europian Time:
+## ``20:12``
+## ``"{hour/2}:{minute/2}"``
+##
+## ISO with fractional seconds:
+## ``2020-01-12T02:00:33.387824Z``
+## ``"{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second}.{secondFraction/7}Z"``
+## ``parseIso``/``formatIso`` are faster but fractional seconds.
 ##
 ## chrono/calendars
 ## ================
@@ -636,7 +662,7 @@ proc parseCalendar*(format: string, value: string): Calendar =
         of "second/2":
           result.second = getNumber(2)
 
-        of "secondFraction":
+        of "secondFraction", "secondFraction/2", "secondFraction/7":
           let f = getNumber().float64
           result.secondFraction = f / pow(10, log10(f).ceil)
 
@@ -682,7 +708,7 @@ proc parseCalendar*(formats: seq[string], value: string): Calendar =
   for format in formats:
     try:
       return parseCalendar(format, value)
-    except ValueError, IndexError:
+    except ValueError:
       discard
   raise newException(ValueError, "None of the format strings matched")
 
@@ -771,6 +797,10 @@ proc format*(cal: Calendar, format: string): string =
             output.add "0"
           else:
             output.add ($cal.secondFraction)[2..^1]
+        of "secondFraction/2":
+          output.add ($cal.secondFraction)[2..2]
+        of "secondFraction/7":
+          output.add ($cal.secondFraction)[2..7]
 
         of "weekday":
           output &= weekdays[cal.weekday]

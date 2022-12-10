@@ -79,7 +79,7 @@ proc calendar*(ts: Timestamp): Calendar =
     if tss < 0:
       return
 
-  result.secondFraction = float64(ts) - float64(tss)
+  result.secondFraction = float64(ts) - floor(tss)
   var s = tss mod 86400
   tss = tss div 86400
   var h = s div 3600

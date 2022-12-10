@@ -23,6 +23,19 @@ suite "timestamps":
       var m = Timestamp(float64(i) * 123456)
       check ts(calendar(m)) == m
 
+  test "ts/calendar fractional seconds":
+    var m = Timestamp(1578794433.387824)
+    check abs(calendar(m).secondFraction - 0.387824) < 0.00001
+
+    m = Timestamp(1578794433.0)
+    check abs(calendar(m).secondFraction - 0.0) < 0.00001
+
+    m = Timestamp(1578794433.5)
+    check abs(calendar(m).secondFraction - 0.5) < 0.00001
+
+    m = Timestamp(1578794433.1)
+    check abs(calendar(m).secondFraction - 0.1) < 0.00001
+
   test "parseTs":
     check parseTs(
         "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
@@ -39,6 +52,11 @@ suite "timestamps":
         parseIsoTs("1988-02-09T03:34:12Z"),
         "{month/2}/{day/2}/{year/4} {hour/2}:{minute/2}:{second/2}",
       ) == "02/09/1988 03:34:12"
+
+  test "fractional ISO":
+    let data = "2020-01-12T02:00:33.387824Z"
+    let ts = parseTs("{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second}.{secondFraction}Z", data)
+    check ts.format("{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second}.{secondFraction/7}Z") == data
 
   test "iso utc random":
     proc testTime(ts: int64, iso: string) =
