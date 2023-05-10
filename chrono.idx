@@ -1,0 +1,77 @@
+Calendar	chrono.html#Calendar	chrono: Calendar	
+Unknown	chrono.html#Unknown	TimeScale.Unknown	
+Second	chrono.html#Second	TimeScale.Second	
+Minute	chrono.html#Minute	TimeScale.Minute	
+Hour	chrono.html#Hour	TimeScale.Hour	
+Day	chrono.html#Day	TimeScale.Day	
+Week	chrono.html#Week	TimeScale.Week	
+Month	chrono.html#Month	TimeScale.Month	
+Quarter	chrono.html#Quarter	TimeScale.Quarter	
+Year	chrono.html#Year	TimeScale.Year	
+TimeScale	chrono.html#TimeScale	chrono: TimeScale	
+parseTimeScale	chrono.html#parseTimeScale,string	chrono: parseTimeScale(timeScale: string): TimeScale	
+formatIso	chrono.html#formatIso,Calendar	chrono: formatIso(cal: Calendar): string	
+`$`	chrono.html#$,Calendar	chrono: `$`(a: Calendar): string	
+parseIsoCalendar	chrono.html#parseIsoCalendar,string	chrono: parseIsoCalendar(iso: string): Calendar	
+weekday	chrono.html#weekday,Calendar	chrono: weekday(cal: Calendar): int	
+leapYear	chrono.html#leapYear,Calendar	chrono: leapYear(cal: Calendar): bool	
+daysInMonth	chrono.html#daysInMonth,Calendar	chrono: daysInMonth(cal: Calendar): int	
+normalize	chrono.html#normalize,Calendar	chrono: normalize(cal: var Calendar)	
+add	chrono.html#add,Calendar,TimeScale,int	chrono: add(cal: var Calendar; timeScale: TimeScale; number: int)	
+add	chrono.html#add,Calendar,TimeScale,float	chrono: add(cal: var Calendar; timeScale: TimeScale; number: float)	
+sub	chrono.html#sub,Calendar,TimeScale,int	chrono: sub(cal: var Calendar; timeScale: TimeScale; number: int)	
+sub	chrono.html#sub,Calendar,TimeScale,float	chrono: sub(cal: var Calendar; timeScale: TimeScale; number: float)	
+compare	chrono.html#compare,Calendar,Calendar	chrono: compare(a, b: Calendar): int	
+`==`	chrono.html#==,Calendar,Calendar	chrono: `==`(a, b: Calendar): bool	
+`&lt;`	chrono.html#<,Calendar,Calendar	chrono: `&lt;`(a, b: Calendar): bool	
+`&gt;`	chrono.html#>,Calendar,Calendar	chrono: `&gt;`(a, b: Calendar): bool	
+`&lt;=`	chrono.html#<=,Calendar,Calendar	chrono: `&lt;=`(a, b: Calendar): bool	
+`&gt;=`	chrono.html#>=,Calendar,Calendar	chrono: `&gt;=`(a, b: Calendar): bool	
+toStartOf	chrono.html#toStartOf,Calendar,TimeScale	chrono: toStartOf(cal: var Calendar; timeScale: TimeScale)	
+toEndOf	chrono.html#toEndOf,Calendar,TimeScale	chrono: toEndOf(cal: var Calendar; timeScale: TimeScale)	
+parseCalendar	chrono.html#parseCalendar,string,string	chrono: parseCalendar(format: string; value: string): Calendar	
+parseCalendar	chrono.html#parseCalendar,seq[string],string	chrono: parseCalendar(formats: seq[string]; value: string): Calendar	
+format	chrono.html#format,Calendar,string	chrono: format(cal: Calendar; format: string): string	
+copy	chrono.html#copy,Calendar	chrono: copy(cal: Calendar): Calendar	
+Timestamp	chrono.html#Timestamp	chrono: Timestamp	
+`==`	chrono.html#==,Timestamp,Timestamp	chrono: `==`(a, b: Timestamp): bool	
+`&gt;`	chrono.html#>,Timestamp,Timestamp	chrono: `&gt;`(a, b: Timestamp): bool	
+`&lt;`	chrono.html#<,Timestamp,Timestamp	chrono: `&lt;`(a, b: Timestamp): bool	
+`&lt;=`	chrono.html#<=,Timestamp,Timestamp	chrono: `&lt;=`(a, b: Timestamp): bool	
+`&gt;=`	chrono.html#>=,Timestamp,Timestamp	chrono: `&gt;=`(a, b: Timestamp): bool	
+`$`	chrono.html#$,Timestamp	chrono: `$`(a: Timestamp): string	
+calendar	chrono.html#calendar,Timestamp	chrono: calendar(ts: Timestamp): Calendar	
+ts	chrono.html#ts,Calendar	chrono: ts(cal: Calendar): Timestamp	
+calendar	chrono.html#calendar,Timestamp,float64	chrono: calendar(ts: Timestamp; tzOffset: float64): Calendar	
+formatIso	chrono.html#formatIso,Timestamp	chrono: formatIso(ts: Timestamp): string	
+formatIso	chrono.html#formatIso,Timestamp,float64	chrono: formatIso(ts: Timestamp; tzOffset: float64): string	
+parseIsoTs	chrono.html#parseIsoTs,string	chrono: parseIsoTs(iso: string): Timestamp	
+parseTs	chrono.html#parseTs,string,string	chrono: parseTs(fmt: string; value: string): Timestamp	
+format	chrono.html#format,Timestamp,string	chrono: format(ts: Timestamp; fmt: string): string	
+toStartOf	chrono.html#toStartOf,Timestamp,TimeScale	chrono: toStartOf(ts: Timestamp; timeScale: TimeScale): Timestamp	
+toEndOf	chrono.html#toEndOf,Timestamp,TimeScale	chrono: toEndOf(ts: Timestamp; timeScale: TimeScale): Timestamp	
+add	chrono.html#add,Timestamp,TimeScale,int	chrono: add(ts: Timestamp; timeScale: TimeScale; number: int): Timestamp	
+sub	chrono.html#sub,Timestamp,TimeScale,int	chrono: sub(ts: Timestamp; timeScale: TimeScale; number: int): Timestamp	
+DstChange	chrono.html#DstChange	chrono: DstChange	
+TimeZone	chrono.html#TimeZone	chrono: TimeZone	
+tzs	chrono.html#tzs	chrono: tzs	
+dstChanges	chrono.html#dstChanges	chrono: dstChanges	
+findTimeZone	chrono.html#findTimeZone,string	chrono: findTimeZone(tzName: string): TimeZone	
+findTimeZone	chrono.html#findTimeZone,int	chrono: findTimeZone(tzId: int): TimeZone	
+valid	chrono.html#valid,TimeZone	chrono: valid(tz: TimeZone): bool	
+findDstChanges	chrono.html#findDstChanges.i,TimeZone	chrono: findDstChanges(tz: TimeZone): DstChange	
+findTimeZoneFromDstName	chrono.html#findTimeZoneFromDstName.i,string	chrono: findTimeZoneFromDstName(dstName: string): TimeZone	
+clearTimezone	chrono.html#clearTimezone,Calendar	chrono: clearTimezone(cal: var Calendar)	
+applyTimezone	chrono.html#applyTimezone,Calendar,string	chrono: applyTimezone(cal: var Calendar; tzName: string)	
+shiftTimezone	chrono.html#shiftTimezone,Calendar,string	chrono: shiftTimezone(cal: var Calendar; tzName: string)	
+normalizeTimezone	chrono.html#normalizeTimezone,Calendar	chrono: normalizeTimezone(cal: var Calendar)	
+calendar	chrono.html#calendar,Timestamp,string	chrono: calendar(ts: Timestamp; tzName: string): Calendar	
+formatIso	chrono.html#formatIso,Timestamp,string	chrono: formatIso(ts: Timestamp; tzName: string): string	
+parseTs	chrono.html#parseTs,string,string,string	chrono: parseTs(fmt: string; value: string; tzName: string): Timestamp	
+format	chrono.html#format,Timestamp,string,string	chrono: format(ts: Timestamp; fmt: string; tzName: string): string	
+loadTzData	chrono.html#loadTzData,string	chrono: loadTzData(tzData: string)	
+Format Specification	chrono.html#format-specification	 Format Specification	
+Common Formats	chrono.html#common-formats	 Common Formats	
+chrono/calendars	chrono.html#chronoslashcalendars	 chrono/calendars	
+chrono/timestamps	chrono.html#chronoslashtimestamps	 chrono/timestamps	
+chrono/timezones	chrono.html#chronoslashtimezones	 chrono/timezones	

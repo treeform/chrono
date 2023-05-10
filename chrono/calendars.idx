@@ -1,0 +1,38 @@
+Calendar	chrono/calendars.html#Calendar	calendars: Calendar	
+Unknown	chrono/calendars.html#Unknown	TimeScale.Unknown	
+Second	chrono/calendars.html#Second	TimeScale.Second	
+Minute	chrono/calendars.html#Minute	TimeScale.Minute	
+Hour	chrono/calendars.html#Hour	TimeScale.Hour	
+Day	chrono/calendars.html#Day	TimeScale.Day	
+Week	chrono/calendars.html#Week	TimeScale.Week	
+Month	chrono/calendars.html#Month	TimeScale.Month	
+Quarter	chrono/calendars.html#Quarter	TimeScale.Quarter	
+Year	chrono/calendars.html#Year	TimeScale.Year	
+TimeScale	chrono/calendars.html#TimeScale	calendars: TimeScale	
+parseTimeScale	chrono/calendars.html#parseTimeScale,string	calendars: parseTimeScale(timeScale: string): TimeScale	
+formatIso	chrono/calendars.html#formatIso,Calendar	calendars: formatIso(cal: Calendar): string	
+`$`	chrono/calendars.html#$,Calendar	calendars: `$`(a: Calendar): string	
+parseIsoCalendar	chrono/calendars.html#parseIsoCalendar,string	calendars: parseIsoCalendar(iso: string): Calendar	
+weekday	chrono/calendars.html#weekday,Calendar	calendars: weekday(cal: Calendar): int	
+leapYear	chrono/calendars.html#leapYear,Calendar	calendars: leapYear(cal: Calendar): bool	
+daysInMonth	chrono/calendars.html#daysInMonth,Calendar	calendars: daysInMonth(cal: Calendar): int	
+normalize	chrono/calendars.html#normalize,Calendar	calendars: normalize(cal: var Calendar)	
+add	chrono/calendars.html#add,Calendar,TimeScale,int	calendars: add(cal: var Calendar; timeScale: TimeScale; number: int)	
+add	chrono/calendars.html#add,Calendar,TimeScale,float	calendars: add(cal: var Calendar; timeScale: TimeScale; number: float)	
+sub	chrono/calendars.html#sub,Calendar,TimeScale,int	calendars: sub(cal: var Calendar; timeScale: TimeScale; number: int)	
+sub	chrono/calendars.html#sub,Calendar,TimeScale,float	calendars: sub(cal: var Calendar; timeScale: TimeScale; number: float)	
+compare	chrono/calendars.html#compare,Calendar,Calendar	calendars: compare(a, b: Calendar): int	
+`==`	chrono/calendars.html#==,Calendar,Calendar	calendars: `==`(a, b: Calendar): bool	
+`&lt;`	chrono/calendars.html#<,Calendar,Calendar	calendars: `&lt;`(a, b: Calendar): bool	
+`&gt;`	chrono/calendars.html#>,Calendar,Calendar	calendars: `&gt;`(a, b: Calendar): bool	
+`&lt;=`	chrono/calendars.html#<=,Calendar,Calendar	calendars: `&lt;=`(a, b: Calendar): bool	
+`&gt;=`	chrono/calendars.html#>=,Calendar,Calendar	calendars: `&gt;=`(a, b: Calendar): bool	
+toStartOf	chrono/calendars.html#toStartOf,Calendar,TimeScale	calendars: toStartOf(cal: var Calendar; timeScale: TimeScale)	
+toEndOf	chrono/calendars.html#toEndOf,Calendar,TimeScale	calendars: toEndOf(cal: var Calendar; timeScale: TimeScale)	
+parseCalendar	chrono/calendars.html#parseCalendar,string,string	calendars: parseCalendar(format: string; value: string): Calendar	
+parseCalendar	chrono/calendars.html#parseCalendar,seq[string],string	calendars: parseCalendar(formats: seq[string]; value: string): Calendar	
+format	chrono/calendars.html#format,Calendar,string	calendars: format(cal: Calendar; format: string): string	
+copy	chrono/calendars.html#copy,Calendar	calendars: copy(cal: Calendar): Calendar	
+Format Specification	chrono/calendars.html#format-specification	 Format Specification	
+Common Formats	chrono/calendars.html#common-formats	 Common Formats	
+chrono/calendars	chrono/calendars.html#chronoslashcalendars	 chrono/calendars	
