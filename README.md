@@ -6,7 +6,7 @@
 
 ![Github Actions](https://github.com/treeform/chrono/workflows/Github%20Actions/badge.svg)
 
-[API reference](https://nimdocs.com/treeform/chrono)
+[API reference](https://treeform.github.io/chrono)
 
 This library has no dependencies other than the Nim standard library.
 
