@@ -54,7 +54,7 @@ var ts = parseTs(
 ## Format Timestamps
 
 ```Nim
-echo formatTs(
+echo format(
   ts,
   "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
 )
@@ -75,7 +75,7 @@ cal.toEndOf(Month)
 ## Use Timezones
 
 ```Nim
-echo formatTs(
+echo format(
     ts,
     "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z",
     tzName = "America/Los_Angeles"
