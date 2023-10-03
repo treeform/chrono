@@ -1,20 +1,23 @@
-Timestamp	chrono/timestamps.html#Timestamp	timestamps: Timestamp	
-`==`	chrono/timestamps.html#==,Timestamp,Timestamp	timestamps: `==`(a, b: Timestamp): bool	
-`&gt;`	chrono/timestamps.html#>,Timestamp,Timestamp	timestamps: `&gt;`(a, b: Timestamp): bool	
-`&lt;`	chrono/timestamps.html#<,Timestamp,Timestamp	timestamps: `&lt;`(a, b: Timestamp): bool	
-`&lt;=`	chrono/timestamps.html#<=,Timestamp,Timestamp	timestamps: `&lt;=`(a, b: Timestamp): bool	
-`&gt;=`	chrono/timestamps.html#>=,Timestamp,Timestamp	timestamps: `&gt;=`(a, b: Timestamp): bool	
-`$`	chrono/timestamps.html#$,Timestamp	timestamps: `$`(a: Timestamp): string	
-calendar	chrono/timestamps.html#calendar,Timestamp	timestamps: calendar(ts: Timestamp): Calendar	
-ts	chrono/timestamps.html#ts,Calendar	timestamps: ts(cal: Calendar): Timestamp	
-calendar	chrono/timestamps.html#calendar,Timestamp,float64	timestamps: calendar(ts: Timestamp; tzOffset: float64): Calendar	
-formatIso	chrono/timestamps.html#formatIso,Timestamp	timestamps: formatIso(ts: Timestamp): string	
-formatIso	chrono/timestamps.html#formatIso,Timestamp,float64	timestamps: formatIso(ts: Timestamp; tzOffset: float64): string	
-parseIsoTs	chrono/timestamps.html#parseIsoTs,string	timestamps: parseIsoTs(iso: string): Timestamp	
-parseTs	chrono/timestamps.html#parseTs,string,string	timestamps: parseTs(fmt: string; value: string): Timestamp	
-format	chrono/timestamps.html#format,Timestamp,string	timestamps: format(ts: Timestamp; fmt: string): string	
-toStartOf	chrono/timestamps.html#toStartOf,Timestamp,TimeScale	timestamps: toStartOf(ts: Timestamp; timeScale: TimeScale): Timestamp	
-toEndOf	chrono/timestamps.html#toEndOf,Timestamp,TimeScale	timestamps: toEndOf(ts: Timestamp; timeScale: TimeScale): Timestamp	
-add	chrono/timestamps.html#add,Timestamp,TimeScale,int	timestamps: add(ts: Timestamp; timeScale: TimeScale; number: int): Timestamp	
-sub	chrono/timestamps.html#sub,Timestamp,TimeScale,int	timestamps: sub(ts: Timestamp; timeScale: TimeScale; number: int): Timestamp	
-chrono/timestamps	chrono/timestamps.html#chronoslashtimestamps	 chrono/timestamps	
+nimTitle	timestamps	chrono/timestamps.html	module src/chrono/timestamps		0
+nim	Timestamp	chrono/timestamps.html#Timestamp	type Timestamp		35
+nim	`==`	chrono/timestamps.html#==,Timestamp,Timestamp	proc `==`(a, b: Timestamp): bool		37
+nim	`>`	chrono/timestamps.html#>,Timestamp,Timestamp	proc `>`(a, b: Timestamp): bool		41
+nim	`<`	chrono/timestamps.html#<,Timestamp,Timestamp	proc `<`(a, b: Timestamp): bool		45
+nim	`<=`	chrono/timestamps.html#<=,Timestamp,Timestamp	proc `<=`(a, b: Timestamp): bool		49
+nim	`>=`	chrono/timestamps.html#>=,Timestamp,Timestamp	proc `>=`(a, b: Timestamp): bool		53
+nim	`$`	chrono/timestamps.html#$,Timestamp	proc `$`(a: Timestamp): string		57
+nim	calendar	chrono/timestamps.html#calendar,Timestamp	proc calendar(ts: Timestamp): Calendar		72
+nim	ts	chrono/timestamps.html#ts,Calendar	proc ts(cal: Calendar): Timestamp		110
+nim	calendar	chrono/timestamps.html#calendar,Timestamp,float64	proc calendar(ts: Timestamp; tzOffset: float64): Calendar		123
+nim	formatIso	chrono/timestamps.html#formatIso,Timestamp	proc formatIso(ts: Timestamp): string		130
+nim	formatIso	chrono/timestamps.html#formatIso,Timestamp,float64	proc formatIso(ts: Timestamp; tzOffset: float64): string		135
+nim	parseIsoTs	chrono/timestamps.html#parseIsoTs,string	proc parseIsoTs(iso: string): Timestamp		140
+nim	parseTs	chrono/timestamps.html#parseTs,string,string	proc parseTs(fmt: string; value: string): Timestamp		146
+nim	format	chrono/timestamps.html#format,Timestamp,string	proc format(ts: Timestamp; fmt: string): string		150
+nim	toStartOf	chrono/timestamps.html#toStartOf,Timestamp,TimeScale	proc toStartOf(ts: Timestamp; timeScale: TimeScale): Timestamp		154
+nim	toEndOf	chrono/timestamps.html#toEndOf,Timestamp,TimeScale	proc toEndOf(ts: Timestamp; timeScale: TimeScale): Timestamp		160
+nim	add	chrono/timestamps.html#add,Timestamp,TimeScale,int	proc add(ts: Timestamp; timeScale: TimeScale; number: int): Timestamp		166
+nim	sub	chrono/timestamps.html#sub,Timestamp,TimeScale,int	proc sub(ts: Timestamp; timeScale: TimeScale; number: int): Timestamp		172
+nimgrp	calendar	chrono/timestamps.html#calendar-procs-all	proc		72
+nimgrp	formatiso	chrono/timestamps.html#formatIso-procs-all	proc		130
+heading	chrono/timestamps	chrono/timestamps.html#chronoslashtimestamps	 chrono/timestamps		0
