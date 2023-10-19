@@ -814,6 +814,15 @@ proc format*(cal: Calendar, format: string): string =
         of "dstName":
           output &= cal.dstName
 
+        of "offsetDir":
+          output &= (if cal.tzOffset<0: "-" else: "+")
+        of "offsetHour/2":
+          putNumber(floor(cal.tzOffset / 3600.0).int, 2)
+        of "offsetMinute/2":
+          putNumber(floor(cal.tzOffset / 60.0).int mod 60, 2)
+        of "offsetSecond/2":
+          putNumber(cal.tzOffset.int mod 60, 2)
+
         else:
           raise newException(ValueError, "Invalid format token: " & token)
 
