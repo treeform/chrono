@@ -60,6 +60,11 @@ suite "calendars":
     testParse("1988-02-09T03:34:12Z", "{year/4}-{month/2}-{day/2}T{hour/2}:{minute/2}:{second/2}Z", "1988-02-09T03:34:12Z")
     testParse("1988-02-09T03:34:12Z", "{year/4}{month/2}{day/2}{hour/2}{minute/2}{second/2}", "19880209033412")
 
+    testParse("2023-01-01T00:00:00Z", "{year/4}-Q{quarter}", "2023-Q1")
+    testParse("2023-04-01T00:00:00Z", "{year/4}-Q{quarter}", "2023-Q2")
+    testParse("2023-07-01T00:00:00Z", "{year/4}-Q{quarter}", "2023-Q3")
+    testParse("2023-10-01T00:00:00Z", "{year/4}-Q{quarter}", "2023-Q4")
+
     testParse("1970-01-01T09:08:00Z", "{hour/2/ap}:{minute/2} {am/pm}", "09:08 am")
     testParse("1970-01-01T21:08:00Z", "{hour/2/ap}:{minute/2} {am/pm}", "09:08 pm")
     testParse("1970-01-01T00:08:00Z", "{hour/2/ap}:{minute/2} {am/pm}", "12:08 am")
@@ -116,6 +121,10 @@ suite "calendars":
 
     testFormat("1970-01-01T12:08:00Z", "{month/n}", "January")
     testFormat("1970-02-09T12:08:00Z", "{month/n/3}", "Feb")
+    testFormat("1970-02-09T12:08:00Z", "{year/4}-Q{quarter}", "1970-Q1")
+    testFormat("1970-04-09T12:08:00Z", "{year/4}-Q{quarter}", "1970-Q2")
+    testFormat("1970-07-09T12:08:00Z", "{year/4}-Q{quarter}", "1970-Q3")
+    testFormat("1970-10-09T12:08:00Z", "{year/4}-Q{quarter}", "1970-Q4")
 
     doAssert Calendar().format("{secondFraction}") == "0"
     doAssert Calendar(secondFraction: 0.25).format("{secondFraction}") == "25"

@@ -8,6 +8,7 @@
 ## {year}             Year in as many digits as needed. Can be negative.                                 ``12012/9/3 -> 12012``
 ## {year/2}           Two digit year, 0-30 represents 2000-2030 while 30-99 is 1930 to 1999.             ``2012/9/3 -> 12``
 ## {year/4}           Four digits of the year. Years 0 - 9999.                                           ``2012/9/3 -> 2012``
+## {quarter}          Always 1 digit. 1-4                                                                ``2012/9/4 -> 3``
 ## {month}            Month in digits 1-12                                                               ``2012/9/3 -> 9``
 ## {month/2}          Month in two digits 01-12                                                          ``2012/9/3 -> 09``
 ## {month/n}          Full name of month                                                                 ``September -> September``
@@ -613,6 +614,9 @@ proc parseCalendar*(format: string, value: string): Calendar =
         of "year/4":
           result.year = getNumber(4)
 
+        of "quarter":
+          result.month = (getNumber(1) - 1) * 3 + 1
+
         of "month":
           result.month = getNumber()
         of "month/2":
@@ -746,6 +750,9 @@ proc format*(cal: Calendar, format: string): string =
           if cal.year < 0 or cal.year > 9999:
             raise newException(ValueError, "Can't format year as 4 digits")
           putNumber(cal.year, 4)
+
+        of "quarter":
+          putNumber((cal.month-1) div 3 + 1)
 
         of "month":
           putNumber(cal.month)
