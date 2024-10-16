@@ -1,39 +1,39 @@
 nimTitle	chrono	chrono.html	module src/chrono		0
-nim	Calendar	chrono.html#Calendar	object Calendar		100
-nim	Unknown	chrono.html#Unknown	TimeScale.Unknown		112
-nim	Second	chrono.html#Second	TimeScale.Second		112
-nim	Minute	chrono.html#Minute	TimeScale.Minute		112
-nim	Hour	chrono.html#Hour	TimeScale.Hour		112
-nim	Day	chrono.html#Day	TimeScale.Day		112
-nim	Week	chrono.html#Week	TimeScale.Week		112
-nim	Month	chrono.html#Month	TimeScale.Month		112
-nim	Quarter	chrono.html#Quarter	TimeScale.Quarter		112
-nim	Year	chrono.html#Year	TimeScale.Year		112
-nim	TimeScale	chrono.html#TimeScale	enum TimeScale		112
-nim	parseTimeScale	chrono.html#parseTimeScale,string	proc parseTimeScale(timeScale: string): TimeScale		128
-nim	formatIso	chrono.html#formatIso,Calendar	proc formatIso(cal: Calendar): string		141
-nim	`$`	chrono.html#$,Calendar	proc `$`(a: Calendar): string		187
-nim	parseIsoCalendar	chrono.html#parseIsoCalendar,string	proc parseIsoCalendar(iso: string): Calendar		191
-nim	weekday	chrono.html#weekday,Calendar	proc weekday(cal: Calendar): int		251
-nim	leapYear	chrono.html#leapYear,Calendar	proc leapYear(cal: Calendar): bool		274
-nim	daysInMonth	chrono.html#daysInMonth,Calendar	proc daysInMonth(cal: Calendar): int		289
-nim	normalize	chrono.html#normalize,Calendar	proc normalize(cal: var Calendar)		293
-nim	add	chrono.html#add,Calendar,TimeScale,int	proc add(cal: var Calendar; timeScale: TimeScale; number: int)		393
-nim	add	chrono.html#add,Calendar,TimeScale,float	proc add(cal: var Calendar; timeScale: TimeScale; number: float)		417
-nim	sub	chrono.html#sub,Calendar,TimeScale,int	proc sub(cal: var Calendar; timeScale: TimeScale; number: int)		440
-nim	sub	chrono.html#sub,Calendar,TimeScale,float	proc sub(cal: var Calendar; timeScale: TimeScale; number: float)		444
-nim	compare	chrono.html#compare,Calendar,Calendar	proc compare(a, b: Calendar): int		448
-nim	`==`	chrono.html#==,Calendar,Calendar	proc `==`(a, b: Calendar): bool		487
-nim	`<`	chrono.html#<,Calendar,Calendar	proc `<`(a, b: Calendar): bool		488
-nim	`>`	chrono.html#>,Calendar,Calendar	proc `>`(a, b: Calendar): bool		489
-nim	`<=`	chrono.html#<=,Calendar,Calendar	proc `<=`(a, b: Calendar): bool		490
-nim	`>=`	chrono.html#>=,Calendar,Calendar	proc `>=`(a, b: Calendar): bool		491
-nim	toStartOf	chrono.html#toStartOf,Calendar,TimeScale	proc toStartOf(cal: var Calendar; timeScale: TimeScale)		493
-nim	toEndOf	chrono.html#toEndOf,Calendar,TimeScale	proc toEndOf(cal: var Calendar; timeScale: TimeScale)		542
-nim	parseCalendar	chrono.html#parseCalendar,string,string	proc parseCalendar(format: string; value: string): Calendar		547
-nim	parseCalendar	chrono.html#parseCalendar,seq[string],string	proc parseCalendar(formats: seq[string]; value: string): Calendar		705
-nim	format	chrono.html#format,Calendar,string	proc format(cal: Calendar; format: string): string		715
-nim	copy	chrono.html#copy,Calendar	proc copy(cal: Calendar): Calendar		825
+nim	Calendar	chrono.html#Calendar	object Calendar		101
+nim	Unknown	chrono.html#Unknown	TimeScale.Unknown		113
+nim	Second	chrono.html#Second	TimeScale.Second		113
+nim	Minute	chrono.html#Minute	TimeScale.Minute		113
+nim	Hour	chrono.html#Hour	TimeScale.Hour		113
+nim	Day	chrono.html#Day	TimeScale.Day		113
+nim	Week	chrono.html#Week	TimeScale.Week		113
+nim	Month	chrono.html#Month	TimeScale.Month		113
+nim	Quarter	chrono.html#Quarter	TimeScale.Quarter		113
+nim	Year	chrono.html#Year	TimeScale.Year		113
+nim	TimeScale	chrono.html#TimeScale	enum TimeScale		113
+nim	parseTimeScale	chrono.html#parseTimeScale,string	proc parseTimeScale(timeScale: string): TimeScale		129
+nim	formatIso	chrono.html#formatIso,Calendar	proc formatIso(cal: Calendar): string		142
+nim	`$`	chrono.html#$,Calendar	proc `$`(a: Calendar): string		188
+nim	parseIsoCalendar	chrono.html#parseIsoCalendar,string	proc parseIsoCalendar(iso: string): Calendar		192
+nim	weekday	chrono.html#weekday,Calendar	proc weekday(cal: Calendar): int		252
+nim	leapYear	chrono.html#leapYear,Calendar	proc leapYear(cal: Calendar): bool		275
+nim	daysInMonth	chrono.html#daysInMonth,Calendar	proc daysInMonth(cal: Calendar): int		290
+nim	normalize	chrono.html#normalize,Calendar	proc normalize(cal: var Calendar)		294
+nim	add	chrono.html#add,Calendar,TimeScale,int	proc add(cal: var Calendar; timeScale: TimeScale; number: int)		394
+nim	add	chrono.html#add,Calendar,TimeScale,float	proc add(cal: var Calendar; timeScale: TimeScale; number: float)		418
+nim	sub	chrono.html#sub,Calendar,TimeScale,int	proc sub(cal: var Calendar; timeScale: TimeScale; number: int)		441
+nim	sub	chrono.html#sub,Calendar,TimeScale,float	proc sub(cal: var Calendar; timeScale: TimeScale; number: float)		445
+nim	compare	chrono.html#compare,Calendar,Calendar	proc compare(a, b: Calendar): int		449
+nim	`==`	chrono.html#==,Calendar,Calendar	proc `==`(a, b: Calendar): bool		488
+nim	`<`	chrono.html#<,Calendar,Calendar	proc `<`(a, b: Calendar): bool		489
+nim	`>`	chrono.html#>,Calendar,Calendar	proc `>`(a, b: Calendar): bool		490
+nim	`<=`	chrono.html#<=,Calendar,Calendar	proc `<=`(a, b: Calendar): bool		491
+nim	`>=`	chrono.html#>=,Calendar,Calendar	proc `>=`(a, b: Calendar): bool		492
+nim	toStartOf	chrono.html#toStartOf,Calendar,TimeScale	proc toStartOf(cal: var Calendar; timeScale: TimeScale)		494
+nim	toEndOf	chrono.html#toEndOf,Calendar,TimeScale	proc toEndOf(cal: var Calendar; timeScale: TimeScale)		543
+nim	parseCalendar	chrono.html#parseCalendar,string,string	proc parseCalendar(format: string; value: string): Calendar		548
+nim	parseCalendar	chrono.html#parseCalendar,seq[string],string	proc parseCalendar(formats: seq[string]; value: string): Calendar		709
+nim	format	chrono.html#format,Calendar,string	proc format(cal: Calendar; format: string): string		719
+nim	copy	chrono.html#copy,Calendar	proc copy(cal: Calendar): Calendar		832
 nim	Timestamp	chrono.html#Timestamp	type Timestamp		35
 nim	`==`	chrono.html#==,Timestamp,Timestamp	proc `==`(a, b: Timestamp): bool		37
 nim	`>`	chrono.html#>,Timestamp,Timestamp	proc `>`(a, b: Timestamp): bool		41
@@ -71,22 +71,22 @@ nim	formatIso	chrono.html#formatIso,Timestamp,string	proc formatIso(ts: Timestam
 nim	parseTs	chrono.html#parseTs,string,string,string	proc parseTs(fmt: string; value: string; tzName: string): Timestamp		186
 nim	format	chrono.html#format,Timestamp,string,string	proc format(ts: Timestamp; fmt: string; tzName: string): string		192
 nim	loadTzData	chrono.html#loadTzData,string	proc loadTzData(tzData: string)		198
-nimgrp	parsecalendar	chrono.html#parseCalendar-procs-all	proc		547
-nimgrp	$	chrono.html#$-procs-all	proc		187
-nimgrp	>=	chrono.html#>=-procs-all	proc		491
 nimgrp	calendar	chrono.html#calendar-procs-all	proc		72
-nimgrp	<=	chrono.html#<=-procs-all	proc		490
-nimgrp	tostartof	chrono.html#toStartOf-procs-all	proc		493
-nimgrp	format	chrono.html#format-procs-all	proc		715
-nimgrp	<	chrono.html#<-procs-all	proc		488
-nimgrp	add	chrono.html#add-procs-all	proc		393
-nimgrp	>	chrono.html#>-procs-all	proc		489
-nimgrp	formatiso	chrono.html#formatIso-procs-all	proc		141
+nimgrp	==	chrono.html#==-procs-all	proc		488
+nimgrp	>	chrono.html#>-procs-all	proc		490
+nimgrp	toendof	chrono.html#toEndOf-procs-all	proc		543
+nimgrp	format	chrono.html#format-procs-all	proc		719
+nimgrp	$	chrono.html#$-procs-all	proc		188
+nimgrp	parsecalendar	chrono.html#parseCalendar-procs-all	proc		548
+nimgrp	>=	chrono.html#>=-procs-all	proc		492
 nimgrp	parsets	chrono.html#parseTs-procs-all	proc		146
-nimgrp	sub	chrono.html#sub-procs-all	proc		440
+nimgrp	sub	chrono.html#sub-procs-all	proc		441
 nimgrp	findtimezone	chrono.html#findTimeZone-procs-all	proc		75
-nimgrp	toendof	chrono.html#toEndOf-procs-all	proc		542
-nimgrp	==	chrono.html#==-procs-all	proc		487
+nimgrp	formatiso	chrono.html#formatIso-procs-all	proc		142
+nimgrp	<=	chrono.html#<=-procs-all	proc		491
+nimgrp	<	chrono.html#<-procs-all	proc		489
+nimgrp	add	chrono.html#add-procs-all	proc		394
+nimgrp	tostartof	chrono.html#toStartOf-procs-all	proc		494
 heading	Format Specification	chrono.html#format-specification	 Format Specification		0
 heading	Common Formats	chrono.html#common-formats	 Common Formats		0
 heading	chrono/calendars	chrono.html#chronoslashcalendars	 chrono/calendars		0
