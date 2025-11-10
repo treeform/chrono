@@ -65,7 +65,7 @@ proc fetchAndCompileTzDb() =
     echo "It looks like you don't have https://github.com/eggert/tz checkedout"
     runCommand("git clone https://github.com/eggert/tz")
   else:
-    runCommand("cd tz; git pull origin master")
+    runCommand("cd tz; git pull origin main")
 
   if not dirExists("tz/zic") or not dirExists("tz/zdump"):
     runCommand("cd tz; make")
@@ -96,7 +96,7 @@ proc dumpToCsvFiles() =
 
     for rawLine in output.split("\L"):
       let line = rawLine.replace(getCurrentDir() & "/tz/zic_out/", "")
-      if "NULL" in line or line.len == 0:
+      if "NULL" in line or "failed" in line or "-2147481748" in line or line.len == 0:
         continue
       let parts = line.splitWhitespace()
       let dstName = parts[13]
