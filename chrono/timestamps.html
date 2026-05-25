@@ -5,7 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>src/chrono/timestamps</title>
+<title>chrono/timestamps</title>
 
 <!-- Google fonts -->
 <link href='https://fonts.googleapis.com/css?family=Lato:400,600,900' rel='stylesheet' type='text/css'/>
@@ -16,15 +16,18 @@
 <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAA3XAAAN1wFCKJt4AAAAB3RJTUUH4QQQEwksSS9ZWwAAAk1JREFUWMPtll2ITVEUx39nn/O7Y5qR8f05wtCUUr6ZIS++8pEnkZInPImneaCQ5METNdOkeFBKUhMPRIkHKfEuUZSUlGlKPN2TrgfncpvmnntnmlEyq1Z7t89/rf9a6+y99oZxGZf/XeIq61EdtgKXgdXA0xrYAvBjOIF1AI9zvjcC74BSpndrJPkBWDScTF8Aa4E3wDlgHbASaANmVqlcCnwHvgDvgVfAJ+AikAAvgfVZwLnSVZHZaOuKoQi3ZOMi4NkYkpe1p4J7A8BpYAD49hfIy/oqG0+hLomiKP2L5L+1ubn5115S+3OAn4EnwBlgMzCjyt6ZAnQCJ4A7wOs88iRJHvw50HoujuPBoCKwHWiosy8MdfZnAdcHk8dxXFJ3VQbQlCTJvRBCGdRbD4M6uc5glpY3eAihpN5S5w12diSEcCCEcKUO4ljdr15T76ur1FDDLIQQ3qv71EdDOe3Kxj3leRXyk+pxdWnFWod6Wt2bY3de3aSuUHcPBVimHs7mK9WrmeOF6lR1o9qnzskh2ar2qm1qizpfXaPeVGdlmGN5pb09qMxz1Xb1kLqgzn1RyH7JUXW52lr5e/Kqi9qpto7V1atuUzfnARrV7jEib1T76gG2qxdGmXyiekkt1GswPTtek0aBfJp6YySGBfWg2tPQ0FAYgf1stUfdmdcjarbYJEniKIq6gY/Aw+zWHAC+p2labGpqiorFYgGYCEzN7oQdQClN07O1/EfDyGgC0ALMBdYAi4FyK+4H3gLPsxfR1zRNi+NP7nH5J+QntnXe5B5mpfQAAAAASUVORK5CYII=">
 
 <!-- CSS -->
-<link rel="stylesheet" type="text/css" href="../nimdoc.out.css?v=2.2.0">
+<link rel="stylesheet" type="text/css" href="../nimdoc.out.css?v=2.2.10">
 
 <!-- JS -->
-<script type="text/javascript" src="../dochack.js?v=2.2.0"></script>
+<script type="text/javascript" src="../dochack.js?v=2.2.10"></script>
 </head>
 <body>
   <div class="document" id="documentId">
+    <input type="checkbox" id="nav-toggle" hidden>
+    <label for="nav-toggle" id="nav-burger">&#9776;</label>
+    <label for="nav-toggle" id="nav-overlay"></label>
     <div class="container">
-      <h1 class="title">src/chrono/timestamps</h1>
+      <h1 class="title">chrono/timestamps</h1>
       <div class="row">
   <div class="three columns">
     <div class="theme-select-wrapper">
@@ -170,7 +173,7 @@
   <h1><a class="toc-backref" href="#7">Types</a></h1>
   <dl class="item">
     <div id="Timestamp">
-  <dt><pre><a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a> <span class="Other">=</span> <span class="Keyword">distinct</span> <span class="Identifier">float64</span></pre></dt>
+  <dt><pre><a href="#Timestamp"><span class="Identifier">Timestamp</span></a> <span class="Other">=</span> <span class="Keyword">distinct</span> <span class="Identifier">float64</span></pre></dt>
   <dd>
     
     Always seconds since 1970 UTC.
@@ -187,7 +190,7 @@
   <dl class="item">
     <div id="$-procs-all">
   <div id="$,Timestamp">
-  <dt><pre><span class="Keyword">proc</span> <a href="#%24%2CTimestamp"><span class="Identifier">`$`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#%24%2CTimestamp"><span class="Identifier">`$`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     Display a timestamps as a float64.
@@ -200,7 +203,7 @@
 </div>
 <div id="&lt;-procs-all">
   <div id="<,Timestamp,Timestamp">
-  <dt><pre><span class="Keyword">proc</span> <a href="#%3C%2CTimestamp%2CTimestamp"><span class="Identifier">`&lt;`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#%3C%2CTimestamp%2CTimestamp"><span class="Identifier">`&lt;`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     Compare timestamps.
@@ -213,7 +216,7 @@
 </div>
 <div id="&lt;=-procs-all">
   <div id="<=,Timestamp,Timestamp">
-  <dt><pre><span class="Keyword">proc</span> <a href="#%3C%3D%2CTimestamp%2CTimestamp"><span class="Identifier">`&lt;=`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#%3C%3D%2CTimestamp%2CTimestamp"><span class="Identifier">`&lt;=`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     Compare timestamps.
@@ -226,7 +229,7 @@
 </div>
 <div id="==-procs-all">
   <div id="==,Timestamp,Timestamp">
-  <dt><pre><span class="Keyword">proc</span> <a href="#%3D%3D%2CTimestamp%2CTimestamp"><span class="Identifier">`==`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#%3D%3D%2CTimestamp%2CTimestamp"><span class="Identifier">`==`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     Compare timestamps.
@@ -239,7 +242,7 @@
 </div>
 <div id="&gt;-procs-all">
   <div id=">,Timestamp,Timestamp">
-  <dt><pre><span class="Keyword">proc</span> <a href="#%3E%2CTimestamp%2CTimestamp"><span class="Identifier">`&gt;`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#%3E%2CTimestamp%2CTimestamp"><span class="Identifier">`&gt;`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     Compare timestamps.
@@ -252,7 +255,7 @@
 </div>
 <div id="&gt;=-procs-all">
   <div id=">=,Timestamp,Timestamp">
-  <dt><pre><span class="Keyword">proc</span> <a href="#%3E%3D%2CTimestamp%2CTimestamp"><span class="Identifier">`&gt;=`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#%3E%3D%2CTimestamp%2CTimestamp"><span class="Identifier">`&gt;=`</span></a><span class="Other">(</span><span class="Identifier">a</span><span class="Other">,</span> <span class="Identifier">b</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">bool</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     Compare timestamps.
@@ -265,7 +268,7 @@
 </div>
 <div id="add-procs-all">
   <div id="add,Timestamp,TimeScale,int">
-  <dt><pre><span class="Keyword">proc</span> <a href="#add%2CTimestamp%2CTimeScale%2Cint"><span class="Identifier">add</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">timeScale</span><span class="Other">:</span> <a href="calendars.html#TimeScale"><span class="Identifier">TimeScale</span></a><span class="Other">;</span> <span class="Identifier">number</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a> {.
+  <dt><pre><span class="Keyword">proc</span> <a href="#add%2CTimestamp%2CTimeScale%2Cint"><span class="Identifier">add</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">timeScale</span><span class="Other">:</span> <a href="calendars.html#TimeScale"><span class="Identifier">TimeScale</span></a><span class="Other">;</span> <span class="Identifier">number</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -279,7 +282,7 @@
 </div>
 <div id="calendar-procs-all">
   <div id="calendar,Timestamp">
-  <dt><pre><span class="Keyword">proc</span> <a href="#calendar%2CTimestamp"><span class="Identifier">calendar</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <a href="calendars.html#Calendar"><span class="Identifier">Calendar</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#calendar%2CTimestamp"><span class="Identifier">calendar</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <a href="calendars.html#Calendar"><span class="Identifier">Calendar</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     Converts a Timestamp to a Calendar.
@@ -289,7 +292,7 @@
   </dd>
 </div>
 <div id="calendar,Timestamp,float64">
-  <dt><pre><span class="Keyword">proc</span> <a href="#calendar%2CTimestamp%2Cfloat64"><span class="Identifier">calendar</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">tzOffset</span><span class="Other">:</span> <span class="Identifier">float64</span><span class="Other">)</span><span class="Other">:</span> <a href="calendars.html#Calendar"><span class="Identifier">Calendar</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+  <dt><pre><span class="Keyword">proc</span> <a href="#calendar%2CTimestamp%2Cfloat64"><span class="Identifier">calendar</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">tzOffset</span><span class="Other">:</span> <span class="Identifier">float64</span><span class="Other">)</span><span class="Other">:</span> <a href="calendars.html#Calendar"><span class="Identifier">Calendar</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -303,7 +306,7 @@
 </div>
 <div id="format-procs-all">
   <div id="format,Timestamp,string">
-  <dt><pre><span class="Keyword">proc</span> <a href="#format%2CTimestamp%2Cstring"><span class="Identifier">format</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">fmt</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+  <dt><pre><span class="Keyword">proc</span> <a href="#format%2CTimestamp%2Cstring"><span class="Identifier">format</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">fmt</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -317,7 +320,7 @@
 </div>
 <div id="formatIso-procs-all">
   <div id="formatIso,Timestamp">
-  <dt><pre><span class="Keyword">proc</span> <a href="#formatIso%2CTimestamp"><span class="Identifier">formatIso</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#formatIso%2CTimestamp"><span class="Identifier">formatIso</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     Fastest way to convert Timestamp to an ISO 8601 string representation. Use this instead of the format function when dealing with ISO format.
@@ -327,7 +330,7 @@
   </dd>
 </div>
 <div id="formatIso,Timestamp,float64">
-  <dt><pre><span class="Keyword">proc</span> <a href="#formatIso%2CTimestamp%2Cfloat64"><span class="Identifier">formatIso</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">tzOffset</span><span class="Other">:</span> <span class="Identifier">float64</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+  <dt><pre><span class="Keyword">proc</span> <a href="#formatIso%2CTimestamp%2Cfloat64"><span class="Identifier">formatIso</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">tzOffset</span><span class="Other">:</span> <span class="Identifier">float64</span><span class="Other">)</span><span class="Other">:</span> <span class="Identifier">string</span> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -341,7 +344,7 @@
 </div>
 <div id="parseIsoTs-procs-all">
   <div id="parseIsoTs,string">
-  <dt><pre><span class="Keyword">proc</span> <a href="#parseIsoTs%2Cstring"><span class="Identifier">parseIsoTs</span></a><span class="Other">(</span><span class="Identifier">iso</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+  <dt><pre><span class="Keyword">proc</span> <a href="#parseIsoTs%2Cstring"><span class="Identifier">parseIsoTs</span></a><span class="Other">(</span><span class="Identifier">iso</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -355,7 +358,7 @@
 </div>
 <div id="parseTs-procs-all">
   <div id="parseTs,string,string">
-  <dt><pre><span class="Keyword">proc</span> <a href="#parseTs%2Cstring%2Cstring"><span class="Identifier">parseTs</span></a><span class="Other">(</span><span class="Identifier">fmt</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">value</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
+  <dt><pre><span class="Keyword">proc</span> <a href="#parseTs%2Cstring%2Cstring"><span class="Identifier">parseTs</span></a><span class="Other">(</span><span class="Identifier">fmt</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">;</span> <span class="Identifier">value</span><span class="Other">:</span> <span class="Identifier">string</span><span class="Other">)</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Identifier">ValueError</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -369,7 +372,7 @@
 </div>
 <div id="sub-procs-all">
   <div id="sub,Timestamp,TimeScale,int">
-  <dt><pre><span class="Keyword">proc</span> <a href="#sub%2CTimestamp%2CTimeScale%2Cint"><span class="Identifier">sub</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">timeScale</span><span class="Other">:</span> <a href="calendars.html#TimeScale"><span class="Identifier">TimeScale</span></a><span class="Other">;</span> <span class="Identifier">number</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a> {.
+  <dt><pre><span class="Keyword">proc</span> <a href="#sub%2CTimestamp%2CTimeScale%2Cint"><span class="Identifier">sub</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">timeScale</span><span class="Other">:</span> <a href="calendars.html#TimeScale"><span class="Identifier">TimeScale</span></a><span class="Other">;</span> <span class="Identifier">number</span><span class="Other">:</span> <span class="Identifier">int</span><span class="Other">)</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a> {.
     <span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -383,7 +386,7 @@
 </div>
 <div id="toEndOf-procs-all">
   <div id="toEndOf,Timestamp,TimeScale">
-  <dt><pre><span class="Keyword">proc</span> <a href="#toEndOf%2CTimestamp%2CTimeScale"><span class="Identifier">toEndOf</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">timeScale</span><span class="Other">:</span> <a href="calendars.html#TimeScale"><span class="Identifier">TimeScale</span></a><span class="Other">)</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+  <dt><pre><span class="Keyword">proc</span> <a href="#toEndOf%2CTimestamp%2CTimeScale"><span class="Identifier">toEndOf</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">timeScale</span><span class="Other">:</span> <a href="calendars.html#TimeScale"><span class="Identifier">TimeScale</span></a><span class="Other">)</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -397,7 +400,7 @@
 </div>
 <div id="toStartOf-procs-all">
   <div id="toStartOf,Timestamp,TimeScale">
-  <dt><pre><span class="Keyword">proc</span> <a href="#toStartOf%2CTimestamp%2CTimeScale"><span class="Identifier">toStartOf</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">timeScale</span><span class="Other">:</span> <a href="calendars.html#TimeScale"><span class="Identifier">TimeScale</span></a><span class="Other">)</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
+  <dt><pre><span class="Keyword">proc</span> <a href="#toStartOf%2CTimestamp%2CTimeScale"><span class="Identifier">toStartOf</span></a><span class="Other">(</span><span class="Identifier">ts</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a><span class="Other">;</span> <span class="Identifier">timeScale</span><span class="Other">:</span> <a href="calendars.html#TimeScale"><span class="Identifier">TimeScale</span></a><span class="Other">)</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span>
     <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
@@ -411,7 +414,7 @@
 </div>
 <div id="ts-procs-all">
   <div id="ts,Calendar">
-  <dt><pre><span class="Keyword">proc</span> <a href="#ts%2CCalendar"><span class="Identifier">ts</span></a><span class="Other">(</span><span class="Identifier">cal</span><span class="Other">:</span> <a href="calendars.html#Calendar"><span class="Identifier">Calendar</span></a><span class="Other">)</span><span class="Other">:</span> <a href="timestamps.html#Timestamp"><span class="Identifier">Timestamp</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
+  <dt><pre><span class="Keyword">proc</span> <a href="#ts%2CCalendar"><span class="Identifier">ts</span></a><span class="Other">(</span><span class="Identifier">cal</span><span class="Other">:</span> <a href="calendars.html#Calendar"><span class="Identifier">Calendar</span></a><span class="Other">)</span><span class="Other">:</span> <a href="#Timestamp"><span class="Identifier">Timestamp</span></a> {.<span><span class="Other pragmadots">...</span></span><span class="pragmawrap"><span class="Identifier">raises</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">tags</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span><span class="Other">,</span> <span class="Identifier">forbids</span><span class="Other">:</span> <span class="Other">[</span><span class="Other">]</span></span>.}</pre></dt>
   <dd>
     
     Converts Calendar to a Timestamp.
@@ -432,7 +435,7 @@
       <div class="twelve-columns footer">
         <span class="nim-sprite"></span>
         <br>
-        <small style="color: var(--hint);">Made with Nim. Generated: 2024-10-16 22:42:09 UTC</small>
+        <small style="color: var(--hint);">Made with Nim. Generated: 2026-05-25 04:27:12 UTC</small>
       </div>
     </div>
   </div>

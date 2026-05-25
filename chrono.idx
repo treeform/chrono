@@ -1,4 +1,4 @@
-nimTitle	chrono	chrono.html	module src/chrono		0
+nimTitle	chrono	chrono.html	module chrono		0
 nim	Calendar	chrono.html#Calendar	object Calendar		101
 nim	Unknown	chrono.html#Unknown	TimeScale.Unknown		113
 nim	Second	chrono.html#Second	TimeScale.Second		113

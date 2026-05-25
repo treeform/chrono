@@ -1,4 +1,4 @@
-nimTitle	timestamps	chrono/timestamps.html	module src/chrono/timestamps		0
+nimTitle	timestamps	chrono/timestamps.html	module chrono/timestamps		0
 nim	Timestamp	chrono/timestamps.html#Timestamp	type Timestamp		35
 nim	`==`	chrono/timestamps.html#==,Timestamp,Timestamp	proc `==`(a, b: Timestamp): bool		37
 nim	`>`	chrono/timestamps.html#>,Timestamp,Timestamp	proc `>`(a, b: Timestamp): bool		41
